@@ -1,0 +1,8 @@
+requests
+torch
+pandas
+pydantic
+langchain-openai
+langchain-core
+sentence-transformers
+langgraph
