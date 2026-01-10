@@ -32,7 +32,7 @@ Before running the project, ensure you have the following components set up:
 The system is configured to use **LM Studio** as the LLM provider.
 
 - Download and install [LM Studio](https://lmstudio.ai/).
-- Load a model (e.g., `qwen2.5-coder-14b-instruct`).
+- Load a model (e.g., `qwen2.5-coder-14b-instruct` or `mistralai/devstral-small-2-2512`).
 - Start the Local Server on `http://localhost:1234`.
 
 ### 2. PlantUML Server
@@ -55,14 +55,15 @@ A local PlantUML server is required for syntax validation and diagram rendering.
 
 ## Project Structure
 
-- [langgraph.ipynb](langgraph.ipynb): The main Jupyter notebook containing the multi-agent workflow.
+- [multi-agent.ipynb](multi-agent.ipynb): The main Jupyter notebook containing the multi-agent workflow.
 - [data/](data/):
   - [complete_shots.json](data/complete_shots.json): Few-shot examples for the LLM.
   - [test_exercises.json](data/test_exercises.json): Test cases with requirements and gold standard solutions.
+  - [uml_knowledge.db](data/uml_knowledge.db): SQLite database that contains the complete set of few-shots in as embedded documents.
 
 ## How to Run
 
-1. Open [langgraph.ipynb](langgraph.ipynb) in VS Code or Jupyter Lab.
+1. Open [multi-agent.ipynb](multi-agent.ipynb) in VS Code or Jupyter Lab.
 2. Ensure LM Studio and the PlantUML server are running.
 3. Run the cells sequentially to:
    - Initialize the system components (LLM, PlantUML tool, Memory Manager).
