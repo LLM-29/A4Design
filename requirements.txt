@@ -6,3 +6,6 @@ langchain-openai
 langchain-core
 sentence-transformers
 langgraph
+sqlite-vec
+langchain_community
+sqlean
