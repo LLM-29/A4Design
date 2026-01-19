@@ -27,15 +27,7 @@ Minimum requirements
 
 Before running the project, ensure you have the following components set up:
 
-### 1. LLM Backend (LM Studio)
-
-The system is configured to use **LM Studio** as the LLM provider.
-
-- Download and install [LM Studio](https://lmstudio.ai/).
-- Load a model (e.g., `qwen2.5-coder-14b-instruct` or `mistralai/devstral-small-2-2512`).
-- Start the Local Server on `http://localhost:1234`.
-
-### 2. PlantUML Server
+### 1. PlantUML Server
 
 A local PlantUML server is required for syntax validation and diagram rendering.
 
@@ -52,27 +44,52 @@ A local PlantUML server is required for syntax validation and diagram rendering.
    ```bash
    pip install -r requirements.txt
    ```
+   Alternatively, if using `pyproject.toml`:
+   ```bash
+   pip install -e .
+   ```
 
 ## Project Structure
 
-- [multi-agent.ipynb](multi-agent.ipynb): The main Jupyter notebook containing the multi-agent workflow.
-- [data/](data/):
-  - [complete_shots.json](data/complete_shots.json): Few-shot examples for the LLM.
-  - [test_exercises.json](data/test_exercises.json): Test cases with requirements and gold standard solutions.
-  - [uml_knowledge.db](data/uml_knowledge.db): SQLite database that contains the complete set of few-shots in as embedded documents.
+- [notebooks/](notebooks/): Jupyter notebooks for experimentation.
+  - [multi-agent.ipynb](notebooks/multi-agent.ipynb): The main Jupyter notebook containing the multi-agent workflow.
+- [scripts/](scripts/): Main scripts to run the project.
+  - [main.py](scripts/main.py): Entry point script for running single-agent or multi-agent modes.
+- [src/](src/): Source code of the project.
+  - [agents/](src/agents/): Agent implementations.
+    - [multi_agent/](src/agents/multi_agent/): Multi-agent workflow components (agents, config, main, memory, model_manager, workflow).
+    - [single_agent/](src/agents/single_agent/): Single-agent baseline implementation.
+  - [core/](src/core/): Core modules (few_shot_loader, logger, models, plantuml, prompts, utils).
+  - [evaluation/](src/evaluation/): Evaluation modules.
+- [data/](data/): Data files.
+  - [index.faiss](data/index.faiss): FAISS index for retrieval.
+  - [processed/](data/processed/): Processed data.
+    - [diagrams.json](data/processed/diagrams.json): Processed diagrams.
+    - [few_shot.json](data/processed/few_shot.json): Few-shot examples.
+    - [test_exercises.json](data/processed/test_exercises.json): Test exercises.
+    - [validation_exercises.json](data/processed/validation_exercises.json): Validation exercises.
+  - [raw/](data/raw/): Raw data (if any).
+- [output/](output/): Output results from runs.
+  - [multi_agent/](output/multi_agent/): Outputs from multi-agent workflow.
+  - [single_agent/](output/single_agent/): Outputs from single-agent baseline.
+- [pyproject.toml](pyproject.toml): Project configuration for modern Python packaging.
+- [setup.py](setup.py): Legacy setup script.
+- [requirements.txt](requirements.txt): Python dependencies.
+- [README.md](README.md): This file.
+- [**init**.py](__init__.py): Package initialization.
 
 ## How to Run
 
-1. Open [multi-agent.ipynb](multi-agent.ipynb) in VS Code or Jupyter Lab.
-2. Ensure LM Studio and the PlantUML server are running.
-3. Run the cells sequentially to:
-   - Initialize the system components (LLM, PlantUML tool, Memory Manager).
-   - Define the LangGraph workflow.
-   - Execute a single test or batch evaluation.
+1. Ensure the PlantUML server is running.
+2. Run the script from the project root:
+   ```bash
+   python scripts/main.py --mode single  # For single-agent baseline
+   python scripts/main.py --mode multi   # For multi-agent workflow
+   ```
+   This will execute the respective workflows and save outputs to the [output/](output/) directory.
 
 ## Evaluation
 
 The system evaluates generated diagrams against a human-created gold standard using:
 
 - **Structural Accuracy**: Precision, Recall, and F1 score for Classes, Attributes, and Relationships.
-- **Consistency Checking**: Validating that all requirements are met without unnecessary additions.
