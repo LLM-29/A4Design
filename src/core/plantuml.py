@@ -5,17 +5,12 @@ PlantUML tools for validation, rendering, and parsing diagrams.
 import re
 import zlib
 import base64
-import logging
-from typing import Dict, List, Any, Optional
-
 import requests
 
-try:
-    from .models import PlantUMLResult
-except ImportError:
-    from models import PlantUMLResult
 
-logger = logging.getLogger(__name__)
+from typing import Dict, List, Any
+from src.core.models import PlantUMLResult
+from src.core.logger import Logger
 
 
 class PlantUMLTool:
@@ -26,7 +21,7 @@ class PlantUMLTool:
     and generate diagram URLs.
     """
     
-    def __init__(self, host: str = "http://localhost:8080"):
+    def __init__(self, host: str):
         """
         Initialize PlantUML tool.
         
@@ -34,7 +29,7 @@ class PlantUMLTool:
             host: PlantUML server host URL
         """
         self.host = host
-        logger.info(f"PlantUML tool initialized with host: {host}")
+        Logger.log_info(f"PlantUML tool initialized with host: {host}")
 
     def extract_plantuml(self, text: str) -> str:
         """
@@ -122,7 +117,7 @@ class PlantUMLTool:
         Returns:
             PlantUMLResult with validation status and detailed error if applicable.
         """
-        logger.info("Validating PlantUML syntax")
+        Logger.log_info("Validating PlantUML syntax")
         
         try:
             diagram_code = self.extract_plantuml(plantuml_code)
@@ -132,21 +127,23 @@ class PlantUMLTool:
             response = requests.get(url_png, timeout=timeout)
             
             if response.status_code == 200 and response.content[:4] == b'\x89PNG':
-                logger.info("Syntax validation passed (PNG rendered)")
+                Logger.log_info("Syntax validation passed (PNG rendered)")
+                Logger.log_debug(f"Returning PlantUMLResult with is_valid=True, url={url_png}, svg_url={self.host}/svg/{encoded}")
                 return PlantUMLResult(
                     is_valid=True,
                     url=url_png,
                     svg_url=f"{self.host}/svg/{encoded}"
                 )
             
-            logger.warning("PNG rendering failed. Fetching detailed syntax error...")
+            Logger.log_warning("PNG rendering failed. Fetching detailed syntax error...")
             url_txt = f"{self.host}/txt/{encoded}"
             error_response = requests.get(url_txt, timeout=timeout)
             
             detailed_error = error_response.text.strip()
             
             error_msg = f"PlantUML Syntax Error:\n{detailed_error}"
-            logger.error(f"Syntax error detected: {error_msg}")
+            Logger.log_error(f"Syntax error detected: {error_msg}")
+            Logger.log_debug(f"Returning PlantUMLResult with is_valid=False, error={error_msg}")
             
             return PlantUMLResult(
                 is_valid=False,
@@ -155,13 +152,21 @@ class PlantUMLTool:
             
         except requests.exceptions.RequestException as e:
             error_msg = f"PlantUML Server Connection Error: {str(e)}"
-            logger.error(error_msg)
-            return PlantUMLResult(is_valid=False, error=error_msg)
+            Logger.log_error(error_msg)
+            Logger.log_debug(f"Returning PlantUMLResult with is_valid=False, error={error_msg}")
+            return PlantUMLResult(
+                is_valid=False,
+                error=error_msg
+            )
             
         except Exception as e:
             error_msg = f"Unexpected error during syntax check: {str(e)}"
-            logger.error(error_msg)
-            return PlantUMLResult(is_valid=False, error=error_msg)
+            Logger.log_error(error_msg)
+            Logger.log_debug(f"Returning PlantUMLResult with is_valid=False, error={error_msg}")
+            return PlantUMLResult(
+                is_valid=False,
+                error=error_msg
+            )
 
 
 class PlantUMLParser:
@@ -189,12 +194,12 @@ class PlantUMLParser:
         try:
             self._extract_classes()
             self._extract_relationships()
-            logger.debug(
+            Logger.log_debug(
                 f"Parsed {len(self.classes)} classes and "
                 f"{len(self.relationships)} relationships"
             )
         except Exception as e:
-            logger.error(f"Parsing failed: {e}")
+            Logger.log_error(f"Parsing failed: {e}")
     
     def _extract_classes(self) -> None:
         """Extract class definitions and their attributes."""

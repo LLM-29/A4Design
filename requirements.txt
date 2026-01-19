@@ -2,6 +2,7 @@ requests
 torch
 pandas
 pydantic
+python-dotenv
 langchain-openai
 langchain-core
 sentence-transformers
@@ -9,3 +10,4 @@ langgraph
 sqlite-vec
 langchain_community
 hashlib
+langchain-groq

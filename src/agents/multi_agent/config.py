@@ -3,76 +3,91 @@ Configuration management for the UML generation system.
 """
 
 from pydantic import BaseModel, Field
-
+from os import getenv
+import src.config as cfg
 
 class SystemConfig(BaseModel):
     """System configuration for UML generation."""
-    
-    lmstudio_base_url: str = Field(
-        default="http://localhost:1234/v1",
-        description="LMStudio API endpoint"
+    evaluation_mode: str = Field(
+        default="critic",
+        description="Evaluation mode (critic or scorer)"
+    )
+    openrouter_base_url: str = Field(
+        default=cfg.OPENROUTER_BASE_URL,
+        description="Base URL for OpenAI-compatible API"
     )
     decompose_model: str = Field(
-        default="qwen3-vl-8b-instruct-mlx",
+        # default="mistralai/devstral-2512:free",
+        default=cfg.DECOMPOSE_MODEL,
         description="Model for decomposition/analysis tasks"
     )
+    api_key: str = Field(
+        default=getenv("OPENROUTER_API_KEY"),
+        description="API key for decomposition model"
+    )
     generate_model: str = Field(
-        default="mistralai/devstral-small-2-2512",
+        default=cfg.GENERATE_MODEL,
         description="Model for code generation tasks"
     )
     embedder_model: str = Field(
-        default="BAAI/bge-large-en-v1.5",
+        default=cfg.EMBEDDER_MODEL,
         description="Embedder model for database retrieval/search tasks"
     )
     evaluation_embedder_model: str = Field(
-        default="all-MiniLM-L6-v2",
+        default=cfg.EVALUATION_EMBEDDER_MODEL,
         description="Embedder model for evaluation semantic similarity (optimized for STS tasks)"
     )
     db_path: str = Field(
-        default="./../../data/uml_knowledge.db",
+        default=cfg.DATABASE,
         description="Path to SQLite database"
     )
     shots_json_path: str = Field(
-        default="./../../data/complete_shots.json",
+        default=cfg.FEW_SHOT_EXAMPLES,
         description="Path to few-shot examples"
     )
+    diagrams_json_path: str = Field(
+        default=cfg.DIAGRAMS,
+        description="Path to diagrams data"
+    )
+    test_exercises_path: str = Field(
+        default=cfg.TEST_EXERCISES,
+        description="Path to test exercises"
+    )
     plantuml_host: str = Field(
-        default="http://localhost:8080",
+        default=cfg.PLANTUML_HOST,
         description="PlantUML server host"
     )
     max_iterations: int = Field(
-        default=6,
+        default=cfg.MAX_ITERATIONS,
         ge=1,
         description="Maximum workflow iterations"
     )
     max_tokens_decompose: int = Field(
-        default=2048,
+        default=cfg.MAX_TOKENS_DECOMPOSE,
         description="Max tokens for decompose step"
     )
     max_tokens_generate: int = Field(
-        default=2048,
+        default=cfg.MAX_TOKENS_GENERATE,
         description="Max tokens for generate step"
     )
     max_tokens_critique: int = Field(
-        default=2048,
+        default=cfg.MAX_TOKENS_CRITIQUE,
         description="Max tokens for critique step"
     )
-    max_tokens_reflect: int = Field(
-        default=2048,
-        description="Max tokens for reflect step"
-    )
-    max_tokens_refine: int = Field(
-        default=2048,
-        description="Max tokens for structure refine step"
-    )
-    temperature: float = Field(
-        default=0.15,
+    temperature_generation: float = Field(
+        default=cfg.TEMPERATURE_GENERATION,
         ge=0.0,
         le=2.0,
         description="Base temperature for LLM"
     )
+    temperature_decompose: float = Field(
+        default=cfg.TEMPERATURE_DECOMPOSE,
+        ge=0.0,
+        le=2.0,
+        description="Temperature for decomposition model"
+    )
     num_few_shots: int = Field(
-        default=3,
+        default=cfg.NUM_FEW_SHOTS,
         ge=0,
         description="Number of few-shot examples"
     )
@@ -82,7 +97,7 @@ class SystemConfig(BaseModel):
         description="Timeout for PlantUML server requests"
     )
     llm_timeout: int = Field(
-        default=600,
+        default=15,
         ge=1,
         description="Timeout for LLM operations"
     )

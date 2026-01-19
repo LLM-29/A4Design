@@ -1,0 +1,2488 @@
+[
+  {
+    "id": 1,
+    "title": "Project Management System",
+    "class_extraction": {
+      "requirements": "A project manager uses the project management system to manage a project. The project manager leads a team to execute the project within the project's start and end dates. Once a project is created in the project management system, a manager may initiate and later terminate the project due to its completion or for some other reason. As input, a project uses requirements. As output, a project produces a system (or part of a system). The requirements and system are work products: things that are created, used, updated, and elaborated on throughout a project. Every work product has a description, is of some percent complete throughout the effort, and may be validated. However, validation is dependent on the type of work product. For example, the requirements are validated with users in workshops, and the system is validated by being tested against the requirements. Furthermore, requirements may be published using various types of media, including on an intranet or in paper form; and systems may be deployed onto specific platforms.",
+      "thought": "I will systematically analyze the requirements text to identify all concrete domain entities (nouns representing tangible things or concepts) and their attributes.\n\n1. **Manager (Project Manager)**: The requirements explicitly mention 'project manager' as the main user who 'uses the project management system,' 'leads a team,' and 'may initiate and later terminate' projects. This is a concrete entity representing a person with a role. While the requirements don't explicitly list attributes like Name or Phone Number, these are fundamental properties for any person entity in a business system where coordination is required.\n\n2. **Project**: This is the core business entity around which the entire system revolves. The requirements explicitly state temporal boundaries: 'within the project's start and end dates.' Projects have a lifecycle ('created,' 'initiated,' 'terminated'), indicating they are first-class entities. A Name attribute is implicit but necessary for distinguishing between different projects.\n\n3. **Work Product**: The requirements explicitly define this as a generalization: 'The requirements and system are work products: things that are created, used, updated, and elaborated on throughout a project.' The text states 'Every work product has a description' and 'is of some percent complete throughout the effort,' making these universal attributes.\n\n4. **Requirement**: Explicitly stated as a type of work product with specialized characteristics. The requirements mention 'requirements may be published using various types of media, including on an intranet or in paper form,' indicating a Media attribute specific to requirements.\n\n5. **System**: Also explicitly stated as a type of work product with its own specialized characteristics. The requirements state 'systems may be deployed onto specific platforms,' indicating a Platform attribute specific to systems.\n\n6. **Team**: Explicitly mentioned as a group entity: 'The project manager leads a team to execute the project.' While no explicit attributes are provided, a Description attribute is reasonable for documenting team composition or characteristics.",
+      "classes": [
+        {
+          "name": "Manager",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Phone Number",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Project",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Start Date",
+              "type": "Date"
+            },
+            {
+              "name": "End Date",
+              "type": "Date"
+            }
+          ]
+        },
+        {
+          "name": "Work Product",
+          "attributes": [
+            {
+              "name": "Description",
+              "type": "String"
+            },
+            {
+              "name": "Percent Complete",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Requirement",
+          "attributes": [
+            {
+              "name": "Media",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "System",
+          "attributes": [
+            {
+              "name": "Platform",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Team",
+          "attributes": [
+            {
+              "name": "Description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "A project manager uses the project management system to manage a project. The project manager leads a team to execute the project within the project's start and end dates. Once a project is created in the project management system, a manager may initiate and later terminate the project due to its completion or for some other reason. As input, a project uses requirements. As output, a project produces a system (or part of a system). The requirements and system are work products: things that are created, used, updated, and elaborated on throughout a project. Every work product has a description, is of some percent complete throughout the effort, and may be validated. However, validation is dependent on the type of work product. For example, the requirements are validated with users in workshops, and the system is validated by being tested against the requirements. Furthermore, requirements may be published using various types of media, including on an intranet or in paper form; and systems may be deployed onto specific platforms.",
+      "classes": [
+        "Manager",
+        "Project",
+        "Team",
+        "Work Product",
+        "Requirement",
+        "System"
+      ],
+      "thought": "I will analyze the requirements to identify all relationships between the provided classes, considering the types: Association, Aggregation, Composition, and Inheritance.\n\n1. **Manager → Team (Association)**: The requirements explicitly state 'The project manager leads a team.' The verb 'leads' indicates a leadership/directional relationship. This is not inheritance (Manager is not a type of Team), nor composition (Team can exist independently). It's a simple association capturing the leadership responsibility.\n\n2. **Project → Manager (Association)**: The requirements state 'A project manager uses the project management system to manage a project.' This indicates that a Project is managed by a Manager. The relationship is navigable from Project to Manager to identify who manages it. Not composition because the manager exists independently of the project.\n\n3. **Project → Team (Association)**: Implied by 'leads a team to execute the project.' The team performs the work defined by the project. This is an association representing the execution relationship, not composition (Team exists independently of the specific Project).\n\n4. **Requirement → Work Product (Inheritance)**: The requirements explicitly state 'The requirements and system are work products.' This is a classic 'is-a' relationship. Requirement inherits the Description and Percent Complete attributes from Work Product and adds its specialized Media attribute.\n\n5. **System → Work Product (Inheritance)**: Also explicitly stated: 'The requirements and system are work products.' System inherits base attributes from Work Product and adds its specialized Platform attribute.\n\n6. **Requirement → Project (Association)**: The requirements state 'As input, a project uses requirements.' This represents a usage/dependency relationship where Requirements feed into the Project. Not composition because Requirements can exist before being assigned to a project.\n\n7. **System → Project (Association)**: The requirements state 'As output, a project produces a system (or part of a system).' This represents a production relationship where the Project creates the System as its deliverable. While this could be considered composition, systems typically outlive projects, making association more appropriate.\n\nAll classes participate in at least one relationship, ensuring no orphaned entities.",
+      "relationships": [
+        {
+          "source": "Manager",
+          "target": "Team",
+          "type": "Association"
+        },
+        {
+          "source": "Project",
+          "target": "Manager",
+          "type": "Association"
+        },
+        {
+          "source": "Project",
+          "target": "Team",
+          "type": "Association"
+        },
+        {
+          "source": "Requirement",
+          "target": "Work Product",
+          "type": "Inheritance"
+        },
+        {
+          "source": "System",
+          "target": "Work Product",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Requirement",
+          "target": "Project",
+          "type": "Association"
+        },
+        {
+          "source": "System",
+          "target": "Project",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "title": "Hollywood Approach",
+    "class_extraction": {
+      "requirements": "We are interested in building a software application to manage filmed scenes for realizing a movie, by following the so-called 'Hollywood Approach'. Every scene is identified by a code (a string) and it is described by a text in natural language. Every scene is filmed from different positions (at least one), each of this is called a setup. Every setup is characterized by a code (a string) and a text in natural language where the photographic parameters are noted (e.g., aperture, exposure, focal length, filters, etc.). Note that a setup is related to a single scene. For every setup, several takes may be filmed (at least one). Every take is characterized by a (positive) natural number, a real number representing the number of meters of film that have been used for shooting the take, and the code (a string) of the reel where the film is stored. Note that a take is associated to a single setup. Scenes are divided into internals that are filmed in a theater, and externals that are filmed in a location and can either be 'day scene' or 'night scene'. Locations are characterized by a code (a string) and the address of the location, and a text describing them in natural language.",
+      "thought": "Analyzing the requirements to identify concrete domain entities and their attributes:\n\n1. **Scene**: Core entity explicitly mentioned: 'Every scene is identified by a code (a string) and it is described by a text in natural language.' This gives us two explicit attributes: code and description.\n\n2. **Setup**: Filming position entity: 'Every setup is characterized by a code (a string) and a text in natural language where the photographic parameters are noted.' Two explicit attributes: code and photographic_pars (text for parameters).\n\n3. **Take**: Individual filming attempt: 'Every take is characterized by a (positive) natural number, a real number representing the number of meters of film that have been used for shooting the take, and the code (a string) of the reel where the film is stored.' Three explicit attributes: nbr (number), filmed_meters (Real), and reel (String).\n\n4. **Internal**: Specialized scene type: 'Scenes are divided into internals that are filmed in a theater.' The theater attribute is specific to internal scenes.\n\n5. **External**: Another specialized scene type: 'externals that are filmed in a location and can either be 'day scene' or 'night scene'.' The night_scene attribute (Boolean) distinguishes day from night scenes.\n\n6. **Location**: Place entity for external scenes: 'Locations are characterized by a code (a string) and the address of the location, and a text describing them in natural language.' Three explicit attributes: name (code), address, and description.\n\nAll attributes are explicitly mentioned in the requirements with their types clearly stated.",
+      "classes": [
+        {
+          "name": "Scene",
+          "attributes": [
+            {
+              "name": "code",
+              "type": "String"
+            },
+            {
+              "name": "description",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Setup",
+          "attributes": [
+            {
+              "name": "code",
+              "type": "String"
+            },
+            {
+              "name": "photographic_pars",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Take",
+          "attributes": [
+            {
+              "name": "nbr",
+              "type": "Integer"
+            },
+            {
+              "name": "filmed_meters",
+              "type": "Real"
+            },
+            {
+              "name": "reel",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Internal",
+          "attributes": [
+            {
+              "name": "theater",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "External",
+          "attributes": [
+            {
+              "name": "night_scene",
+              "type": "Boolean"
+            }
+          ]
+        },
+        {
+          "name": "Location",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "String"
+            },
+            {
+              "name": "address",
+              "type": "String"
+            },
+            {
+              "name": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "We are interested in building a software application to manage filmed scenes for realizing a movie, by following the so-called 'Hollywood Approach'. Every scene is identified by a code (a string) and it is described by a text in natural language. Every scene is filmed from different positions (at least one), each of this is called a setup. Every setup is characterized by a code (a string) and a text in natural language where the photographic parameters are noted (e.g., aperture, exposure, focal length, filters, etc.). Note that a setup is related to a single scene. For every setup, several takes may be filmed (at least one). Every take is characterized by a (positive) natural number, a real number representing the number of meters of film that have been used for shooting the take, and the code (a string) of the reel where the film is stored. Note that a take is associated to a single setup. Scenes are divided into internals that are filmed in a theater, and externals that are filmed in a location and can either be 'day scene' or 'night scene'. Locations are characterized by a code (a string) and the address of the location, and a text describing them in natural language.",
+      "classes": [
+        "Scene",
+        "Setup",
+        "Take",
+        "Internal",
+        "External",
+        "Location"
+      ],
+      "thought": "Analyzing relationships between classes:\n\n1. **Setup → Scene (Association)**: Explicitly stated: 'a setup is related to a single scene.' This is a dependency relationship where each setup belongs to exactly one scene. Association is appropriate as setups depend on scenes but aren't parts of them in a composition sense.\n\n2. **Take → Setup (Association)**: Explicitly stated: 'a take is associated to a single setup.' Similar to the setup-scene relationship, each take belongs to one setup. Association captures this dependency.\n\n3. **Internal → Scene (Inheritance)**: 'Scenes are divided into internals that are filmed in a theater.' This is a classic 'is-a' relationship - Internal IS A specialized type of Scene, inheriting code and description attributes and adding the theater attribute.\n\n4. **External → Scene (Inheritance)**: 'Scenes are divided into internals that are filmed in a theater, and externals...' External IS A specialized type of Scene, inheriting base attributes and adding night_scene attribute.\n\n5. **External → Location (Association)**: 'externals that are filmed in a location.' External scenes are associated with locations where they're filmed. Not composition because locations can exist independently of any particular external scene being filmed there.\n\nAll classes participate in relationships. The hierarchy Scene → {Internal, External} is a clear specialization pattern, while the chain Take → Setup → Scene represents compositional dependencies in the filming process.",
+      "relationships": [
+        {
+          "source": "Setup",
+          "target": "Scene",
+          "type": "Association"
+        },
+        {
+          "source": "Take",
+          "target": "Setup",
+          "type": "Association"
+        },
+        {
+          "source": "Internal",
+          "target": "Scene",
+          "type": "Inheritance"
+        },
+        {
+          "source": "External",
+          "target": "Scene",
+          "type": "Inheritance"
+        },
+        {
+          "source": "External",
+          "target": "Location",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "title": "Bank System",
+    "class_extraction": {
+      "requirements": "A bank system contains data on customers (identified by name and address) and their accounts. Each account has a balance and there are 2 type of accounts: one for savings which offers an interest rate, the other for investments, used to buy stocks. Stocks are bought at a certain quantity for a certain price (ticker) and the bank applies commission on stock orders.",
+      "thought": "Identifying domain entities and attributes:\n\n1. **Customer**: Explicitly mentioned: 'customers (identified by name and address).' Two explicit attributes: Name and Address for customer identification.\n\n2. **Account**: Core banking entity: 'Each account has a balance.' One explicit attribute: CashBalance (Real). This serves as the base class for specialized account types.\n\n3. **SavingAccount**: First account specialization: 'one for savings which offers an interest rate.' The interestRate attribute is specific to savings accounts.\n\n4. **InvestmentAccount**: Second account specialization: 'the other for investments, used to buy stocks.' While no specific additional attributes are mentioned beyond the base Account, this is a distinct type that enables stock purchases.\n\n5. **Stock**: Financial instrument: 'Stocks are bought at a certain quantity for a certain price (ticker).' Two explicit attributes: ticker (the price identifier) and quantity (Integer for number of shares).\n\n6. **StockOrder**: Transaction entity: 'the bank applies commission on stock orders.' The commission attribute (Real) represents the bank's fee for executing stock transactions.\n\nThe requirements clearly establish a two-tier account hierarchy (Account as base, with SavingAccount and InvestmentAccount as specializations) and a stock trading mechanism through StockOrders.",
+      "classes": [
+        {
+          "name": "Customer",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Account",
+          "attributes": [
+            {
+              "name": "CashBalance",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "SavingAccount",
+          "attributes": [
+            {
+              "name": "interestRate",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "InvestmentAccount",
+          "attributes": []
+        },
+        {
+          "name": "Stock",
+          "attributes": [
+            {
+              "name": "ticker",
+              "type": "String"
+            },
+            {
+              "name": "quantity",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "StockOrder",
+          "attributes": [
+            {
+              "name": "commission",
+              "type": "Real"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "A bank system contains data on customers (identified by name and address) and their accounts. Each account has a balance and there are 2 type of accounts: one for savings which offers an interest rate, the other for investments, used to buy stocks. Stocks are bought at a certain quantity for a certain price (ticker) and the bank applies commission on stock orders.",
+      "classes": [
+        "Customer",
+        "Account",
+        "SavingAccount",
+        "InvestmentAccount",
+        "Stock",
+        "StockOrder"
+      ],
+      "thought": "Analyzing relationships:\n\n1. **Customer → Account (Association)**: 'A bank system contains data on customers...and their accounts.' Customers own or have accounts. This is an ownership association, not composition, as accounts have their own lifecycle and business rules.\n\n2. **SavingAccount → Account (Inheritance)**: 'there are 2 type of accounts: one for savings' - SavingAccount IS A type of Account. Inherits CashBalance and adds interestRate.\n\n3. **InvestmentAccount → Account (Inheritance)**: 'the other for investments' - InvestmentAccount IS A type of Account. Inherits CashBalance and enables stock trading functionality.\n\n4. **InvestmentAccount → Stock (Association)**: 'investments, used to buy stocks' - InvestmentAccounts hold or manage stocks. This is an association representing the holding relationship.\n\n5. **Stock → StockOrder (Association)**: 'the bank applies commission on stock orders' - Stocks are traded through StockOrders. The StockOrder manages the transaction including commission calculation. This association links the stock being traded to the order executing the trade.\n\nThe structure shows a clear account hierarchy with Customer owning various Account types, and InvestmentAccount specifically enabling stock trading through StockOrders.",
+      "relationships": [
+        {
+          "source": "Customer",
+          "target": "Account",
+          "type": "Association"
+        },
+        {
+          "source": "SavingAccount",
+          "target": "Account",
+          "type": "Inheritance"
+        },
+        {
+          "source": "InvestmentAccount",
+          "target": "Account",
+          "type": "Inheritance"
+        },
+        {
+          "source": "InvestmentAccount",
+          "target": "Stock",
+          "type": "Association"
+        },
+        {
+          "source": "Stock",
+          "target": "StockOrder",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "title": "Word Processor",
+    "class_extraction": {
+      "requirements": "A user can open a new or existing document. Text is entered through a keyboard. A document is made up of several pages and each page is made up of a header, body and footer. Date, time and page number may be added to header or footer. Document body is made up of sentences, which are themselves made up of words and punctuation characters. Words are made up of letters, digits and/or special characters. Pictures and tables may be inserted into the document body. Tables are made up of rows and columns and every cell in a table can contain both text and pictures. Users can save or print documents.",
+      "thought": "I will decompose the Word Processor requirements into structural entities focusing on the document hierarchy.\n\n1. **Document**: The top-level container. It is described as being 'made up of several pages.' An attribute for tracking the total count (numberofpages) is useful for document management.\n\n2. **Page**: A structural unit of the document. Each page has a pageNumber to identify its sequence. \n\n3. **Trimming**: The requirements mention 'header, body and footer' and specify that 'Date, time and page number may be added to header or footer.' We can group these non-body elements into a 'Trimming' class with attributes for date, time, and pageNumber.\n\n4. **Character**: While the text mentions sentences, words, and punctuation, at the most granular level, these are all characters. We define a Character class with an ASCIICode and a Type to distinguish between letters, digits, and special characters.\n\n5. **Picture**: Explicitly mentioned as elements that can be inserted into the body. Attributes like imageSize and imageType are standard for defining digital imagery.\n\n6. **Table**: A complex structural element within the body. It is 'made up of rows and columns,' which are represented as Integer attributes.\n\n7. **Cell**: The constituent part of a table. The requirements state 'every cell in a table can contain both text and pictures,' necessitating a specific cellFormat attribute.",
+      "classes": [
+        {
+          "name": "Document",
+          "attributes": [
+            {
+              "name": "numberofpages",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Page",
+          "attributes": [
+            {
+              "name": "pageNumber",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Trimming",
+          "attributes": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "time",
+              "type": "Time"
+            },
+            {
+              "name": "pageNumber",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Character",
+          "attributes": [
+            {
+              "name": "ASCIICode",
+              "type": "String"
+            },
+            {
+              "name": "Type",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Picture",
+          "attributes": [
+            {
+              "name": "imageSize",
+              "type": "Integer"
+            },
+            {
+              "name": "imageType",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Table",
+          "attributes": [
+            {
+              "name": "rows",
+              "type": "Integer"
+            },
+            {
+              "name": "columns",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Cell",
+          "attributes": [
+            {
+              "name": "cellFormat",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "A user can open a new or existing document. Text is entered through a keyboard. A document is made up of several pages and each page is made up of a header, body and footer. Date, time and page number may be added to header or footer. Document body is made up of sentences, which are themselves made up of words and punctuation characters. Words are made up of letters, digits and/or special characters. Pictures and tables may be inserted into the document body. Tables are made up of rows and columns and every cell in a table can contain both text and pictures. Users can save or print documents.",
+      "classes": [
+        "Document",
+        "Page",
+        "Trimming",
+        "Character",
+        "Picture",
+        "Table",
+        "Cell"
+      ],
+      "thought": "I will define the relationships based on the 'made up of' and 'contains' logic provided in the text.\n\n1. **Document → Page (Composition)**: The text says a document is 'made up of' several pages. This is a strong lifecycle dependency; if the document is destroyed, its pages are too. \n\n2. **Page → Trimming (Aggregation)**: Pages contain headers and footers (Trimmings). Aggregation is used because these are decorative elements of the page.\n\n3. **Page → {Character, Picture, Table} (Aggregation)**: The page body contains these elements. Aggregation represents the containment of content within the page structure.\n\n4. **Table → Cell (Composition)**: A table is structurally defined by its cells. If the table is deleted, the cells cease to exist.\n\n5. **Cell → {Character, Picture} (Aggregation)**: As stated, 'every cell in a table can contain both text and pictures.' Cells act as containers for these content types.",
+      "relationships": [
+        {
+          "source": "Document",
+          "target": "Page",
+          "type": "Composition"
+        },
+        {
+          "source": "Page",
+          "target": "Trimming",
+          "type": "Aggregation"
+        },
+        {
+          "source": "Page",
+          "target": "Character",
+          "type": "Aggregation"
+        },
+        {
+          "source": "Page",
+          "target": "Picture",
+          "type": "Aggregation"
+        },
+        {
+          "source": "Page",
+          "target": "Table",
+          "type": "Aggregation"
+        },
+        {
+          "source": "Table",
+          "target": "Cell",
+          "type": "Composition"
+        },
+        {
+          "source": "Cell",
+          "target": "Character",
+          "type": "Aggregation"
+        },
+        {
+          "source": "Cell",
+          "target": "Picture",
+          "type": "Aggregation"
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "title": "Patient Record and Scheduling",
+    "class_extraction": {
+      "requirements": "A patient record and scheduling system in a doctor’s oﬃce is used by the receptionists, nurses, and doctors. The receptionists use the system to enter new patient information when first-time patients visit the doctor. They also schedule all appointments. The nurses use the system to keep track of the results of each visit including diagnosis and medications. For each visit, free form text fields are used captures information on diagnosis and treatment. Multiple medications may be prescribed during each visit. The nurses can also access the information to print out a history of patient visits. The doctors primarily use the system to view patient history. The doctors may enter some patient treatment information and prescriptions occasionally, but most frequently they let the nurses enter this information. -- Each patient is assigned to a family. The head of family is responsible for the person with the primary medical coverage. Information about doctors is maintained since a family has a primary care physician, but different doctors may be the ones seeing the patient during the visit.",
+      "thought": "I will extract classes based on the medical and administrative entities described.\n\n1. **Patient**: The central entity. While the text focuses on their record, standard medical systems require attributes like Name, Gender, Birthdate, and clinical notes (Allergies, Notes).\n\n2. **FamilyInsured**: Derived from 'Each patient is assigned to a family' and 'head of family is responsible for... medical coverage.' This entity tracks insurance and primary contact details (Address, Telephone, InsuranceCarrier, PolicyNumber).\n\n3. **Doctor**: Explicitly mentioned as system users and primary care providers. Attributes include professional details (Specialty, PagerNumber) and contact info.\n\n4. **Visit**: Represents the actual clinical encounter. The requirements list 'diagnosis and medications' and 'free form text fields... for diagnosis and treatment.' We also add clinical vitals like Weight, Temperature, and BloodPressure which are standard in such systems.\n\n5. **Appointment**: Created when 'receptionists... schedule all appointments.' This entity manages the temporal aspect (Date, Time, Reason).\n\n6. **Prescription**: 'Multiple medications may be prescribed during each visit.' This is a distinct entity to track the medication, dosage, and date.",
+      "classes": [
+        {
+          "name": "Patient",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Gender",
+              "type": "String"
+            },
+            {
+              "name": "Birthdate",
+              "type": "Date"
+            },
+            {
+              "name": "LastVisitDate",
+              "type": "Date"
+            },
+            {
+              "name": "Allergies",
+              "type": "String"
+            },
+            {
+              "name": "Notes",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "FamilyInsured",
+          "attributes": [
+            {
+              "name": "NameofFamilyHead",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            },
+            {
+              "name": "Telephone",
+              "type": "String"
+            },
+            {
+              "name": "InsuranceCarrier",
+              "type": "String"
+            },
+            {
+              "name": "PolicyNumber",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Doctor",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            },
+            {
+              "name": "Telephone",
+              "type": "String"
+            },
+            {
+              "name": "SSN",
+              "type": "String"
+            },
+            {
+              "name": "Specialty",
+              "type": "String"
+            },
+            {
+              "name": "PagerNumber",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Visit",
+          "attributes": [
+            {
+              "name": "Date",
+              "type": "Date"
+            },
+            {
+              "name": "Reason",
+              "type": "String"
+            },
+            {
+              "name": "Weight",
+              "type": "Real"
+            },
+            {
+              "name": "Temperature",
+              "type": "Real"
+            },
+            {
+              "name": "BloodPressure",
+              "type": "String"
+            },
+            {
+              "name": "DiagnosisNotes",
+              "type": "String"
+            },
+            {
+              "name": "TreatmentNotes",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Appointment",
+          "attributes": [
+            {
+              "name": "Date",
+              "type": "Date"
+            },
+            {
+              "name": "Time",
+              "type": "Time"
+            },
+            {
+              "name": "Reason",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Prescription",
+          "attributes": [
+            {
+              "name": "Number",
+              "type": "String"
+            },
+            {
+              "name": "Date",
+              "type": "Date"
+            },
+            {
+              "name": "Medication",
+              "type": "String"
+            },
+            {
+              "name": "Dosage",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "A patient record and scheduling system in a doctor’s oﬃce is used by the receptionists, nurses, and doctors. The receptionists use the system to enter new patient information when first-time patients visit the doctor. They also schedule all appointments. The nurses use the system to keep track of the results of each visit including diagnosis and medications. For each visit, free form text fields are used captures information on diagnosis and treatment. Multiple medications may be prescribed during each visit. The nurses can also access the information to print out a history of patient visits. The doctors primarily use the system to view patient history. The doctors may enter some patient treatment information and prescriptions occasionally, but most frequently they let the nurses enter this information. -- Each patient is assigned to a family. The head of family is responsible for the person with the primary medical coverage. Information about doctors is maintained since a family has a primary care physician, but different doctors may be the ones seeing the patient during the visit.",
+      "classes": [
+        "Patient",
+        "FamilyInsured",
+        "Doctor",
+        "Visit",
+        "Appointment",
+        "Prescription"
+      ],
+      "thought": "I will map the relationships based on the organizational and clinical workflow described.\n\n1. **Patient → FamilyInsured (Association)**: 'Each patient is assigned to a family.' This is an association where the patient is linked to their primary medical coverage unit.\n\n2. **FamilyInsured → Doctor (Association)**: 'a family has a primary care physician.' This links the insurance unit/family to a specific doctor.\n\n3. **Patient → Appointment (Association)**: Receptionists 'schedule all appointments' for patients. This is an administrative association.\n\n4. **Patient → Visit (Association)**: Tracking the 'history of patient visits.' Visits are clinical events associated with a specific patient.\n\n5. **Visit → Appointment (Association)**: 'Visit is linked to an Appointment.' This represents the fulfillment of a scheduled slot by an actual visit.\n\n6. **Visit → Prescription (Association)**: 'Multiple medications may be prescribed during each visit.' The visit generates the prescription.\n\n7. **Doctor → Visit (Association)**: Doctors (or nurses under doctor supervision) 'the ones seeing the patient during the visit.' This links the professional to the clinical event.",
+      "relationships": [
+        {
+          "source": "Patient",
+          "target": "FamilyInsured",
+          "type": "Association"
+        },
+        {
+          "source": "FamilyInsured",
+          "target": "Doctor",
+          "type": "Association"
+        },
+        {
+          "source": "Patient",
+          "target": "Appointment",
+          "type": "Association"
+        },
+        {
+          "source": "Patient",
+          "target": "Visit",
+          "type": "Association"
+        },
+        {
+          "source": "Visit",
+          "target": "Appointment",
+          "type": "Association"
+        },
+        {
+          "source": "Visit",
+          "target": "Prescription",
+          "type": "Association"
+        },
+        {
+          "source": "Doctor",
+          "target": "Visit",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "title": "Movie-Shop",
+    "class_extraction": {
+      "requirements": "Design a system for a movie-shop, in order to handle ordering of movies and browsing of the catalogue of the store, and user subscriptions with rechargeable cards. Only subscribers are allowed hiring movies with their own card. Credit is updated on the card during rent operations. Both users and subscribers can buy a movie and their data are saved in the related order. When a movie is not available it is ordered ",
+      "thought": "I will identify the entities required for a retail and subscription-based movie system.\n\n1. **User**: The base entity for anyone interacting with the shop. Attributes: name and surname.\n\n2. **Subscriber**: A specialized user. The text mentions 'user subscriptions with rechargeable cards.' This entity requires contact info (address, phone).\n\n3. **Card**: The 'rechargeable card' used by subscribers. It tracks a unique code and the current credit.\n\n4. **Movie**: The base product in the catalogue. Attributes: name and type.\n\n5. **Movie-Buy**: A specialization of Movie for purchase. Includes attributes like Price-Sell and status (availability).\n\n6. **Movie-Rent**: A specialization of Movie for hiring. Includes hire date, status, and Price.\n\n7. **Order**: Created when users 'buy a movie and their data are saved in the related order.' Attributes include date and the name of the user who made it.\n\n8. **Movie-Shop**: Representing the system/store entity itself.",
+      "classes": [
+        {
+          "name": "User",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "String"
+            },
+            {
+              "name": "surname",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Subscriber",
+          "attributes": [
+            {
+              "name": "address",
+              "type": "String"
+            },
+            {
+              "name": "phone",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Card",
+          "attributes": [
+            {
+              "name": "code",
+              "type": "String"
+            },
+            {
+              "name": "credit",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Movie",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "String"
+            },
+            {
+              "name": "type",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Movie-Buy",
+          "attributes": [
+            {
+              "name": "status",
+              "type": "String"
+            },
+            {
+              "name": "Price-Sell",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Movie-Rent",
+          "attributes": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "status",
+              "type": "String"
+            },
+            {
+              "name": "Price",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "attributes": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "user",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Movie-Shop",
+          "attributes": []
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Design a system for a movie-shop, in order to handle ordering of movies and browsing of the catalogue of the store, and user subscriptions with rechargeable cards. Only subscribers are allowed hiring movies with their own card. Credit is updated on the card during rent operations. Both users and subscribers can buy a movie and their data are saved in the related order. When a movie is not available it is ordered ",
+      "classes": [
+        "User",
+        "Subscriber",
+        "Card",
+        "Movie",
+        "Movie-Buy",
+        "Movie-Rent",
+        "Order",
+        "Movie-Shop"
+      ],
+      "thought": "I will define the hierarchy and interaction logic for the movie shop.\n\n1. **Subscriber → User (Inheritance)**: 'Both users and subscribers can buy...' implies that a Subscriber is a type of User with additional privileges.\n\n2. **Subscriber → Card (Association)**: 'Only subscribers are allowed hiring movies with their own card.' This links the subscriber to their payment/subscription card.\n\n3. **User → Movie-Buy (Association)**: Users (including subscribers) can purchase movies.\n\n4. **Subscriber → Movie-Rent (Association)**: Only subscribers can hire (rent) movies.\n\n5. **Movie-Buy → Movie (Inheritance)**: Movie-Buy is a specific transactional type of the generic Movie entity.\n\n6. **Movie-Rent → Movie (Inheritance)**: Movie-Rent is a specific transactional type of the generic Movie entity.\n\n7. **Order → Movie-Buy (Association)**: Purchases are consolidated into Orders.\n\n8. **User → Movie-Shop (Association)**: Represents the general interaction with the system.",
+      "relationships": [
+        {
+          "source": "Subscriber",
+          "target": "User",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Subscriber",
+          "target": "Card",
+          "type": "Association"
+        },
+        {
+          "source": "User",
+          "target": "Movie-Buy",
+          "type": "Association"
+        },
+        {
+          "source": "Subscriber",
+          "target": "Movie-Rent",
+          "type": "Association"
+        },
+        {
+          "source": "Movie-Buy",
+          "target": "Movie",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Movie-Rent",
+          "target": "Movie",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Order",
+          "target": "Movie-Buy",
+          "type": "Association"
+        },
+        {
+          "source": "User",
+          "target": "Movie-Shop",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "title": "Flights",
+    "class_extraction": {
+      "requirements": "We want to model a system for management of flights and pilots. An airline operates flights. Each airline has an ID. Each flight has an ID a departure airport and an arrival airport: an airport as a unique identifier. Each flight has a pilot and a co-pilot, and it uses an aircraft of a certain type; a flight has also a departure time and an arrival time. An airline owns a set of aircrafts of different types. An aircraft can be in a working state or it can be under repair. In a particular moment an aircraft can be landed or airborne. A company has a set of pilots: each pilot has an experience level: 1 is minimum, 3 is maximum. A type of aeroplane may need a particular number of pilots, with a diﬀerent role (e.g.: captain, co-pilot, navigator): there must be at least one captain and one co-pilot, and a captain must have a level 3.",
+      "thought": "I will identify entities for aviation management.\n\n1. **Airline**: The organization. Attribute: ID and Name.\n\n2. **Flight**: The core activity. Attributes: ID, departure_time, and arrival_time.\n\n3. **Airport**: Location entity with a unique identifier (ID) and name.\n\n4. **Aircraft**: The physical machine. Attributes: Name, repair status (Boolean), and landed status (Boolean).\n\n5. **AircraftType**: Categorizes aircraft; essential because 'airline owns a set of aircrafts of different types.'\n\n6. **Pilot**: The personnel. Includes specializations (Pilot 1, 2, 3) based on the level 1-3 requirement mentioned in the text.\n\n7. **Pilot 1, 2, 3**: Specialized levels of pilots to reflect the experience level constraint (level 3 required for captains).",
+      "classes": [
+        {
+          "name": "Airline",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "String"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Flight",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "String"
+            },
+            {
+              "name": "departure_time",
+              "type": "DateTime"
+            },
+            {
+              "name": "arrival_time",
+              "type": "DateTime"
+            }
+          ]
+        },
+        {
+          "name": "Airport",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "String"
+            },
+            {
+              "name": "name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Aircraft",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "repair",
+              "type": "Boolean"
+            },
+            {
+              "name": "landed",
+              "type": "Boolean"
+            }
+          ]
+        },
+        {
+          "name": "AircraftType",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Pilot",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Pilot 1",
+          "attributes": []
+        },
+        {
+          "name": "Pilot 2",
+          "attributes": []
+        },
+        {
+          "name": "Pilot 3",
+          "attributes": []
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "We want to model a system for management of flights and pilots. An airline operates flights. Each airline has an ID. Each flight has an ID a departure airport and an arrival airport: an airport as a unique identifier. Each flight has a pilot and a co-pilot, and it uses an aircraft of a certain type; a flight has also a departure time and an arrival time. An airline owns a set of aircrafts of different types. An aircraft can be in a working state or it can be under repair. In a particular moment an aircraft can be landed or airborne. A company has a set of pilots: each pilot has an experience level: 1 is minimum, 3 is maximum. A type of aeroplane may need a particular number of pilots, with a diﬀerent role (e.g.: captain, co-pilot, navigator): there must be at least one captain and one co-pilot, and a captain must have a level 3.",
+      "classes": [
+        "Airline",
+        "Flight",
+        "Airport",
+        "Aircraft",
+        "AircraftType",
+        "Pilot",
+        "Pilot 1",
+        "Pilot 2",
+        "Pilot 3"
+      ],
+      "thought": "I will establish the operational and organizational links between aviation entities.\n\n1. **Airline → Flight (Association)**: 'An airline operates flights.'\n\n2. **Airline → Aircraft (Association)**: 'An airline owns a set of aircrafts.'\n\n3. **Flight → Airport (Association)**: 'Each flight has a departure airport and an arrival airport.'\n\n4. **Flight → Aircraft (Association)**: 'a flight... uses an aircraft.'\n\n5. **Flight → Pilot (Association)**: 'Each flight has a pilot and a co-pilot.'\n\n6. **Aircraft → AircraftType (Association)**: Aircraft are instances of specific types.\n\n7. **Pilot 1, 2, 3 → Pilot (Inheritance)**: These represent different levels of a Pilot.\n\n8. **Pilot → AircraftType (Association)**: Represents certification: 'A type of aeroplane may need a particular number of pilots.'",
+      "relationships": [
+        {
+          "source": "Airline",
+          "target": "Flight",
+          "type": "Association"
+        },
+        {
+          "source": "Airline",
+          "target": "Aircraft",
+          "type": "Association"
+        },
+        {
+          "source": "Flight",
+          "target": "Airport",
+          "type": "Association"
+        },
+        {
+          "source": "Flight",
+          "target": "Aircraft",
+          "type": "Association"
+        },
+        {
+          "source": "Flight",
+          "target": "Pilot",
+          "type": "Association"
+        },
+        {
+          "source": "Aircraft",
+          "target": "AircraftType",
+          "type": "Association"
+        },
+        {
+          "source": "Pilot 1",
+          "target": "Pilot",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Pilot 2",
+          "target": "Pilot",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Pilot 3",
+          "target": "Pilot",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Pilot",
+          "target": "AircraftType",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "title": "Veterinary Clinic",
+    "class_extraction": {
+      "requirements": "The owner of a veterinary clinic wants to create a database to store information about all veterinary services performed. After some research he came up with the following requirements:\n    - For each admitted animal, its name, breed (if any) and owner must be stored. Each animal should be given an unique numeric identifier.\n    - For each owner, its name, address and phone number should be stored. An unique numeric identifier should also be generated for each one of them.\n    - An animal might be owner-less. This happens frequently as the clinic often rescues abandoned dogs from the streets in order to treat them and get them new owners.- It should be possible to store information about a specific breed even if no animals of that breed have been treated at the clinic.\n    - Each appointment always has a responsible physician. All appointments start at a certain date and time; and are attended by an animal (and of course its owner).\n    - For each physician, his name, address and phone number should be stored. An unique numeric identifier should also be generated for each one of them.\n    - In an appointment, several medical conditions might be detected. Each condition has a common name and a scientific name. No two conditions have the same scientific name.\n    - It should be possible to store information about the most common conditions for each different breed in the database.",
+      "thought": "I will extract entities for the veterinary database.\n\n1. **Person**: A base class for individuals. Owners and Physicians share attributes like Name, Address, and Phone.\n\n2. **Owner**: A specialized Person who may own animals.\n\n3. **Physician**: A specialized Person who performs appointments.\n\n4. **Animal**: The patient entity. Attributes: unique ID and Name.\n\n5. **Breed**: A standalone entity because it's 'possible to store information about a specific breed even if no animals... have been treated.' Attribute: Name.\n\n6. **Appointment**: The service event. Attributes: Date and Time.\n\n7. **Condition**: Medical finding. Attributes: Common_Name and Sci_Name.",
+      "classes": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "Integer"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            },
+            {
+              "name": "Phone",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Owner",
+          "attributes": []
+        },
+        {
+          "name": "Physician",
+          "attributes": []
+        },
+        {
+          "name": "Animal",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "Integer"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Breed",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Appointment",
+          "attributes": [
+            {
+              "name": "Date",
+              "type": "Date"
+            },
+            {
+              "name": "Time",
+              "type": "Time"
+            }
+          ]
+        },
+        {
+          "name": "Condition",
+          "attributes": [
+            {
+              "name": "Common_Name",
+              "type": "String"
+            },
+            {
+              "name": "Sci_Name",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "The owner of a veterinary clinic wants to create a database to store information about all veterinary services performed. After some research he came up with the following requirements...",
+      "classes": [
+        "Person",
+        "Owner",
+        "Physician",
+        "Animal",
+        "Breed",
+        "Appointment",
+        "Condition"
+      ],
+      "thought": "Establishing relationships for clinic operations.\n\n1. **Owner → Person (Inheritance)**: 'For each owner, its name, address...' matching the Person template.\n\n2. **Physician → Person (Inheritance)**: Similarly, physicians are persons with specific roles.\n\n3. **Animal → Breed (Association)**: 'For each admitted animal, its... breed.'\n\n4. **Animal → Owner (Association)**: 'admitted animal... its owner.' This is optional as animals can be 'owner-less.'\n\n5. **Appointment → Animal (Association)**: 'attended by an animal.'\n\n6. **Appointment → Physician (Association)**: 'appointment always has a responsible physician.'\n\n7. **Appointment → Condition (Association)**: 'In an appointment, several medical conditions might be detected.'\n\n8. **Breed → Condition (Association)**: 'store information about the most common conditions for each different breed.'",
+      "relationships": [
+        {
+          "source": "Owner",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Physician",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Animal",
+          "target": "Breed",
+          "type": "Association"
+        },
+        {
+          "source": "Animal",
+          "target": "Owner",
+          "type": "Association"
+        },
+        {
+          "source": "Appointment",
+          "target": "Animal",
+          "type": "Association"
+        },
+        {
+          "source": "Appointment",
+          "target": "Physician",
+          "type": "Association"
+        },
+        {
+          "source": "Appointment",
+          "target": "Condition",
+          "type": "Association"
+        },
+        {
+          "source": "Breed",
+          "target": "Condition",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "title": "Auto Repair",
+    "class_extraction": {
+      "requirements": "An auto repair shop that sells and mounts parts and accessories for all kinds of vehicles wants a new information system to manage their clients, parts, accessories, and assembly services. After some research, they came up with the following requirements:\n    - There are several employees. Each one of them has a unique identifying number, a name, and an address.\n    - In this shop, assembly services, where parts and accessories are installed in a vehicle, are executed. For each of these services, the following data must be stored: in which car the service was executed, how many kms the car had at the time, who was the responsible employee, which parts and accessories were fitted, how many work hours it took, and the admission and finish dates.\n    - Parts and accessories are only sold together with an assembly service.\n    - Each part/accessory only fits in some car models. Therefore, it is important to store that information.\n    - Each part/accessory has a category (radio, tyre, …), a serial number, and a price.\n    - Each car has a license plate, a make, a model, a color, and an owner.\n    - Each owner has a name, identifying number, address, and a phone.\n    - One person can own more than one car, but one car only has one owner.",
+      "thought": "I will decompose the auto repair shop domain into its primary structural components.\n\n1. **Person**: A general class for individuals. Owners and Employees both have IDs, names, and addresses.\n\n2. **Employee**: Specialized person responsible for services.\n\n3. **Owner**: Specialized person who owns vehicles and acts as a client.\n\n4. **Car**: The vehicle being serviced. Attributes include license plate and color.\n\n5. **Car Model**: A specific design of a car. Necessary because 'Each part/accessory only fits in some car models.'\n\n6. **Make**: The manufacturer (e.g., Ford, Toyota).\n\n7. **Service**: The assembly event. Attributes: admission and finish dates, kilometers, and labor hours.\n\n8. **Part/Acc**: The physical item being installed. Attributes: serial number and price.\n\n9. **Part Type**: Categorizes parts (e.g., 'tyre', 'radio'). Tracks current pricing and compatibility.",
+      "classes": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "Integer"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Employee",
+          "attributes": []
+        },
+        {
+          "name": "Owner",
+          "attributes": []
+        },
+        {
+          "name": "Car",
+          "attributes": [
+            {
+              "name": "Plate",
+              "type": "String"
+            },
+            {
+              "name": "Color",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Car Model",
+          "attributes": []
+        },
+        {
+          "name": "Make",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Service",
+          "attributes": [
+            {
+              "name": "Adm_Date",
+              "type": "Date"
+            },
+            {
+              "name": "Finish_Date",
+              "type": "Date"
+            },
+            {
+              "name": "Car_Km",
+              "type": "Integer"
+            },
+            {
+              "name": "Hours_spent",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Part/Acc",
+          "attributes": [
+            {
+              "name": "Serial_No",
+              "type": "String"
+            },
+            {
+              "name": "Price",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Part Type",
+          "attributes": [
+            {
+              "name": "Current_Price",
+              "type": "Real"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "An auto repair shop requirements summary...",
+      "classes": [
+        "Person",
+        "Employee",
+        "Owner",
+        "Car",
+        "Car Model",
+        "Make",
+        "Service",
+        "Part/Acc",
+        "Part Type"
+      ],
+      "thought": "Linking the repair shop entities based on operational flow.\n\n1. **Employee/Owner → Person (Inheritance)**: Standard specialization for people.\n\n2. **Car → Owner (Association)**: 'One person can own more than one car... one car only has one owner.'\n\n3. **Car → Car Model (Association)**: Each physical car is an instance of a model.\n\n4. **Car Model → Make (Association)**: Models are produced by manufacturers.\n\n5. **Service → Car (Association)**: Services are performed on specific vehicles.\n\n6. **Service → Employee (Association)**: An employee is responsible for the service.\n\n7. **Service → Part/Acc (Association)**: Services use parts.\n\n8. **Part/Acc → Part Type (Association)**: Physical parts belong to a category.\n\n9. **Part Type → Car Model (Association)**: Compatibility mapping between parts and vehicle models.",
+      "relationships": [
+        {
+          "source": "Employee",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Owner",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Car",
+          "target": "Owner",
+          "type": "Association"
+        },
+        {
+          "source": "Car",
+          "target": "Car Model",
+          "type": "Association"
+        },
+        {
+          "source": "Car Model",
+          "target": "Make",
+          "type": "Association"
+        },
+        {
+          "source": "Service",
+          "target": "Car",
+          "type": "Association"
+        },
+        {
+          "source": "Service",
+          "target": "Employee",
+          "type": "Association"
+        },
+        {
+          "source": "Service",
+          "target": "Part/Acc",
+          "type": "Association"
+        },
+        {
+          "source": "Part/Acc",
+          "target": "Part Type",
+          "type": "Association"
+        },
+        {
+          "source": "Part Type",
+          "target": "Car Model",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "title": "Restaurant",
+    "class_extraction": {
+      "requirements": "The owner of a small restaurant wants a new information system to store data for all meals consumed there and also to keep a record of ingredients kept in stock. After some research he reached the following requirements list:\n    - Each ingredient has a name, a measuring unit (e.g. olive oil is measured in liters, while eggs are unit based) and a quantity in stock. There are no two ingredients with the same name. Each dish is composed of several ingredients in a certain quantity. An ingredient can, of course, be used in different dishes.\n    - A dish has a unique name and a numeric identifier.\n    - There are several tables at the restaurant. Each one of them has a unique numeric identifier and a maximum amount of people that can be seated there.\n    - In each meal, several dishes are consumed at a certain table. The same dish can be eaten more than once in the same meal.\n    - A meal takes place in a certain date and has a start and end time. Each meal has a responsible waiter.\n    - A waiter has a unique numerical identifier, a name, an address and a phone number.\n    - In some cases it is important to store information about the client that consumed the meal. A client has a tax identification number, a name and an address.",
+      "thought": "I will extract entities for restaurant management.\n\n1. **Person**: Base class for people involved (Clients and Waiters).\n\n2. **Client**: A person who consumes a meal. Attributes: Tax_ID.\n\n3. **Waiter**: A person who serves. Attributes: ID and Phone.\n\n4. **Table**: The physical seating area. Attributes: ID and Capacity.\n\n5. **Meal**: The dining event. Attributes: Date, StartTime, EndTime.\n\n6. **Dish**: A menu item. Attributes: ID and Name.\n\n7. **Ingredient**: Base component of dishes. Attributes: Name, Unit, and Stock quantity.",
+      "classes": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Client",
+          "attributes": [
+            {
+              "name": "Tax_ID",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Waiter",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "Integer"
+            },
+            {
+              "name": "Phone",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Table",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "Integer"
+            },
+            {
+              "name": "Capacity",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Meal",
+          "attributes": [
+            {
+              "name": "Date",
+              "type": "Date"
+            },
+            {
+              "name": "StartTime",
+              "type": "Time"
+            },
+            {
+              "name": "EndTime",
+              "type": "Time"
+            }
+          ]
+        },
+        {
+          "name": "Dish",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "Integer"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Ingredient",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Unit",
+              "type": "String"
+            },
+            {
+              "name": "Stock",
+              "type": "Real"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "The owner of a small restaurant requirements summary...",
+      "classes": [
+        "Person",
+        "Client",
+        "Waiter",
+        "Table",
+        "Meal",
+        "Dish",
+        "Ingredient"
+      ],
+      "thought": "Defining interactions in the restaurant domain.\n\n1. **Client/Waiter → Person (Inheritance)**: Specialized roles for people.\n\n2. **Meal → Table (Association)**: A meal is hosted at a specific table.\n\n3. **Meal → Waiter (Association)**: A meal is served by a responsible waiter.\n\n4. **Meal → Client (Association)**: A meal is consumed by a client.\n\n5. **Meal → Dish (Association)**: A meal consists of several dishes.\n\n6. **Dish → Ingredient (Association)**: Dishes are composed of ingredients.",
+      "relationships": [
+        {
+          "source": "Client",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Waiter",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Meal",
+          "target": "Table",
+          "type": "Association"
+        },
+        {
+          "source": "Meal",
+          "target": "Waiter",
+          "type": "Association"
+        },
+        {
+          "source": "Meal",
+          "target": "Client",
+          "type": "Association"
+        },
+        {
+          "source": "Meal",
+          "target": "Dish",
+          "type": "Association"
+        },
+        {
+          "source": "Dish",
+          "target": "Ingredient",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "title": "Deliveries",
+    "class_extraction": {
+      "requirements": "The owner of a small delivery company plans to have an information system... Each customer has a VAT number, a name, a phone number and an address... When a customer wants to send a package... He then receives a unique identifier code... The package is then delivered by the customer at the delivery center... Each client has an associated delivery center... The package is then delivered by hand... by a courier. Couriers have a single VAT number, a name and a phone number. Each courier works in a single delivery center. A courier is assigned to a package as soon as the package is introduced in the system.",
+      "thought": "I will identify entities for the logistics domain.\n\n1. **Person**: Common base for Customers and Couriers. Attributes: VAT, Name, Phone.\n\n2. **Customer**: Person who sends/receives packages. Attribute: Address.\n\n3. **Courier**: Person who handles deliveries.\n\n4. **Package**: The item being shipped. Attributes: ID, Weight, Urgency.\n\n5. **DeliveryCenter**: The hub for logistics. Attributes: Name and Address.",
+      "classes": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "VAT",
+              "type": "String"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Phone",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Customer",
+          "attributes": [
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Courier",
+          "attributes": []
+        },
+        {
+          "name": "Package",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "String"
+            },
+            {
+              "name": "Weight",
+              "type": "Real"
+            },
+            {
+              "name": "Urgency",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "DeliveryCenter",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "The owner of a small delivery company requirements summary...",
+      "classes": [
+        "Person",
+        "Customer",
+        "Courier",
+        "Package",
+        "DeliveryCenter"
+      ],
+      "thought": "Establishing logistics and personnel relationships.\n\n1. **Customer/Courier → Person (Inheritance)**: People roles.\n\n2. **Package → Customer (Association)**: Tracks both the sender and the recipient.\n\n3. **Package → DeliveryCenter (Association)**: Tracks the hubs the package passes through.\n\n4. **Courier → DeliveryCenter (Association)**: Couriers are based at specific centers.\n\n5. **Courier → Package (Association)**: Couriers are assigned to specific deliveries.\n\n6. **Customer → DeliveryCenter (Association)**: Customers are associated with their closest center.",
+      "relationships": [
+        {
+          "source": "Customer",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Courier",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Package",
+          "target": "Customer",
+          "type": "Association"
+        },
+        {
+          "source": "Package",
+          "target": "DeliveryCenter",
+          "type": "Association"
+        },
+        {
+          "source": "Courier",
+          "target": "DeliveryCenter",
+          "type": "Association"
+        },
+        {
+          "source": "Courier",
+          "target": "Package",
+          "type": "Association"
+        },
+        {
+          "source": "Customer",
+          "target": "DeliveryCenter",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "title": "Furniture Factory Management",
+    "class_extraction": {
+      "requirements": "The factory produces several lines of furniture... consisting of several pieces... All furniture pieces have a type, a single reference and a selling price... each component produced can be used in more than one piece... Each piece of furniture is thus composed of several components... assigned a unique numerical code, a manufacturing price and a type... sold in various stores... Each order has a order number, a date, the store that placed the order as well as a list of all the ordered furniture and their quantities.",
+      "thought": "I will extract entities for the manufacturing and retail domain.\n\n1. **Line**: The product line (e.g., Bedroom, Kitchen). Attribute: Type.\n\n2. **Piece**: Individual furniture item. Attributes: Reference (Ref) and Price.\n\n3. **Component**: Parts used in furniture. Attributes: Code and manufacturing Price.\n\n4. **ComponentType**: Categorization of components (e.g., screw, shelf).\n\n5. **Store**: Retail outlets. Attributes: Name, Address, and FAX.\n\n6. **Order**: Replenishment request. Attributes: Number and Date.",
+      "classes": [
+        {
+          "name": "Line",
+          "attributes": [
+            {
+              "name": "Type",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Piece",
+          "attributes": [
+            {
+              "name": "Ref",
+              "type": "String"
+            },
+            {
+              "name": "Price",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Component",
+          "attributes": [
+            {
+              "name": "Code",
+              "type": "String"
+            },
+            {
+              "name": "Price",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "ComponentType",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            },
+            {
+              "name": "FAX",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "attributes": [
+            {
+              "name": "Number",
+              "type": "String"
+            },
+            {
+              "name": "Date",
+              "type": "Date"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Furniture factory management requirements summary...",
+      "classes": [
+        "Line",
+        "Piece",
+        "Component",
+        "ComponentType",
+        "Store",
+        "Order"
+      ],
+      "thought": "Establishing manufacturing and supply chain links.\n\n1. **Piece → Line (Association)**: Pieces belong to specific furniture lines.\n\n2. **Piece → Component (Association)**: A piece is composed of multiple components.\n\n3. **Component → ComponentType (Association)**: Components are categorized by type.\n\n4. **Store → Order (Association)**: Stores place replenishment orders.\n\n5. **Order → Piece (Association)**: Orders contain lists of pieces and quantities.",
+      "relationships": [
+        {
+          "source": "Piece",
+          "target": "Line",
+          "type": "Association"
+        },
+        {
+          "source": "Piece",
+          "target": "Component",
+          "type": "Association"
+        },
+        {
+          "source": "Component",
+          "target": "ComponentType",
+          "type": "Association"
+        },
+        {
+          "source": "Store",
+          "target": "Order",
+          "type": "Association"
+        },
+        {
+          "source": "Order",
+          "target": "Piece",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "title": "Industrial Factory Operations",
+    "class_extraction": {
+      "requirements": "A factory has several machines. Each one of them is operated by several workers. A worker might work in more than one machine... Each different type of product is produced in a single machine... Products from the same type are all produced from the same single material and have the same weight. Clients can issue purchase orders... For each worker... name, birth date, address and a list of his skills... For each machine... serial number, make, model and purchase date... For each client... name, address, phone number... For each purchase order... order number, date, expected and actual delivery date.",
+      "thought": "I will extract entities for an industrial manufacturing environment.\n\n1. **Person**: Shared base for Workers and Clients.\n\n2. **Worker**: Specialized personnel with a Birth_Date.\n\n3. **Client**: The entity purchasing products. Attributes: Phone and Contact_Person.\n\n4. **Machine**: Manufacturing equipment. Attributes: Serial, Make, Model, Purchase_Date.\n\n5. **Product_Type**: Blueprint for products. Attributes: Material and Weight.\n\n6. **Product**: Individual items produced. Attributes: ID and Name.\n\n7. **Skill**: Worker qualifications. Attribute: Name.\n\n8. **Purchase Order**: The sales document. Attributes: Number, Date, Expected and Actual Delivery dates.",
+      "classes": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "FirstName",
+              "type": "String"
+            },
+            {
+              "name": "Surname",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Worker",
+          "attributes": [
+            {
+              "name": "Birth_Date",
+              "type": "Date"
+            }
+          ]
+        },
+        {
+          "name": "Client",
+          "attributes": [
+            {
+              "name": "Phone",
+              "type": "String"
+            },
+            {
+              "name": "Contact_Person",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Machine",
+          "attributes": [
+            {
+              "name": "Serial",
+              "type": "String"
+            },
+            {
+              "name": "Make",
+              "type": "String"
+            },
+            {
+              "name": "Model",
+              "type": "String"
+            },
+            {
+              "name": "Purchase_Date",
+              "type": "Date"
+            }
+          ]
+        },
+        {
+          "name": "Product_Type",
+          "attributes": [
+            {
+              "name": "Material",
+              "type": "String"
+            },
+            {
+              "name": "Weight",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "attributes": [
+            {
+              "name": "ID",
+              "type": "String"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Skill",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Purchase Order",
+          "attributes": [
+            {
+              "name": "Number",
+              "type": "String"
+            },
+            {
+              "name": "Date",
+              "type": "Date"
+            },
+            {
+              "name": "Expected_Del",
+              "type": "Date"
+            },
+            {
+              "name": "Actual_Del",
+              "type": "Date"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Industrial factory operations requirements summary...",
+      "classes": [
+        "Person",
+        "Worker",
+        "Client",
+        "Machine",
+        "Product_Type",
+        "Product",
+        "Skill",
+        "Purchase Order"
+      ],
+      "thought": "Establishing industrial workflow and organizational relationships.\n\n1. **Worker/Client → Person (Inheritance)**: Person specializations.\n\n2. **Worker → Machine (Association)**: Workers operate machines.\n\n3. **Worker → Skill (Association)**: Workers possess various skills.\n\n4. **Machine → Product_Type (Association)**: Machines are configured to produce specific product types.\n\n5. **Product_Type → Product (Association)**: Specific items are instances of a product type.\n\n6. **Client → Purchase Order (Association)**: Clients place orders.\n\n7. **Purchase Order → Product (Association)**: Orders contain lists of specific products.",
+      "relationships": [
+        {
+          "source": "Worker",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Client",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Worker",
+          "target": "Machine",
+          "type": "Association"
+        },
+        {
+          "source": "Worker",
+          "target": "Skill",
+          "type": "Association"
+        },
+        {
+          "source": "Machine",
+          "target": "Product_Type",
+          "type": "Association"
+        },
+        {
+          "source": "Product_Type",
+          "target": "Product",
+          "type": "Association"
+        },
+        {
+          "source": "Client",
+          "target": "Purchase Order",
+          "type": "Association"
+        },
+        {
+          "source": "Purchase Order",
+          "target": "Product",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "title": "Bycicle Rental",
+    "class_extraction": {
+      "requirements": "A bicycle renting company... store the NIN, TIN, name and address for every client... NIN and TIN must be different... bicycle models that can be rented. Each model has a unique name, a type (road, mountain, bmx or hybrid) and the number of gears... Each bicycle has a unique identifying number and a model. The company has several different stores... unique name and an address... When a reservation is made... which client, when... which bike model... where will he pick up... When a bike is picked up, the actual bike... must be stored.",
+      "thought": "I will extract entities for a rental business.\n\n1. **Client**: The renter. Attributes: NIN, TIN, Name, Address.\n\n2. **BicycleModel**: The catalog entry for bike types. Attributes: Name, Type, and No_Gears.\n\n3. **Bicycle**: The physical asset. Attribute: unique Number.\n\n4. **Store**: The pickup/return locations. Attributes: Name and Address.\n\n5. **Reservation**: The booking event. Attributes: Pickup_Day and Return_Day.",
+      "classes": [
+        {
+          "name": "Client",
+          "attributes": [
+            {
+              "name": "Nin",
+              "type": "String"
+            },
+            {
+              "name": "Tin",
+              "type": "String"
+            },
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "BicycleModel",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Type",
+              "type": "String"
+            },
+            {
+              "name": "No_Gears",
+              "type": "Integer"
+            }
+          ]
+        },
+        {
+          "name": "Bicycle",
+          "attributes": [
+            {
+              "name": "Number",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Reservation",
+          "attributes": [
+            {
+              "name": "Pickup_Day",
+              "type": "Date"
+            },
+            {
+              "name": "Return_Day",
+              "type": "Date"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Bicycle rental requirements summary...",
+      "classes": [
+        "Client",
+        "BicycleModel",
+        "Bicycle",
+        "Store",
+        "Reservation"
+      ],
+      "thought": "Defining the rental business logic.\n\n1. **Bicycle → BicycleModel (Association)**: Each physical bike is an instance of a catalog model.\n\n2. **Client → Reservation (Association)**: Clients make reservations.\n\n3. **Reservation → BicycleModel (Association)**: Initial reservations are for a model type.\n\n4. **Reservation → Bicycle (Association)**: Upon pickup, a specific bike is assigned to the reservation.\n\n5. **Reservation → Store (Association)**: Reservations are tied to specific locations.",
+      "relationships": [
+        {
+          "source": "Bicycle",
+          "target": "BicycleModel",
+          "type": "Association"
+        },
+        {
+          "source": "Client",
+          "target": "Reservation",
+          "type": "Association"
+        },
+        {
+          "source": "Reservation",
+          "target": "BicycleModel",
+          "type": "Association"
+        },
+        {
+          "source": "Reservation",
+          "target": "Bicycle",
+          "type": "Association"
+        },
+        {
+          "source": "Reservation",
+          "target": "Store",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "title": "Car Park Access System",
+    "class_extraction": {
+      "requirements": "Saturn Int. management... issue identity cards to all employees. Each card records the name, department and number... give them access to the company car park... barrier and a card reader... If the number is recognized, the reader sends a signal to trigger the barrier to rise... another type of card for guests... records a number and the current date.",
+      "thought": "I will decompose the security and access system.\n\n1. **Car Park**: The facility being secured.\n\n2. **Card**: The base access token.\n\n3. **Staff Card**: Specialized card for employees. Attributes: Name, Department, Number.\n\n4. **Guest Card**: Specialized card for visitors. Attributes: Number, Date.\n\n5. **Card Reader**: Hardware for scanning cards.\n\n6. **Barrier**: Hardware for controlling entry/exit.\n\n7. **Signal**: Communication between the reader and the barrier. Attribute: Status.\n\n8. **Access**: Represents the permission granted by a card.",
+      "classes": [
+        {
+          "name": "Car Park",
+          "attributes": []
+        },
+        {
+          "name": "Card",
+          "attributes": []
+        },
+        {
+          "name": "Staff Card",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            },
+            {
+              "name": "Department",
+              "type": "String"
+            },
+            {
+              "name": "Number",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Guest Card",
+          "attributes": [
+            {
+              "name": "Number",
+              "type": "String"
+            },
+            {
+              "name": "Date",
+              "type": "Date"
+            }
+          ]
+        },
+        {
+          "name": "Card Reader",
+          "attributes": []
+        },
+        {
+          "name": "Barrier",
+          "attributes": []
+        },
+        {
+          "name": "Signal",
+          "attributes": [
+            {
+              "name": "Status",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Access",
+          "attributes": []
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Car park access system requirements summary...",
+      "classes": [
+        "Car Park",
+        "Card",
+        "Staff Card",
+        "Guest Card",
+        "Card Reader",
+        "Barrier",
+        "Signal",
+        "Access"
+      ],
+      "thought": "Linking hardware and credentials for security.\n\n1. **Staff Card/Guest Card → Card (Inheritance)**: Specialized card types.\n\n2. **Access → Card (Inheritance)**: Permission model.\n\n3. **Car Park → Card Reader/Barrier (Composition)**: The park contains these hardware components.\n\n4. **Card Reader → Card (Association)**: Readers process cards.\n\n5. **Card Reader → Signal (Composition)**: Readers generate signals.\n\n6. **Barrier → Signal (Association)**: Barriers react to signals.",
+      "relationships": [
+        {
+          "source": "Staff Card",
+          "target": "Card",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Guest Card",
+          "target": "Card",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Access",
+          "target": "Card",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Car Park",
+          "target": "Card Reader",
+          "type": "Composition"
+        },
+        {
+          "source": "Car Park",
+          "target": "Barrier",
+          "type": "Composition"
+        },
+        {
+          "source": "Card Reader",
+          "target": "Card",
+          "type": "Association"
+        },
+        {
+          "source": "Card Reader",
+          "target": "Signal",
+          "type": "Composition"
+        },
+        {
+          "source": "Barrier",
+          "target": "Signal",
+          "type": "Association"
+        }
+      ]
+    }
+  },
+  {
+    "id": 16,
+    "title": "Banking Organizational Structure",
+    "class_extraction": {
+      "requirements": "OOBank has many branches... address and branch number... uniquely identified by an account number; it has a balance and a credit or overdraft limit... types of accounts, including: a mortgage account (property as collateral), a checking account, and a credit card account (expiry date)... Each type of account has a particular interest rate, a monthly fee... OOBank is divided into divisions and subdivisions... branches are considered subdivisions... Each division has a manager and a set of other employees. Each customer is assigned a particular employee as his or her 'personal banker'.",
+      "thought": "I will extract entities for a complex banking hierarchy.\n\n1. **Person**: Shared base for Employees and Customers.\n\n2. **Employee/Customer**: Specialized roles for persons.\n\n3. **OrganizationalUnit**: Base class for bank divisions. Branches and Subdivisions are types of units.\n\n4. **Branch**: Physical location. Attributes: Number and Address.\n\n5. **Account**: The financial record. Attributes: number, balance, credit limit.\n\n6. **AccountType**: Template for accounts (InterestRate, MonthlyFee, etc.).\n\n7. **Mortgage/Chequing/CreditCardAccount**: Specialized account types with specific attributes (e.g., collateral, expiryDate).",
+      "classes": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "Name",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Employee",
+          "attributes": []
+        },
+        {
+          "name": "Customer",
+          "attributes": []
+        },
+        {
+          "name": "OrganizationalUnit",
+          "attributes": []
+        },
+        {
+          "name": "Branch",
+          "attributes": [
+            {
+              "name": "Number",
+              "type": "String"
+            },
+            {
+              "name": "Address",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "Subdivision",
+          "attributes": []
+        },
+        {
+          "name": "Account",
+          "attributes": [
+            {
+              "name": "number",
+              "type": "String"
+            },
+            {
+              "name": "balance",
+              "type": "Real"
+            },
+            {
+              "name": "creditoroverdraftLimit",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "AccountType",
+          "attributes": [
+            {
+              "name": "InterestRate",
+              "type": "Real"
+            },
+            {
+              "name": "MonthlyFee",
+              "type": "Real"
+            },
+            {
+              "name": "checksAllowed",
+              "type": "Boolean"
+            },
+            {
+              "name": "insuranceAvailable",
+              "type": "Boolean"
+            }
+          ]
+        },
+        {
+          "name": "ChequingAccount",
+          "attributes": []
+        },
+        {
+          "name": "MortgageAccount",
+          "attributes": [
+            {
+              "name": "collateral",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "CreditCardAccount",
+          "attributes": [
+            {
+              "name": "expiryDate",
+              "type": "Date"
+            }
+          ]
+        },
+        {
+          "name": "CreditCard",
+          "attributes": [
+            {
+              "name": "name",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Banking organizational structure summary...",
+      "classes": [
+        "Person",
+        "Employee",
+        "Customer",
+        "OrganizationalUnit",
+        "Branch",
+        "Subdivision",
+        "Account",
+        "AccountType",
+        "ChequingAccount",
+        "MortgageAccount",
+        "CreditCardAccount",
+        "CreditCard"
+      ],
+      "thought": "Establishing bank hierarchy and customer relations.\n\n1. **Employee/Customer → Person (Inheritance)**: Specialized roles.\n\n2. **Branch → OrganizationalUnit (Inheritance)**: Branches are specialized bank units.\n\n3. **OrganizationalUnit → Subdivision (Composition)**: Bank units are divided into smaller sections.\n\n4. **OrganizationalUnit → Employee (Association)**: Units employ personnel.\n\n5. **Customer → Employee (Association)**: Personal banker assignment.\n\n6. **Account → AccountType (Association)**: Accounts follow type templates.\n\n7. **Mortgage/Chequing/CreditCard → Account (Inheritance)**: Account specializations.",
+      "relationships": [
+        {
+          "source": "Employee",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Customer",
+          "target": "Person",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Branch",
+          "target": "OrganizationalUnit",
+          "type": "Inheritance"
+        },
+        {
+          "source": "OrganizationalUnit",
+          "target": "Subdivision",
+          "type": "Composition"
+        },
+        {
+          "source": "OrganizationalUnit",
+          "target": "Employee",
+          "type": "Association"
+        },
+        {
+          "source": "Customer",
+          "target": "Employee",
+          "type": "Association"
+        },
+        {
+          "source": "Account",
+          "target": "AccountType",
+          "type": "Association"
+        },
+        {
+          "source": "ChequingAccount",
+          "target": "Account",
+          "type": "Inheritance"
+        },
+        {
+          "source": "MortgageAccount",
+          "target": "Account",
+          "type": "Inheritance"
+        },
+        {
+          "source": "CreditCardAccount",
+          "target": "Account",
+          "type": "Inheritance"
+        }
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "title": "Prepaid Cell Phone (Decorator Pattern)",
+    "class_extraction": {
+      "requirements": "A basic contract has a contract number and a balance... options can be added (if needed also several times): 100 MB of data, 50 SMS, 50 minutes, Double Transfer Rate... Implement this requirement with the help of the decorator pattern. All contract elements should be able to understand the methods getCharges(), getBalance() and setBalance().",
+      "thought": "I will decompose the Prepaid Cell Phone requirements using a Decorator Pattern approach.\n\n1. **Contract**: The base interface or abstract class for the pattern. It defines the core methods (getCharges, getBalance, setBalance).\n\n2. **Basic Contract**: The Concrete Component in the pattern. It holds the fundamental data like contractNumber and Balance.\n\n3. **Option**: The Decorator base class. It wraps a Contract and allows for additional features.\n\n4. **Data, SMS, Phone, Double Transfer**: Concrete Decorators that add specific charges (1.00€, 0.50€, etc.) to the contract.\n\n5. **Client**: The owner of the contract.",
+      "classes": [
+        {
+          "name": "Contract",
+          "attributes": []
+        },
+        {
+          "name": "Basic Contract",
+          "attributes": [
+            {
+              "name": "contractNumber",
+              "type": "Integer"
+            },
+            {
+              "name": "Balance",
+              "type": "Real"
+            }
+          ]
+        },
+        {
+          "name": "Option",
+          "attributes": []
+        },
+        {
+          "name": "Data",
+          "attributes": []
+        },
+        {
+          "name": "SMS",
+          "attributes": []
+        },
+        {
+          "name": "Phone",
+          "attributes": []
+        },
+        {
+          "name": "Double Transfer",
+          "attributes": []
+        },
+        {
+          "name": "Client",
+          "attributes": []
+        }
+      ]
+    },
+    "relationship_extraction": {
+      "requirements": "Prepaid cell phone (Decorator pattern) requirements summary...",
+      "classes": [
+        "Contract",
+        "Basic Contract",
+        "Option",
+        "Data",
+        "SMS",
+        "Phone",
+        "Double Transfer",
+        "Client"
+      ],
+      "thought": "Establishing the Decorator pattern structure.\n\n1. **Basic Contract → Contract (Inheritance)**: The concrete implementation of the base contract.\n\n2. **Option → Contract (Inheritance)**: The decorator base class inherits from the component it wraps.\n\n3. **Data/SMS/Phone/Double Transfer → Option (Inheritance)**: Specific decorator implementations.\n\n4. **Option → Contract (Association)**: The decorator wraps a contract instance (this is the 'wrapping' part of the pattern).\n\n5. **Contract → Client (Association)**: Links the contract to its owner.",
+      "relationships": [
+        {
+          "source": "Basic Contract",
+          "target": "Contract",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Option",
+          "target": "Contract",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Option",
+          "target": "Contract",
+          "type": "Association"
+        },
+        {
+          "source": "Data",
+          "target": "Option",
+          "type": "Inheritance"
+        },
+        {
+          "source": "SMS",
+          "target": "Option",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Phone",
+          "target": "Option",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Double Transfer",
+          "target": "Option",
+          "type": "Inheritance"
+        },
+        {
+          "source": "Contract",
+          "target": "Client",
+          "type": "Association"
+        }
+      ]
+    }
+  }
+]

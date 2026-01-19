@@ -8,6 +8,23 @@ from typing import Annotated, List, TypedDict, Optional, Dict, Any
 from pydantic import BaseModel, Field, computed_field
 
 
+class AgentMode:
+    SINGLE = "single"
+    MULTI = "multi"
+
+
+class EvaluationMode:
+    CRITIC = "critic"
+    SCORER = "scorer"
+
+
+class TaskType(str, Enum):
+    """Types of tasks that may require different models."""
+    DECOMPOSE = "decompose"  # Analyzing requirements, extracting classes/relationships
+    GENERATE = "generate"    # Generating PlantUML code
+    CRITIQUE = "critique"    # Evaluating diagram quality
+
+
 class NodeNames(str, Enum):
     """Enum for node names to avoid string literals."""
     RETRIEVE = "retrieve"
@@ -16,6 +33,9 @@ class NodeNames(str, Enum):
     GENERATE = "generate"
     SYNTAX_CHECK = "syntax_check"
     CRITIC = "critic"
+    SYNTAX_FIXER = "syntax_fixer"
+    LOGICAL_FIXER = "logical_fixer"
+    SCORER = "scorer"
 
 
 class Attribute(BaseModel):
@@ -42,20 +62,11 @@ class Relationship(BaseModel):
     )
 
 
-class DecompositionResult(BaseModel):
-    """Structured output from the DECOMPOSE node."""
-    classes: List[Class] = Field(
-        default_factory=list,
-        description="List of identified classes"
-    )
-    relationships: List[Relationship] = Field(
-        default_factory=list,
-        description="List of relationships between classes"
-    )
-
-
 class ClassExtractionResult(BaseModel):
     """Structured output from the class extraction step."""
+    thought: str = Field(
+        description="Detailed step-by-step reasoning about domain entities and constraints."
+    )
     classes: List[Class] = Field(
         default_factory=list,
         description="List of identified classes with their attributes"
@@ -64,6 +75,9 @@ class ClassExtractionResult(BaseModel):
 
 class RelationshipExtractionResult(BaseModel):
     """Structured output from the relationship extraction step."""
+    thought: str = Field(
+        description="Deliberation on relationship types (e.g. Association vs Composition) based on lifecycle."
+    )
     relationships: List[Relationship] = Field(
         default_factory=list,
         description="List of relationships between classes"
