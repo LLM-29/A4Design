@@ -122,3 +122,5 @@ class Logger:
     def log_critique_report(report: CritiqueReport) -> None:
         logger.info(f"Extracted {len(report.findings)} findings")
         logger.info(f"Extracted report: {report}")
+
+        

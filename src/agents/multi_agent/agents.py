@@ -67,7 +67,10 @@ class UMLNodes:
         self.memory_manager = memory_manager
         self.config = config
         self.model_manager = model_manager
-        self.few_shot_loader = FewShotLoader()
+        self.few_shot_loader = FewShotLoader(
+            examples_path=config.shots_json_path,
+            diagrams_path=config.diagrams_json_path
+        )
         
         Logger.log_info("UMLNodes initialized with DYNAMIC MODEL LOADING")
     

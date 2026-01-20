@@ -11,7 +11,7 @@ from src.core.logger import Logger
 class FewShotLoader:
     """Loads and formats few-shot examples for different agents."""
     
-    def __init__(self, examples_path: Path = None, diagrams_path: Path = None):
+    def __init__(self, examples_path: Path, diagrams_path: Path):
         """
         Initialize the few-shot loader.
         
@@ -19,17 +19,10 @@ class FewShotLoader:
             examples_path: Path to the few_shot_examples.json file
             diagrams_path: Path to the diagrams.json file (for diagrams)
         """
-        if examples_path is None:
-            # Default path: go up two levels from multi-agent to A4Design, then to data
-            examples_path = Path(__file__).parent.parent.parent / "data" / "processed" / "few_shot_examples.json"
-        
-        if diagrams_path is None:
-            diagrams_path = Path(__file__).parent.parent.parent / "data" / "processed" / "diagrams.json"
-        
         self.examples_path = examples_path
         self.diagrams_path = diagrams_path
         self._examples = None
-        self._complete_shots = None
+        self._diagrams = None
     
     def _load_examples(self) -> List[Dict[str, Any]]:
         """Load examples from JSON file."""
@@ -51,18 +44,18 @@ class FewShotLoader:
                 self._examples = []
         return self._examples
     
-    def _load_complete_shots(self) -> List[Dict[str, Any]]:
+    def _load_diagrams(self) -> List[Dict[str, Any]]:
         """Load complete shots with diagrams from JSON file."""
-        if self._complete_shots is None:
+        if self._diagrams is None:
             try:
-                with open(self.few_shot_examples_path, 'r', encoding='utf-8') as f:
+                with open(self.diagrams_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                    self._complete_shots = data if isinstance(data, list) else []
-                Logger.log_info(f"Loaded {len(self._complete_shots)} complete shots with diagrams")
+                    self._diagrams = data if isinstance(data, list) else []
+                Logger.log_info(f"Loaded {len(self._diagrams)} complete shots with diagrams")
             except Exception as e:
                 Logger.log_warning(f"Failed to load complete shots: {e}")
-                self._complete_shots = []
-        return self._complete_shots
+                self._diagrams = []
+        return self._diagrams
     
     def _get_diagram_for_example(self, example_id: int) -> str:
         """
@@ -74,8 +67,8 @@ class FewShotLoader:
         Returns:
             The PlantUML diagram string or empty string if not found
         """
-        complete_shots = self._load_complete_shots()
-        for shot in complete_shots:
+        diagrams = self._load_diagrams()
+        for shot in diagrams:
             if shot.get("id") == example_id:
                 return shot.get("diagram", "")
         return ""
