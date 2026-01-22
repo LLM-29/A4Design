@@ -18,7 +18,7 @@ from tqdm import tqdm
 from os import getenv
 from dotenv import load_dotenv
 from typing import List, Dict, Any
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 import concurrent.futures
 
 # Add project root to path for imports
@@ -29,8 +29,9 @@ from src.core.utils import initialize_multi_agent_system, run_exercise
 from src.evaluation.evaluation import evaluate_diagram
 from src.core.logger import Logger
 from sentence_transformers import SentenceTransformer
+from sklearn.model_selection import KFold
 
-# --- Constants ---
+
 CACHE_DIR = Path(__file__).parent.parent.parent / "output" / "cache"
 CACHE_FILE = CACHE_DIR / "threshold_generation_cache.json"
 RESULTS_FILE = Path(__file__).parent.parent.parent / "output" / "evaluation" / "joint_threshold_results.json"
@@ -65,7 +66,6 @@ def load_validation_exercises() -> List[Exercise]:
     Logger.log_info(f"Loaded {len(exercises)} validation exercises.")
     return exercises
 
-# --- Caching Utilities ---
 
 def load_generation_cache() -> Dict[str, Any]:
     """Load previously generated diagrams to avoid re-running LLM calls."""
@@ -74,11 +74,13 @@ def load_generation_cache() -> Dict[str, Any]:
             return json.load(f)
     return {}
 
+
 def save_generation_cache(cache: Dict[str, Any]):
     """Save generated diagrams to disk."""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     with open(CACHE_FILE, "w") as f:
         json.dump(cache, f, indent=2)
+
 
 def compute_f1_score(item: Dict[str, Any], eval_thresh: float, exercise_map: Dict[int, Exercise], model) -> float:
     """Compute F1 score for a single exercise-item pair."""
@@ -101,7 +103,6 @@ def compute_f1_score(item: Dict[str, Any], eval_thresh: float, exercise_map: Dic
     except Exception as e:
         return None
 
-# --- Phase 1: Generation ---
 
 def run_generation_phase(api_key: str, exercises: List[Exercise], convergence_thresholds: np.ndarray) -> Dict[str, Any]:
     """
@@ -155,9 +156,6 @@ def run_generation_phase(api_key: str, exercises: List[Exercise], convergence_th
         
     return cache
 
-# --- Phase 2: Evaluation ---
-
-from sklearn.model_selection import KFold
 
 def run_evaluation_phase(exercises: List[Exercise], generation_data: Dict[str, Any], evaluation_thresholds: np.ndarray, k_folds: int = 5) -> Dict[str, Any]:
     Logger.log_info(f"--- Starting Phase 2: {k_folds}-Fold Cross-Validation ---")
@@ -192,19 +190,17 @@ def run_evaluation_phase(exercises: List[Exercise], generation_data: Dict[str, A
             train_batch = [b for b in batch_results if b['exercise_id'] in train_ids]
             
             for eval_thresh in evaluation_thresholds:
-                # Calculate avg F1 for this configuration on TRAIN set (now parallelized)
+                # Calculate avg F1 for this configuration on TRAIN set
                 scores = compute_scores_parallel(train_batch, eval_thresh, exercise_map, model)
                 avg_f1 = np.mean(scores) if scores else 0
                 
                 if avg_f1 > best_train_config['f1']:
                     best_train_config = {'f1': avg_f1, 'conv': conv_thresh, 'eval': eval_thresh}
         
-        # 2. EVALUATE THOSE PARAMETERS ON VALIDATION SET
-        # Retrieve the specific batch for the chosen convergence threshold
+        # 2. EVALUATE PARAMETERS ON VALIDATION SET
         best_conv_key = f"{best_train_config['conv']:.3f}"
         val_batch = [b for b in generation_data[best_conv_key] if b['exercise_id'] in val_ids]
         
-        # For validation, we can also parallelize if needed, but it's smaller
         val_scores = compute_scores_parallel(val_batch, best_train_config['eval'], exercise_map, model)
         val_f1 = np.mean(val_scores) if val_scores else 0
         
@@ -237,16 +233,12 @@ def optimize_joint_thresholds(api_key: str):
     exercises = load_validation_exercises()
 
     # Define ranges
-    # 1. Convergence: How strict the agent is before stopping self-correction
     convergence_thresholds = np.linspace(0.90, 0.99, 10) 
-    # 2. Evaluation: How strict the grader is when matching strings
-    # evaluation_thresholds = np.linspace(0.70, 0.95, 26) # 0.01 steps
+    #TODO provare con range 0.45 - 0.55
     evaluation_thresholds = np.linspace(0.55, 0.70, 10) # 0.01 steps
 
-    # PHASE 1: GENERATION (Expensive)
     generation_data = run_generation_phase(api_key, exercises, convergence_thresholds)
     
-    # PHASE 2: EVALUATION (Cheap)
     optimization_results = run_evaluation_phase(exercises, generation_data, evaluation_thresholds)
     
     return optimization_results
@@ -269,8 +261,8 @@ if __name__ == "__main__":
 
         Logger.log_info("\n" + "="*50)
         Logger.log_info("OPTIMIZATION COMPLETE")
-        Logger.log_info(f"Optimal Convergence Threshold : {results['optimal_convergence_threshold']:.3f}")
-        Logger.log_info(f"Optimal Evaluation Threshold  : {results['optimal_evaluation_threshold']:.3f}")
-        Logger.log_info(f"Maximum F1 Score              : {results['max_f1']:.3f}")
+        Logger.log_info(f"Optimal Convergence Threshold : {results['robust_optimal_convergence']:.3f}")
+        Logger.log_info(f"Optimal Evaluation Threshold  : {results['robust_optimal_evaluation']:.3f}")
+        Logger.log_info(f"Cross-Validation F1 Score     : {results['cross_validation_f1']:.3f}")
         Logger.log_info("="*50)
         Logger.log_info(f"Detailed results saved to {RESULTS_FILE}")
