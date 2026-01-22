@@ -3,7 +3,6 @@ Agent nodes for the UML generation workflow.
 """
 
 import json
-import time
 import Levenshtein
 
 from typing import Dict, List, Any, Optional
@@ -23,7 +22,7 @@ from src.core.models import (
 )
 from src.core.plantuml import PlantUMLTool
 from src.core.logger import Logger
-from src.core.utils import safe_invoke
+from src.core.invoke import safe_invoke
 from src.agents.multi_agent.memory import MemoryManager
 from src.core.model_manager import ModelManager, TaskType
 from src.core.few_shot_loader import FewShotLoader

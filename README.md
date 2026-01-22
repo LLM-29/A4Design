@@ -157,3 +157,5 @@ python src/evaluation/joint_threshold_optimization.py
 ```
 
 This script performs optimization and saves results to the `output/evaluation/` directory. Cached results are stored in `output/cache/` to avoid recomputation. The optimal thresholds are used in the main evaluation pipeline.
+
+### Ground truth Data

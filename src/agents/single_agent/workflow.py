@@ -2,7 +2,6 @@
 Workflow creation and state management for the UML generation system.
 """
 
-from math import abs
 from typing import Any
 from langgraph.graph import StateGraph, START, END
 from src.agents.multi_agent.config import SystemConfig

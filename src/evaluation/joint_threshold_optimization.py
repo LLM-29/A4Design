@@ -235,7 +235,7 @@ def optimize_joint_thresholds(api_key: str):
     # Define ranges
     convergence_thresholds = np.linspace(0.90, 0.99, 10) 
     #TODO provare con range 0.45 - 0.55
-    evaluation_thresholds = np.linspace(0.55, 0.70, 10) # 0.01 steps
+    evaluation_thresholds = np.linspace(0.55, 0.70, 10) 
 
     generation_data = run_generation_phase(api_key, exercises, convergence_thresholds)
     

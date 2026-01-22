@@ -5,3 +5,4 @@ uml_knowledge.db
 index.faiss
 indexer.pkl
 .DS_Store
+.venv/

@@ -1,0 +1,725 @@
+{
+  "0.900": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  patientInfo\n  name\n  contactDetails\n  medicalHistory\n  medicalCoverage\n  primaryCarePhysician\n}\nclass Family {\n  familyInfo\n  headOfFamily\n  primaryCarePhysician\n}\nclass Doctor {\n}\nclass Visit {\n  visitInfo\n  diagnosisText\n  treatmentText\n}\nclass Diagnosis {\n  diagnosisInfo\n}\nclass Treatment {\n  treatmentInfo\n}\nclass Medication {\n  medicationInfo\n}\nclass Receptionist {\n}\nclass Nurse {\n}\nPatient --> Family\nVisit --> Patient\nVisit --> Doctor\nVisit --> Diagnosis\nVisit --> Treatment\nVisit --> Medication\nReceptionist --> Patient\nReceptionist --> Visit\nNurse --> Visit\nNurse --> Medication\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n}\nclass Subscriber {\n  card\n}\nclass Card {\n  balance\n  cardId\n}\nclass Movie {\n  title\n  availability\n  quantity\n}\nclass Order {\n  orderId\n  status\n  userData\n  movieData\n  orderType\n}\nclass Catalogue {\n  description\n}\nSubscriber --|> User\nSubscriber --> Order\nOrder --> Movie\nCatalogue --> Movie\nSubscriber --> Card\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  departureAirport\n  departureTime\n  id\n}\nclass Airport {\n  id\n}\nclass Pilot {\n  experienceLevel\n}\nclass Aircraft {\n  state\n  status\n  type\n}\nclass AircraftType {\n  requiredPilots\n}\nclass Company {\n}\nAirline --> Flight\nFlight --> Airport\nFlight \"captain\" --> Pilot\nFlight \"co-pilot\" --> Pilot\nFlight --> Aircraft\nAircraft --> AircraftType\nAircraftType --> Flight\nAirline o-- Aircraft\nAirline o-- Pilot\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Account {\n  balance\n}\nclass Customer {\n  address\n  name\n}\nclass InvestmentAccount {\n}\nclass SavingsAccount {\n  interestRate\n}\nclass Stock {\n  commission\n  price\n  quantity\n}\nAccount <|-- InvestmentAccount\nAccount <|-- SavingsAccount\nCustomer --> Account\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  name\n  breed\n  owner\n  uniqueIdentifier\n}\nclass Owner {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass Breed {\n}\nclass Appointment {\n  responsiblePhysician\n  startDateTime\n  animal\n}\nclass Physician {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nclass CommonCondition {\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> CommonCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  car\n  kms\n  responsibleEmployee\n  partsAndAccessories\n  workHours\n  admissionDate\n  finishDate\n}\nclass Part {\n  category\n  serialNumber\n  price\n  carModels\n}\nclass Accessory {\n  category\n  serialNumber\n  price\n  carModels\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n  owner\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nEmployee --> AssemblyService\nAssemblyService --> Part\nAssemblyService --> Accessory\nAssemblyService --> Car\nPart --> Car\nAccessory --> Car\nCar --> Owner\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxCapacity\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nClient --> Meal\nMeal --> Dish\nMeal --> Table\nMeal --> Waiter\nDish --> DishIngredient\nDishIngredient --> Ingredient\nnote top of Ingredient\n  name is unique\nend note\nnote top of Dish\n  name is unique\nend note\nnote top of Meal\n  The same dish can be consumed multiple times in a meal.\nend note\nnote on link Meal --> Dish\n  The same dish can be consumed multiple times in a meal.\nend note\nnote on link Meal --> Table\n  A meal takes place at a single table.\nend note\nnote on link Meal --> Waiter\n  Each meal has a responsible waiter.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  uniqueIdentifierCode\n  weight\n  deliveryType\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package\nPackage --> DeliveryCenter\nCustomer --> DeliveryCenter\nCourier --> Package\nCourier --> DeliveryCenter\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n  orderedFurniture\n  quantities\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nOrder --> FurniturePiece\nStore --> Order\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPerson\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  productId\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  expectedDeliveryDate\n  orderDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nin\n  tin\n  name\n  address\n}\nclass BicycleModel {\n  name\n  type\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber\n  model\n}\nclass Store {\n  name\n  address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nClient --> Rental\nRental --> Bicycle\nRental --> Store\nBicycle --> BicycleModel\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Employee {\n  name\n  department\n  number\n}\nclass IdentityCard {\n  cardNumber\n  employeeName\n  employeeDepartment\n  employeeNumber\n}\nclass GuestCard {\n  cardNumber\n  currentDate\n}\nclass CardReader\nclass Barrier\nclass Sign {\n  isFull\n}\nclass CarPark {\n  capacity\n  availableSpaces\n}\nEmployee --> IdentityCard\nIdentityCard --> CardReader\nGuestCard --> CardReader\nCardReader --> Barrier\nCarPark --> Barrier\nCarPark --> Sign\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass Bank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  overdraftLimit\n}\nclass MortgageAccount {\n  collateral\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Division {\n  employees\n  manager\n}\nclass Subdivision {\n}\nclass Employee {\n}\nclass Customer {\n}\nclass Client {\n}\nclass Privilege {\n  description\n}\nBank *-- Branch\nBranch *-- Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nCreditCardAccount --> CreditCardAccount\nAccount --> Privilege\nBank *-- Division\nDivision *-- Subdivision\nBranch <|-- Subdivision\nDivision *-- Employee\nEmployee --> Customer\nClient --> Account\nClient --> Branch\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  balance: double\n  contractNumber: int\n  +BasicContract(int contractNumber, double initialBalance)\n  +getBalance(): double\n  +setBalance(double balance): void\n  +getCharges(): double\n}\n\nabstract class ContractDecorator {\n  -wrappedContract: BasicContract\n  +ContractDecorator(BasicContract contract)\n  +getBalance(): double\n  +setBalance(double balance): void\n  +getCharges(): double\n}\n\nclass DataOption {\n  +DataOption(BasicContract contract)\n  +getCharges(): double\n}\n\nclass DoubleTransferRateOption {\n  +DoubleTransferRateOption(BasicContract contract)\n  +getCharges(): double\n}\n\nclass MinutesOption {\n  +MinutesOption(BasicContract contract)\n  +getCharges(): double\n}\n\nclass SMSOption {\n  +SMSOption(BasicContract contract)\n  +getCharges(): double\n}\n\nBasicContract <|-- ContractDecorator\nContractDecorator <|-- DataOption\nContractDecorator <|-- DoubleTransferRateOption\nContractDecorator <|-- MinutesOption\nContractDecorator <|-- SMSOption\nContractDecorator --> BasicContract\n@enduml"
+    }
+  ],
+  "0.910": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  patientInfo\n}\nclass Family {\n  headOfFamily\n  primaryMedicalCoverage\n}\nclass Doctor {\n  doctorInfo\n}\nclass Appointment {\n  appointmentDetails\n  appointmentDate\n  appointmentTime\n  appointmentPurpose\n}\nclass Visit {\n  visitInfo\n}\nclass Diagnosis {\n  diagnosisText\n}\nclass Treatment {\n  treatmentText\n}\nclass Medication {\n  medicationInfo\n  medicationName\n  dosage\n  frequency\n}\nclass Receptionist {\n  schedulesAppointments\n}\nclass Nurse {\n  managesPatientRecords\n}\nPatient --> Family\nFamily o-- Patient\nFamily o-- Doctor\nPatient --> Appointment\nPatient --> Visit\nVisit --> Diagnosis\nVisit --> Treatment\nVisit --> Medication\nDoctor --> Visit\nDoctor --> Patient\nReceptionist --> Appointment\nNurse --> Visit\nNurse --> Medication\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n}\nclass Subscriber {\n  card\n  address\n  contactInfo\n  creditBalance\n}\nclass Movie {\n  title\n  availability\n  price\n}\nclass Order {\n  orderId\n  orderDate\n  status\n}\nclass Catalogue {\n  description\n}\nSubscriber --|> User\nSubscriber --> Order\nOrder --> Movie\nCatalogue --> Movie\nUser --> Order\nSubscriber --> Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  departureAirport\n  departureTime\n  id\n}\nclass Airport {\n  uniqueIdentifier\n}\nclass Pilot {\n  experienceLevel\n}\nclass Aircraft {\n  isAirborne\n  state\n}\nclass AircraftType {\n  requiredPilots\n  roles\n}\nAirline --> Flight\nFlight --> Airport\nFlight --> Pilot\nFlight --> Aircraft\nAircraft --> AircraftType\nAirline o-- Aircraft\nAirline o-- Pilot\nAircraftType --> Pilot\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  quantity\n  price\n  commission\n}\nCustomer --> Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  name\n  animalId\n}\nclass Owner {\n  name\n  address\n  phoneNumber\n  ownerId\n}\nclass Breed {\n  breedName\n}\nclass Appointment {\n  dateTime\n}\nclass Physician {\n  name\n  address\n  phoneNumber\n  physicianId\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  kmsAtTime\n  workHours\n  admissionDate\n  finishDate\n}\nclass PartAccessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nEmployee --> AssemblyService\nAssemblyService --> Car\nAssemblyService --> PartAccessory\nPartAccessory --> Car\nCar --> Owner\nnote right of PartAccessory : Only sold with AssemblyService\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nnote right of Client::taxIdentificationNumber\n  Unique\nend note\nclass Dish {\n  name\n  numericIdentifier\n}\nnote right of Dish::name\n  Unique\nend note\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nnote right of Ingredient::name\n  Unique\nend note\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxPeople\n  numericIdentifier\n}\nnote right of Table::numericIdentifier\n  Unique\nend note\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nnote right of Waiter::numericIdentifier\n  Unique\nend note\nclass DishIngredient {\n  quantity\n}\nDish -- DishIngredient\nDishIngredient -- Ingredient\nMeal --> Client\nMeal --> Dish\nnote on link\n  Same dish can be consumed multiple times in a meal\nend note\nMeal --> Table\nMeal --> Waiter\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifierCode\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package\nPackage --> DeliveryCenter\nCustomer --> DeliveryCenter\nCourier --> DeliveryCenter\nCourier --> Package\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  manufacturingPrice\n  type\n  uniqueNumericalCode\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  furniture\n  orderNumber\n  quantity\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nOrder --> FurniturePiece\nOrder --> Store\nStore --> FurniturePiece\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  {unique} nationalIdNumber\n  {unique} taxIdentificationNumber\n  name\n  address\n}\nclass BicycleModel {\n  name\n  type: road, mountain, bmx, hybrid\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber\n  model\n}\nclass Store {\n  {mandatory} name\n  {mandatory} address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nclass Pickup {\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Bicycle\nRental --> Client\nRental --> Store\nReservation --> Pickup\nPickup --> Rental\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Employee {\n  name\n  department\n  number\n}\nclass IdentityCard {\n  name\n  department\n  number\n}\nclass CarPark {\n  capacity\n}\nclass Barrier {\n  status\n}\nclass CardReader {\n  location\n}\nclass Sign {\n  message\n  status\n}\nclass GuestCard {\n  number\n  currentDate\n}\nEmployee --> IdentityCard\nIdentityCard --> CardReader\nCardReader --> Barrier\nCarPark --> Barrier\nCarPark --> Sign\nGuestCard --> CardReader\nGuestCard --> CarPark\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass Bank {\n}\nclass OOBank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  overdraftLimit\n  interestRate\n  monthlyFee\n}\nclass MortgageAccount {\n  property\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n}\nclass JointAccount {\n}\nclass Division {\n  name\n}\nclass Subdivision {\n  name\n}\nclass Employee {\n  name\n}\nclass Customer {\n}\nclass PersonalBanker {\n}\nclass Privilege {\n  description\n}\nclass SecondaryCard {\n}\nBank --> Branch\nBranch --> Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nCreditCardAccount --> SecondaryCard\nBank --> Division\nDivision --> Subdivision\nDivision o-- Employee\nCustomer --> PersonalBanker\nAccount o-- Privilege\nCustomer --> Branch\nDivision --> Employee : manager\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  contractNumber: int\n  balance: double\n  BasicContract(int, double)\n  getBalance(): double\n  setBalance(double)\n  getCharges(): double\n}\nabstract class ContractDecorator {\n  {abstract} getCharges(): double\n}\nclass DataOption {\n  monthlyCharge: double = 1.00\n  getCharges(): double\n}\nclass DoubleTransferRateOption {\n  monthlyCharge: double = 0.75\n  getCharges(): double\n}\nclass MinutesOption {\n  monthlyCharge: double = 0.50\n  getCharges(): double\n}\nclass SMSOption {\n  monthlyCharge: double = 0.50\n  getCharges(): double\n}\nContractDecorator --|> BasicContract\nDataOption --|> ContractDecorator\nDoubleTransferRateOption --|> ContractDecorator\nMinutesOption --|> ContractDecorator\nSMSOption --|> ContractDecorator\n@enduml"
+    }
+  ],
+  "0.920": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  patientInfo\n  name\n  contactDetails\n}\nclass Family {\n  headOfFamily\n  primaryMedicalCoverage\n  familyDetails\n}\nclass Doctor {\n  doctorInfo\n  viewPatientHistory\n  enterTreatmentInfo\n}\nclass Visit {\n  diagnosis\n  treatment\n}\nclass Diagnosis {\n  diagnosisInfo\n}\nclass Treatment {\n  treatmentInfo\n}\nclass Medication {\n  medicationInfo\n}\nclass Receptionist {\n  scheduleAppointments\n}\nclass Nurse {\n  enterDiagnosisInfo\n  enterTreatmentInfo\n}\nclass Appointment {\n  appointmentInfo\n}\nPatient --> Family\nFamily --> Doctor\nVisit --> Patient\nVisit --> Doctor\nVisit --> Diagnosis\nVisit --> Treatment\nVisit --> Medication\nReceptionist --> Patient\nNurse --> Visit\nDoctor --> Visit\nReceptionist --> Appointment\nNurse --> Medication\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n}\nclass Subscriber {\n  name\n}\nclass Movie {\n  description\n  title\n}\nclass Order {\n  orderId\n}\nclass Card {\n  credit\n}\nclass Catalogue {\n  description\n}\nUser <|-- Subscriber\nSubscriber --> Card\nSubscriber --> Movie\nUser --> Order\nSubscriber --> Order\nOrder --> Movie\nCard --> Order\nCatalogue o-- Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  coPilot\n  departureAirport\n  departureTime\n  id\n  pilot\n  aircraftType\n}\nclass Airport {\n  id\n}\nclass Pilot {\n  experienceLevel\n}\nclass Aircraft {\n  state\n  status\n  type\n}\nclass AircraftType {\n  numberOfPilots\n  roles\n}\nAirline --> Flight\nFlight --> Airport\nFlight --> Pilot\nFlight --> Aircraft\nAircraft --> AircraftType\nAirline o-- Aircraft\nAirline o-- AircraftType\nAirline o-- Pilot\nAircraftType --> Pilot\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Account {\n  balance\n}\nclass Customer {\n  address\n  name\n  customerId\n}\nclass InvestmentAccount {\n}\nclass SavingsAccount {\n  interestRate\n}\nclass Stock {\n  price\n  quantity\n  ticker\n}\nAccount <|-- InvestmentAccount\nAccount <|-- SavingsAccount\nCustomer o-- Account\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  id\n  name\n  breed\n  owner\n}\nclass Owner {\n  id\n  name\n  address\n  phoneNumber\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  dateTime\n  responsiblePhysician\n}\nclass Physician {\n  id\n  name\n  address\n  phoneNumber\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Owner\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  kms\n  workHours\n  admissionDate\n  finishDate\n  fittedPartsAccessories\n}\nclass Part {\n  category\n  serialNumber\n  price\n}\nclass Accessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nclass Compatibility {\n}\n\nAssemblyService --> Car\nCar --> Owner\nAssemblyService --> Employee\nAssemblyService --> Part\nAssemblyService --> Accessory\nPart --> Compatibility\nAccessory --> Compatibility\nCompatibility --> Car\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxCapacity\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nDish o-- DishIngredient\nDishIngredient o-- Ingredient\nMeal --> Client\nMeal --> Dish\nMeal --> Table\nMeal --> Waiter\nnote right of Ingredient::name\n  {unique}\nend note\nnote right of Waiter::numericIdentifier\n  {unique}\nend note\nnote right of Meal\n  The same dish can be consumed\n  multiple times in a meal.\nend note\nnote right of Dish::name\n  {unique}\nend note\nnote right of Table::numericIdentifier\n  {unique}\nend note\nnote right of Client::taxIdentificationNumber\n  {unique}\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifierCode\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package\nPackage --> DeliveryCenter\nCustomer --> DeliveryCenter\nCourier --> DeliveryCenter\nCourier --> Package\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nStore --> Order\nOrder --> FurniturePiece\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nationalIdNumber {unique}\n  taxIdentificationNumber {unique, mandatory}\n  name {mandatory}\n  address\n}\nclass BicycleModel {\n  name {unique}\n  type {road, mountain, bmx, hybrid}\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber {unique}\n  model\n}\nclass Store {\n  name {unique}\n  address {mandatory}\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nReservation --> Bicycle\nRental --> Reservation\nRental --> Store\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Employee {\n  name\n  department\n  number\n}\nclass IdentityCard {\n  cardNumber\n  name\n  department\n}\nclass CarPark {\n  capacity\n}\nclass Barrier {\n  status\n}\nclass CardReader {\n  status\n}\nclass Sign {\n  status\n}\nclass GuestCard {\n  cardNumber\n  currentDate\n  returnStatus\n}\nEmployee --> IdentityCard\nIdentityCard --> CardReader\nCardReader --> Barrier\nCarPark --> Barrier\nCarPark --> Sign\nGuestCard --> CardReader\nGuestCard --> CarPark\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass OOBank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  limit\n  interestRate\n  monthlyFee\n}\nclass MortgageAccount {\n  collateral\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Division {\n  manager\n  employees\n  subdivisions\n}\nclass Employee {\n  name\n  employeeID\n}\nclass Customer {\n}\nOOBank --> Branch\nBranch *-- Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nDivision o-- Employee\nCustomer --> Employee\nDivision --> Branch\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  contractNumber\n  balance\n  BasicContract(contractNumber, initialBalance)\n  getBalance(): double\n  setBalance(double)\n  getCharges(): double\n}\nclass ContractOption {\n  description\n  monthlyCharge\n  getCharges(): double\n}\nclass DataOption {\n  monthlyCharge\n}\nclass SMSOption {\n  monthlyCharge\n}\nclass MinutesOption {\n  monthlyCharge\n}\nclass DoubleTransferRateOption {\n  monthlyCharge\n}\nBasicContract *-- ContractOption\nContractOption <|-- DataOption\nContractOption <|-- SMSOption\nContractOption <|-- MinutesOption\nContractOption <|-- DoubleTransferRateOption\n@enduml"
+    }
+  ],
+  "0.930": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  name\n  medicalCoverage\n}\nclass Family {\n  head\n  primaryCarePhysician\n}\nclass Doctor {\n  name\n  specialty\n}\nclass Appointment {\n  date\n  time\n}\nclass Visit {\n  date\n  diagnosis\n  treatment\n}\nclass Diagnosis {\n  description\n}\nclass Treatment {\n  description\n}\nclass Medication {\n  name\n  dosage\n}\nclass Receptionist {\n}\nclass Nurse {\n}\nPatient --> Family\nFamily --> Doctor\nPatient --> Appointment\nPatient --> Visit\nVisit --> Diagnosis\nVisit --> Treatment\nVisit --> Medication\nDoctor --> Visit\nReceptionist --> Patient\nReceptionist --> Appointment\nNurse --> Visit\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n}\nclass Subscriber {\n  card\n  cardBalance\n  cardNumber\n}\nclass Movie {\n  title\n  isAvailable\n  releaseDate\n  price\n}\nclass Order {\n  orderId\n  orderDate\n  status\n  totalAmount\n}\nclass Catalogue {\n  catalogueId\n  movies\n}\nclass Rental {\n}\nclass Purchase {\n}\nSubscriber --|> User\nUser --> Order\nSubscriber --> Order\nOrder --> Movie\nSubscriber --> Rental\nRental --> Movie\nUser --> Purchase\nPurchase --> Movie\nCatalogue o-- Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  coPilot\n  departureAirport\n  departureTime\n  id\n  pilot\n}\nclass Airport {\n  id\n}\nclass Pilot {\n  experienceLevel\n}\nclass Aircraft {\n  state\n  type\n}\nclass AircraftType {\n  numberOfPilots\n  roles\n}\nclass Company {\n}\nAirline --> Flight\nFlight --> Pilot : \"pilot\"\nFlight --> Aircraft : \"uses\"\nFlight --> Airport : \"departure\"\nFlight --> Airport : \"arrival\"\nAirline o-- Aircraft\nAircraft --> AircraftType\nAirline --> Pilot\nAircraftType --> Pilot\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  quantity\n  price\n  commission\n}\nCustomer --> Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  id\n  name\n  breed\n  owner\n}\nclass Owner {\n  id\n  name\n  address\n  phoneNumber\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  dateTime\n  responsiblePhysician\n}\nclass Physician {\n  id\n  name\n  address\n  phoneNumber\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  car\n  workHours\n  admissionDate\n  finishDate\n  kms\n  responsibleEmployee\n}\nclass PartAccessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nclass PartModelCompatibility {\n  partAccessory\n  carModel\n}\nEmployee --> AssemblyService : responsibleEmployee\nAssemblyService --> Car : executedIn\nAssemblyService --> PartAccessory : fittedParts\nPartAccessory --> PartModelCompatibility\nPartModelCompatibility --> Car\nCar --> Owner\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxCapacity\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nDish -- DishIngredient\nDishIngredient -- Ingredient\nMeal --> Client\nMeal --> Dish\nMeal --> Table\nMeal --> Waiter\nnote right of Ingredient::name\n  {unique}\nend note\nnote right of Waiter::numericIdentifier\n  {unique}\nend note\nnote on link Meal --> Dish\n  Same dish can be consumed multiple times in a meal\nend note\nMeal -[dotted]-> Client\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  uniqueIdentifierCode\n  weight\n  deliveryType\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package\nPackage --> DeliveryCenter\nDeliveryCenter --> Courier\nCourier --> Package\nCustomer --> DeliveryCenter\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece o-- Component\nStore --> Order\nOrder --> FurniturePiece\nFurniturePiece --> Store\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Material\nclass Product\nclass ProductType {\n  material\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> ProductType\nMachine --> Worker\nProductType --> Material\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nationalIdNumber\n  taxIdentificationNumber {mandatory}\n  name {mandatory}\n  address\n}\nclass BicycleModel {\n  name {unique}\n  type {road, mountain, bmx, hybrid}\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber\n  model\n}\nclass Store {\n  name\n  address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Bicycle\nStore --> Rental\nReservation --> Rental\nRental --> Store\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Barrier {\n  status\n}\nclass CardReader\nclass CarPark {\n  capacity\n  occupiedSpaces\n}\nclass Employee {\n  department\n  name\n  number\n}\nclass GuestCard {\n  currentDate\n  number\n}\nclass IdentityCard {\n  department\n  name\n  number\n}\nclass Reception\nclass Sign {\n  message\n}\nBarrier --> CarPark\nCardReader --> Barrier\nCardReader --> GuestCard\nCardReader --> IdentityCard\nEmployee --> IdentityCard\nSign --> CarPark\nCarPark --> Sign\nGuestCard --> Reception\nGuestCard --> CarPark\nIdentityCard --> CarPark\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass Bank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  interestRate\n  monthlyFee\n  overdraftLimit\n}\nclass MortgageAccount {\n  property\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Division {\n  name\n}\nclass Subdivision {\n  name\n}\nclass Employee {\n  name\n}\nclass Customer {\n  personalBanker\n}\nclass Privilege {\n  description\n}\nBank \"1\" *-- \"1..*\" Branch\nBranch --> Account\nAccount --> Privilege\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nBank \"1\" *-- \"1..*\" Division\nDivision \"1\" *-- \"1..*\" Subdivision\nDivision --> Employee\nCustomer --> Employee\nCustomer --> Account\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\ninterface Contract {\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\n\nclass BasicContract {\n  contractNumber: int\n  balance: double\n  BasicContract(int contractNumber, double balance)\n  getBalance(): double\n  setBalance(double)\n  getCharges(): double\n}\n\nclass DataOption {\n  monthlyCharge: double = 1.00\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\n\nclass SMSOption {\n  monthlyCharge: double = 1.00\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\n\nclass MinutesOption {\n  monthlyCharge: double = 1.00\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\n\nclass DoubleTransferRateOption {\n  monthlyCharge: double = 1.00\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\n\nBasicContract ..|> Contract\nDataOption ..|> Contract\nSMSOption ..|> Contract\nMinutesOption ..|> Contract\nDoubleTransferRateOption ..|> Contract\n\nDataOption *-- Contract\nSMSOption *-- Contract\nMinutesOption *-- Contract\nDoubleTransferRateOption *-- Contract\n\nnote right of DataOption::getCharges\n  Delegates to wrapped Contract\nend note\n\nnote right of SMSOption::getCharges\n  Delegates to wrapped Contract\nend note\n\nnote right of MinutesOption::getCharges\n  Delegates to wrapped Contract\nend note\n\nnote right of DoubleTransferRateOption::getCharges\n  Delegates to wrapped Contract\nend note\n\nnote top of BasicContract\n  Example: BasicContract -> DataOption -> SMSOption\nend note\n@enduml"
+    }
+  ],
+  "0.940": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  patientID\n  name\n  patientInformation\n}\nclass Family {\n  headOfFamily\n  primaryMedicalCoverage\n}\nclass Doctor {\n  doctorID\n  specialization\n  doctorInformation\n}\nclass Visit {\n  diagnosis\n  treatment\n  visitDate\n}\nclass Diagnosis {\n  diagnosisText\n}\nclass Treatment {\n  treatmentText\n}\nclass Medication {\n  medicationName\n}\nclass Prescription {\n}\nclass Receptionist {\n}\nclass Nurse {\n}\nPatient --> Family\nFamily --> Doctor\nVisit --> Patient\nVisit --> Doctor\nVisit --> Diagnosis\nVisit --> Treatment\nVisit --> Prescription\nPrescription --> Medication\nReceptionist --> Patient\nReceptionist --> Visit\nNurse --> Visit\nNurse --> Medication\nDoctor --> Visit\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n}\nclass Subscriber {\n  card\n}\nclass Movie {\n  title\n}\nclass Order {\n  orderId\n}\nclass Card {\n  credit\n}\nclass Catalogue {\n  description\n}\nSubscriber --|> User\nSubscriber --> Card\nCard --> Movie\nUser --> Order\nSubscriber --> Order\nOrder --> Movie\nCatalouge o-- Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  coPilot\n  departureAirport\n  departureTime\n  id\n  pilot\n  aircraftType\n}\nclass Airport {\n  id\n}\nclass Pilot {\n  experienceLevel\n}\nclass Aircraft {\n  currentState\n}\nclass AircraftType {\n  requiredPilots\n  roles\n  minPilotsPerRole\n}\nAirline --> Flight\nFlight --> Airport\nFlight --> Pilot\nFlight --> AircraftType\nAirline o-- Aircraft\nAircraft --> AircraftType\nFlight --> Aircraft\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  quantity\n  price\n  commission\n}\nCustomer --> Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  name\n  uniqueIdentifier\n  breed\n}\nclass Owner {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  startDateTime\n  responsiblePhysician\n}\nclass Physician {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  car\n  kms\n  responsibleEmployee\n  workHours\n  admissionDate\n  finishDate\n  fittedPartsAccessories\n}\nclass PartAccessory {\n  category\n  serialNumber\n  price\n  fitsCarModels\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n  owner\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nEmployee --> AssemblyService\nAssemblyService --> Car\nAssemblyService --> PartAccessory\nPartAccessory --> Car\nCar --> Owner\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxPeople\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nClient --> Meal\nMeal --> Dish\nMeal --> Table\nMeal --> Waiter\nDish --> DishIngredient\nDishIngredient --> Ingredient\nnote right of Ingredient::name\n  {unique}\nend note\nnote right of Dish::name\n  {unique}\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifierCode\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package\nPackage --> Customer\nPackage --> DeliveryCenter\nCourier --> DeliveryCenter\nCourier --> Package\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nStore --> FurniturePiece\nOrder --> Store\nOrder --> FurniturePiece\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nationalIdNumber {mandatory}\n  taxIdentificationNumber {mandatory}\n  name {mandatory}\n  address\n}\nclass BicycleModel {\n  name {unique}\n  type {road, mountain, bmx, hybrid}\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber {unique}\n  model\n}\nclass Store {\n  name\n  address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Bicycle\nRental --> Client\nRental --> Store\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Barrier {\n  state\n}\nclass CardReader {\n}\nclass CarPark {\n}\nclass Employee {\n  department\n  name\n  number\n}\nclass GuestCard {\n  currentDate\n  number\n}\nclass IdentityCard {\n  department\n  name\n  number\n}\nclass Reception {\n}\nclass Sign {\n  isOn\n  message\n}\nBarrier --> CardReader\nCarPark --> Barrier\nCarPark --> Sign\nEmployee --> IdentityCard\nGuestCard --> CardReader\nGuestCard --> Reception\nIdentityCard --> CardReader\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass Bank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Division {\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  interestRate\n  monthlyFee\n  overdraftLimit\n  privileges\n}\nclass MortgageAccount {\n  property\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Client {\n}\nclass Employee {\n}\nclass Manager {\n}\nclass PersonalBanker {\n}\nBank *-- Branch\nBranch *-- Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nClient --> Account\nClient --> PersonalBanker\nBank *-- Division\nDivision --> Manager\nDivision --> Employee\nBranch --> Division\nPersonalBanker <|-- Employee\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  int contractNumber\n  double balance\n  BasicContract(int contractNumber, double initialBalance)\n  getBalance()\n  setBalance(double newBalance)\n}\nclass DataOption {\n  double monthlyCharge = 1.00\n}\nclass DoubleTransferRateOption {\n  double monthlyCharge = 2.00\n}\nclass MinutesOption {\n  double monthlyCharge = 1.50\n}\nclass SMSOption {\n  double monthlyCharge = 0.50\n}\nBasicContract <|-- DataOption\nBasicContract <|-- DoubleTransferRateOption\nBasicContract <|-- MinutesOption\nBasicContract <|-- SMSOption\n@enduml"
+    }
+  ],
+  "0.950": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Doctor {\n  doctorInfo\n  name\n  specialization\n}\nclass Family {\n  headOfFamily\n  primaryMedicalCoverage\n  familyName\n  address\n  primaryCarePhysician\n}\nclass Medication {\n  medicationName\n}\nclass Patient {\n  patientInfo\n  name\n  contactDetails\n  family\n  medicalCoverage\n}\nclass Visit {\n  visitDate\n  diagnosisText\n  treatmentText\n  prescribedMedications\n}\nclass Receptionist {\n  receptionistInfo\n  name\n  contactDetails\n}\nclass Nurse {\n  nurseInfo\n  name\n  specialization\n}\nclass Appointment {\n  appointmentDate\n  appointmentTime\n}\nPatient --> Family\nDoctor --> Visit : conducts\nMedication --> Visit\nPatient --> Visit\nReceptionist --> Patient\nNurse --> Visit : records\nReceptionist --> Appointment : schedules\nAppointment --> Patient\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n  email\n}\nclass Subscriber {\n  subscriberId\n  card\n}\nclass Card {\n  balance\n}\nclass Movie {\n  title\n  movieId\n  availability\n  quantity\n}\nclass Order {\n  orderDate\n  status\n  totalAmount\n  items\n}\nclass Catalogue {\n  movies\n}\nSubscriber --|> User\nSubscriber --> Card\nSubscriber --> Order\nOrder --> Movie\nCatalogue o-- Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  departureAirport\n  departureTime\n  id\n  pilot\n  co-pilot\n}\nclass Airport {\n  uniqueIdentifier\n}\nclass Pilot {\n  experienceLevel\n}\nclass Aircraft {\n  state\n  airborneStatus\n}\nclass AircraftType {\n  requiredPilots\n  roles\n}\nclass Company {\n}\nAirline --> Flight\nFlight --> Airport\nFlight --> Pilot : captain\nFlight --> Pilot : co-pilot\nAircraft --> AircraftType\nAirline --> Aircraft : owns\nFlight --> Aircraft\nCompany --> Pilot\n\nnote right of AircraftType::roles\n  Specifies required pilot roles\n  (e.g., captain, co-pilot)\nend note\n\nnote right of Pilot::experienceLevel\n  A captain must have\n  an experience level of 3\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  commission\n  price\n  quantity\n}\nCustomer --> Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  name\n  breed\n  owner\n  identifier\n}\nclass Owner {\n  name\n  address\n  phoneNumber\n  identifier\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  dateTime\n  animal\n  physician\n}\nclass Physician {\n  name\n  address\n  phoneNumber\n  identifier\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  workHours\n  admissionDate\n  finishDate\n  kmsAtTime\n}\nclass PartAccessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nclass PartAccessoryCarModel {\n  partAccessory\n  carModel\n}\nAssemblyService --> PartAccessory\nAssemblyService --> Employee\nAssemblyService --> Car\nCar --> Owner\nPartAccessory --> PartAccessoryCarModel\nPartAccessoryCarModel --> Car\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxCapacity\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nDish o-- DishIngredient\nDishIngredient o-- Ingredient\nMeal --> Client\nMeal --> Dish\nMeal --> Table\nMeal --> Waiter\nnote right of Ingredient::name\n  {unique}\nend note\nnote right of Meal::Dish\n  Same dish can be consumed\n  multiple times in a meal\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifierCode\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package\nCustomer --> DeliveryCenter\nPackage --> DeliveryCenter\nCourier --> Package\nCourier --> DeliveryCenter\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  furniturePieces\n  orderNumber\n  quantities\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nComponent --> FurniturePiece\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nOrder --> FurniturePiece\nFurnitureLine --> Store\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPerson\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  expectedDeliveryDate\n  orderDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nationalIdNumber\n  {field} taxIdentificationNumber\n  {field} name\n  address\n}\nclass BicycleModel {\n  name\n  type: road | mountain | bmx | hybrid\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber\n  model\n}\nclass Store {\n  {field} name\n  {field} address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient --> Reservation\nReservation --> Store : pickupStore\nReservation --> BicycleModel\nBicycle --> BicycleModel\nRental --> Bicycle\nRental --> Client : renter\nRental --> Store\nRental --> Reservation\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Employee {\n  name\n  department\n  number\n}\nclass IdentityCard {\n  name\n  department\n  number\n  number\n}\nclass GuestCard {\n  number\n  currentDate\n}\nclass CardReader\nclass Barrier\nclass Sign\nclass CarPark {\n  availableSpaces\n  totalSpaces\n  occupiedSpaces\n}\nclass Reception\nEmployee --> IdentityCard\nIdentityCard --> CardReader\nCardReader --> Barrier\nGuestCard --> CardReader\nGuestCard --> Reception\nCarPark --> Sign\nCarPark --> Barrier\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass OOBank {\n  name\n  headquarters\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  overdraftLimit\n}\nclass MortgageAccount {\n  property\n  interestRate\n  monthlyFee\n  privileges\n}\nclass CheckingAccount {\n  interestRate\n  monthlyFee\n  privileges\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n  interestRate\n  monthlyFee\n  privileges\n}\nclass JointAccount {\n  interestRate\n  monthlyFee\n  privileges\n}\nclass Division {\n  name\n}\nclass Subdivision {\n  name\n}\nclass Employee {\n  name\n}\nclass Customer {\n  personalBanker\n}\nBranch --> Account\nCustomer --> Branch\nCustomer --> Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nDivision --> Subdivision\nDivision --> Branch\nDivision --> Employee : manager\nDivision --> Employee : staff\nCustomer --> Employee : personalBanker\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nabstract class ContractDecorator {\n  contract: BasicContract\n  getCharges():double\n  getBalance():double\n  setBalance(double)\n}\n\nclass BasicContract {\n  contractNumber: int\n  balance: double\n  BasicContract(contractNumber: int, balance: double)\n  getBalance()\n  setBalance(double)\n  getCharges():double\n}\n\nclass DataOption {\n  DataOption(BasicContract)\n  getCharges():double\n  getBalance():double\n  setBalance(double)\n}\n\nclass SMSOption {\n  SMSOption(BasicContract)\n  getCharges():double\n  getBalance():double\n  setBalance(double)\n}\n\nclass MinutesOption {\n  MinutesOption(BasicContract)\n  getCharges():double\n  getBalance():double\n  setBalance(double)\n}\n\nclass DoubleTransferRateOption {\n  DoubleTransferRateOption(BasicContract)\n  getCharges():double\n  getBalance():double\n  setBalance(double)\n}\n\nContractDecorator <|-- DataOption\nContractDecorator <|-- SMSOption\nContractDecorator <|-- MinutesOption\nContractDecorator <|-- DoubleTransferRateOption\nContractDecorator -- BasicContract\n@enduml"
+    }
+  ],
+  "0.960": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  patientId\n  name\n  contactDetails\n}\nclass Family {\n  headOfFamily\n  primaryCarePhysician\n  familyMembers\n  relatedPatientInfo\n}\nclass Appointment {\n  date\n  time\n  patient\n  doctor\n  appointmentId\n}\nclass Visit {\n  visitId\n  diagnosisInfo\n  treatmentInfo\n  visitDate\n  visitTime\n}\nclass Medication {\n  name\n  dosage\n}\nclass Doctor {\n  doctorId\n  specialization\n  licenseNumber\n}\nclass Nurse {\n  nurseId\n  shift\n}\nclass Receptionist {\n  receptionistId\n}\nAppointment --> Patient\nAppointment --> Doctor\nPatient --> Family\nVisit --> Medication\nVisit --> Patient\nVisit --> Doctor\nNurse --> Visit\nReceptionist --> Appointment\nReceptionist --> Patient\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n}\nclass Subscriber {\n  card: Card\n}\nclass Movie {\n  title\n  available\n}\nclass Order {\n  orderId\n}\nclass Catalogue {\n  category\n}\nclass Card {\n  credit\n  cardNumber\n  rechargeable\n}\nSubscriber --|> User\nSubscriber --> Card\nSubscriber --> Movie : hires\nSubscriber --> Order : places\nOrder --> Movie : contains\nCatalogue --> Movie : lists\nUser --> Movie : buys\nUser --> Order\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "@startuml\nclass Airline {\n  id\n}\nclass Flight {\n  arrivalAirport\n  arrivalTime\n  departureAirport\n  departureTime\n  id\n}\nclass Airport {\n  uniqueIdentifier\n}\nclass Pilot {\n  experienceLevel\n  role\n}\nclass Aircraft {\n  type\n  state\n  isAirborne\n}\nclass AircraftType {\n  numberOfPilotsRequired\n  pilotRoles\n}\nclass Company {\n}\nAirline --> Flight\nFlight --> Airport : \"departure and arrival airports\"\nFlight --> Pilot : \"pilot\"\nFlight --> Pilot : \"co-pilot\"\nAircraft --> AircraftType : is of type\nAirline \"owns\" --> Aircraft\nCompany --> Pilot\nAircraftType --> Pilot : requires roles\nnote right of Pilot::experienceLevel\n  Captain must have level 3\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  commission\n  quantity\n  ticker\n}\nCustomer --> Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  id\n  name\n  breed: Breed\n  owner: Owner\n}\nclass Owner {\n  id\n  name\n  address\n  phoneNumber\n}\nclass Breed {\n  id\n  name\n}\nclass Appointment {\n  responsiblePhysician\n  dateTime\n  animal: Animal\n}\nclass Physician {\n  id\n  name\n  address\n  phoneNumber\n}\nclass MedicalCondition {\n  id\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Physician\nAppointment --> Animal\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass \"AssemblyService\" {\n  kms\n  workHours\n  admissionDate\n  finishDate\n}\nclass \"Part/Accessory\" {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n  owner\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nEmployee --> \"AssemblyService\" : Responsible for\nnote right on link\n  Employee is responsible\n  for the assembly service.\nend note\n\"AssemblyService\" --> \"Part/Accessory\" : Fits\nnote right on link\n  Parts and accessories\n  are fitted during the\n  service.\nend note\n\"Part/Accessory\" --> Car : Compatible with model\nnote right on link\n  Parts and accessories\n  are compatible with\n  specific car models.\nend note\nCar --> Owner : Owned by\nnote right on link\n  One owner can own\n  multiple cars, but\n  each car has only\n  one owner.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxPeople\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nDish --> DishIngredient\nDishIngredient --> Ingredient\nMeal --> Client\nMeal --> Dish\nMeal --> Table\nMeal --> Waiter\nnote right of Ingredient::name\n  {unique}\nend note\nnote right of Waiter::numericIdentifier\n  {unique}\nend note\nnote right of Dish::name\n  {unique}\nend note\nnote right of Table::numericIdentifier\n  {unique}\nend note\nnote right of Meal: The same dish can be consumed multiple times in a meal.\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n  associatedDeliveryCenter\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifierCode\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nclass Login {\n}\nCustomer --> Package\nCustomer -- DeliveryCenter\nPackage --> DeliveryCenter\nCourier --> DeliveryCenter\nCourier --> Package\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n  orderedFurniture\n  quantities\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nOrder --> FurniturePiece\nOrder --> Store\nStore --> Order\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nin\n  tin\n  name\n  address\n}\nclass BicycleModel {\n  name\n  type\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber\n  model\n}\nclass Store {\n  name\n  address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Bicycle\nnote top of Client\n  'tin' and 'name' are mandatory.\n  'nin' and 'tin' are unique.\nend note\nnote right of BicycleModel\n  'type' can be: road, mountain, bmx, or hybrid.\nend note\nnote left of Rental::Store\n  The store where the bike is returned.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Employee {\n  name\n  department\n  number\n}\nclass IdentityCard {\n  number\n  name\n  department\n}\nclass CardReader {\n}\nclass Barrier {\n}\nclass CarPark {\n  capacity\n  availableSpaces\n  updateSign()\n}\nclass Sign {\n  displayFull()\n}\nclass GuestCard {\n  number\n  currentDate\n}\nclass Reception {\n}\nEmployee *-- IdentityCard\nCardReader --> IdentityCard : verifies\nBarrier --> CarPark : has entrance/exit\nCardReader --> Barrier : sends signal to rise\nCarPark --> Sign : updates based on capacity\nCardReader --> GuestCard : verifies\nGuestCard --> Reception : issued from/returned to\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass OOBank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  overdraftLimit\n  interestRate\n  monthlyFee\n  privileges\n}\nclass MortgageAccount {\n  property\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Division {\n  name\n  subdivisions\n}\nclass Manager {\n}\nclass Employee {\n}\nclass Customer {\n}\nOOBank --> Branch\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nDivision --> Manager\nDivision --> Employee\nCustomer --> Employee : personalBanker\nBranch --> Division\nAccount --> Branch\nCustomer --> Account\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  contractNumber: int\n  balance: double\n  +BasicContract(contractNumber: int, initialBalance: double)\n  +getBalance(): double\n  +setBalance(newBalance: double)\n  +getCharges(): double\n}\nclass ContractOption {\n  monthlyCharge: double\n  +getCharges(): double\n  +getBalance(): double\n  +setBalance(newBalance: double)\n}\nclass DataOption {\n  monthlyCharge: double\n}\nclass DoubleTransferRateOption {\n  monthlyCharge: double\n}\nclass MinutesOption {\n  monthlyCharge: double\n}\nclass SMSOption {\n  monthlyCharge: double\n}\nBasicContract -- ContractOption\nContractOption <|-- DataOption\nContractOption <|-- DoubleTransferRateOption\nContractOption <|-- MinutesOption\nContractOption <|-- SMSOption\n@enduml"
+    }
+  ],
+  "0.970": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Receptionist {\n  name\n  enterPatientInfo()\n  scheduleAppointment()\n}\nclass Nurse {\n  name\n  printPatientHistory()\n  recordVisit()\n  accessPatientInfo()\n}\nclass Doctor {\n  name\n  viewPatientHistory()\n  enterTreatmentInfo()\n}\nclass Patient {\n  name\n}\nclass Family {\n  name\n}\nclass Visit {\n  date\n  diagnosis\n  treatment\n}\nclass Medication {\n  name\n}\nclass Appointment {\n  date\n}\nReceptionist --> Patient : enters\nReceptionist --> Appointment : schedules\nNurse --> Visit : records\nNurse --> Medication : prescribes\nPatient --> Family\nFamily --> Doctor : has primary care physician\nFamily --> Patient : assigned to\nVisit --> Medication\nPatient --> Visit\nDoctor --> Visit\nNurse --> Patient\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  id\n  name\n  contactInformation\n  purchaseHistory\n  savedOrderData\n}\nclass Subscriber {\n  id\n  name\n  card\n  subscriptionStartDate\n  subscriptionEndDate\n  purchaseHistory\n  savedOrderData\n}\nclass Movie {\n  title\n  isAvailable\n  genre\n  releaseYear\n  director\n}\nclass Order {\n  date\n  amount\n  status\n  orderType\n}\nclass Catalogue {\n  description\n  movies\n  categories\n  movieList\n  categoryList\n}\nclass Card {\n  balance\n  cardNumber\n  expiryDate\n  cardHolderName\n  cardType\n  isActive\n  lastCreditUpdate\n  creditHistory\n}\nSubscriber --|> User\nUser --> Order\nCatalogue --> Movie\nCard --> Order\nUser --> Catalogue : browses\nSubscriber --> Card\nOrder --> Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "",
+      "error": "Recursion limit of 130 reached without hitting a stop condition. You can increase the limit by setting the `recursion_limit` config key.\nFor troubleshooting, visit: https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Account {\n  id\n  balance\n}\nclass Customer {\n  id\n  address\n  name\n}\nclass InvestmentAccount\nclass SavingsAccount {\n  interestRate\n}\nclass Stock {\n  price\n  ticker\n  quantity\n  commission\n}\nAccount <|-- InvestmentAccount\nAccount <|-- SavingsAccount\nCustomer o-- Account\nInvestmentAccount -- Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  name\n  uniqueIdentifier\n  breed\n}\nclass Owner {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  uniqueNumericIdentifier\n  startDateTime\n  responsiblePhysician\n}\nclass Physician {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nnote right of MedicalCondition::scientificName\n  {unique}\nend note\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\nnote on link\n  Most common conditions for each breed\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  car\n  kms\n  workHours\n  admissionDate\n  finishDate\n  responsibleEmployee\n  fittedPartsAccessories\n}\nclass Part {\n  category\n  serialNumber\n  price\n}\nclass Accessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n  owner\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nEmployee --> AssemblyService\nAssemblyService --> Part\nAssemblyService --> Accessory\nAssemblyService --> Car\nCar --> Owner\nPart --> Car\nAccessory --> Car\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nnote right of Client::taxIdentificationNumber\n  Unique\nend note\n\nclass Dish {\n  name\n  numericIdentifier\n}\n\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nnote right of Ingredient::name\n  Unique\nend note\n\nclass Meal {\n  date\n  endTime\n  startTime\n}\n\nclass Table {\n  maxPeople\n  numericIdentifier\n}\n\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\n\nclass DishIngredient {\n  quantity\n}\n\nClient --> Meal\nDish --> Meal\nMeal --> Table\nMeal --> Waiter\nDish --> DishIngredient\nDishIngredient --> Ingredient\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifier\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\nCustomer --> Package : sends\nPackage --> Customer : sent to\nPackage --> DeliveryCenter : routed through internal system to\nPackage --> Courier : assigned to\nCourier --> DeliveryCenter : works in\nCustomer --> DeliveryCenter\nnote right on link\nEach customer is associated\nwith a single delivery center\nchosen by the company.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n  orderedFurniture\n  quantities\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nOrder --> FurniturePiece\nStore --> Order\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  {unique} nationalIdNumber\n  {unique} taxIdentificationNumber\n  name\n  address\n}\nclass BicycleModel {\n  name\n  {road, mountain, bmx, hybrid} type\n  numberOfGears\n}\nclass Bicycle {\n  {unique} identifyingNumber\n  model\n}\nclass Store {\n  {unique} name\n  address\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  pickupDate\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Bicycle\nRental --> Client\nRental --> Store\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Barrier {\n}\nclass CardReader {\n}\nclass CarPark {\n  capacity\n  currentCount\n}\nclass Employee {\n  department\n  name\n  number\n}\nclass GuestCard {\n  cardNumber\n  issueDate\n  currentDate\n}\nclass IdentityCard {\n  cardNumber\n  issueDate\n  department\n  name\n}\nclass Reception {\n}\nclass Sign {\n}\nBarrier --> CarPark\nCardReader --> Barrier\nEmployee *-- IdentityCard\nGuestCard --> CardReader\nGuestCard -- Reception\nIdentityCard --> CardReader\nSign --> CarPark : displays status\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditLimit\n  overdraftLimit\n}\nclass MortgageAccount {\n  property\n  interestRate\n}\nclass CheckingAccount {\n  monthlyFee\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Division {\n  name\n}\nclass Employee {\n  name\n}\nclass Customer {\n  name\n}\nclass Privilege {\n  description\n}\nclass Property {\n}\nclass SecondaryCard {\n}\nclass OOBank {\n  name\n}\nclass Subdivision {\n}\nBranch --> Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nMortgageAccount --> Property\nCreditCardAccount --> SecondaryCard\nAccount --> Privilege\nDivision --> Employee : manager\nDivision --> Employee\nCustomer --> Employee : personal banker\nDivision --> Subdivision\nBranch --> Subdivision\nAccount --> Customer\nOOBank --> Division\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  contractNumber\n  balance\n  BasicContract(int contractNumber, double balance)\n  getBalance(): double\n  setBalance(double)\n}\n\nclass ContractOption {\n  monthlyCharge\n  optionType\n}\n\nBasicContract <|-- ContractOption\nContractOption --> BasicContract\n\nclass DataOption {\n  monthlyCharge = 10.0\n  optionType = \"100 MB\"\n}\n\nclass SMSOption {\n  monthlyCharge = 5.0\n  optionType = \"50 SMS\"\n}\n\nclass MinutesOption {\n  monthlyCharge = 7.0\n  optionType = \"50 minutes\"\n}\n\nclass DoubleTransferRateOption {\n  monthlyCharge = 15.0\n  optionType = \"Double Transfer Rate\"\n}\n\nContractOption <|-- DataOption\nContractOption <|-- SMSOption\nContractOption <|-- MinutesOption\nContractOption <|-- DoubleTransferRateOption\n@enduml"
+    }
+  ],
+  "0.980": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Patient {\n  patientId\n  name\n  contactInfo\n}\nclass Family {\n  familyId\n  headOfFamily\n  primaryMedicalCoverage\n}\nclass Doctor {\n  doctorId\n  name\n  specialization\n  isPrimaryCarePhysician\n}\nclass Visit {\n  visitId\n  date\n  diagnosisText\n  treatmentText\n}\nclass Medication {\n  medicationId\n  name\n  dosage\n}\nclass Prescription {\n  prescriptionId\n  dosage\n  instructions\n}\nclass Appointment {\n  appointmentId\n  date\n  time\n  status\n  appointmentType\n}\nclass Receptionist {\n  receptionistId\n  name\n}\nclass Nurse {\n  nurseId\n  name\n}\nclass User {\n}\n\nPatient --> Family\nFamily --> Doctor\nVisit --> Patient\nVisit --> Doctor\nVisit --> Prescription\nPrescription --> Medication\nReceptionist --> Appointment\nNurse --> Visit\nAppointment --> Patient\nDoctor --> Visit\nReceptionist --> Patient\nNurse --> Medication\nDoctor --> Medication\nFamily --> Patient\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n  email\n  address\n}\nclass Subscriber {\n  card\n  credit\n  updateCredit()\n}\nclass Movie {\n  title\n  isAvailable\n  price\n  status\n  manageOrder()\n}\nclass Order {\n  orderId\n  userId\n  movieId\n  orderDate\n  orderType\n  status\n  isHiring\n}\nclass Catalogue {\n  catalogueId\n  description\n  movies\n}\nSubscriber --|> User\nUser --> Order : places\nOrder --> Movie\nCatalogue o-- Movie\nSubscriber --> Order\nnote right of User::Order\n  Both users and subscribers can place orders for buying movies.\n  Only subscribers can hire movies.\nend note\nnote right of Order::Movie\n  Order can be for hiring or buying.\nend note\nnote on link Subscriber::Order\n  Credit is updated on the card during rent operations.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "",
+      "error": "Recursion limit of 130 reached without hitting a stop condition. You can increase the limit by setting the `recursion_limit` config key.\nFor troubleshooting, visit: https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  ticker\n  price\n  quantity\n}\nclass StockOrder {\n  quantity\n  commission\n}\nCustomer -- Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> StockOrder\nStockOrder --> Stock\nnote right of StockOrder::commission\n  Commission is applied to stock orders,\n  not to stocks themselves.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  id\n  name\n  breed\n  owner\n}\nclass Owner {\n  id\n  name\n  address\n  phoneNumber\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  startDateTime\n  responsiblePhysician\n}\nclass Physician {\n  id\n  name\n  address\n  phoneNumber\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition : common conditions\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  car\n  workHours\n  admissionDate\n  finishDate\n  kms\n  responsibleEmployee\n  fittedPartsAccessories\n}\nclass PartAccessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nclass PartAccessoryCompatibility {\n  partAccessory\n  carModel\n}\n\nAssemblyService --> Car\nAssemblyService --> Employee\nCar --> Owner\nPartAccessoryCompatibility --> PartAccessory\nPartAccessoryCompatibility --> Car\nAssemblyService --> PartAccessory\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxPeople\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nclass DishIngredient {\n  quantity\n}\nClient --> Meal\nDish --> DishIngredient\nDishIngredient --> Ingredient\nDish --> Meal\nMeal --> Table\nMeal --> Waiter\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  deliveryType\n  uniqueIdentifierCode\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\n\nCustomer \"sender\" --> Package\nCustomer \"recipient\" --> Package\nPackage --> DeliveryCenter : initial delivery center\nPackage --> DeliveryCenter : recipientDeliveryCenter\nCourier --> DeliveryCenter : works in\nCourier --> Package : assigned\nCustomer --> DeliveryCenter : assignedDeliveryCenter\n\nnote right of Package::deliveryType\n  <b>deliveryType</b> can be:\n  - normal\n  - urgent\nend note\n\nnote right of Package\n  Package is routed through an internal system until it reaches the recipient's delivery center.\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n}\nclass Store {\n  address\n  faxNumber\n}\nclass OrderItem {\n  quantity\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nStore --> Order\nOrder --> OrderItem\nOrderItem --> FurniturePiece\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Factory {\n}\nclass Machine {\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  type\n  weight\n}\nclass PurchaseOrder {\n  actualDeliveryDate\n  dateMade\n  expectedDeliveryDate\n  orderNumber\n}\nclass Worker {\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nClient --> PurchaseOrder\nFactory *-- Machine\nMachine --> Product\nMachine --> Worker\nPurchaseOrder --> Product\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  nationalIdNumber {unique, mandatory}\n  taxIdentificationNumber {mandatory}\n  name {mandatory}\n  address\n}\nclass BicycleModel {\n  name {unique}\n  type {road, mountain, bmx, hybrid}\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber {unique}\n  model\n}\nclass Store {\n  name {unique, mandatory}\n  address {mandatory}\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  actualBike\n  returnDate\n}\nClient --> Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Bicycle\nRental --> Reservation\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Barrier {\n  state\n}\nclass CardReader\nclass CarPark {\n  capacity\n}\nclass Employee {\n  department\n  name\n  number\n}\nclass Guest {\n  currentDate\n  number\n}\nclass Reception\nclass Sign {\n  state\n}\nclass IdentityCard {\n  name\n  department\n  number\n}\nenum GuestCard {\n  number\n  currentDate\n}\nBarrier --> CardReader\nCarPark --> Barrier\nCarPark --> Sign\nGuest --> CardReader\nEmployee --> IdentityCard\nGuest --> GuestCard\nCardReader --> IdentityCard\nCardReader --> GuestCard\nGuest --> Reception\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass OOBank {\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditOrOverdraftLimit\n  interestRate\n  monthlyFee\n  privileges\n}\nclass MortgageAccount {\n  property\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n  secondaryCards\n}\nclass JointAccount {\n}\nclass Division {\n  name\n  manager\n  subdivisions\n}\nclass Employee {\n  name\n  employeeID\n  role\n}\nclass Customer {\n  name\n}\nOOBank --> Branch\nBranch --> Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nDivision --> Branch\nDivision *-- Employee\nCustomer --> Employee : personal banker\nCustomer --> Branch\nBranch --> Account\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nabstract class Contract {\n  int contractNumber\n  double balance\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\nclass BasicContract {\n  int contractNumber\n  double balance\n  __construct(int contractNumber, double balance)\n  getBalance(): double\n  setBalance(double)\n  getCharges(): double\n}\nclass ContractOption {\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n  getMonthlyCharge(): double\n}\nclass DataOption {\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\nclass DoubleTransferRateOption {\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\nclass MinutesOption {\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\nclass SMSOption {\n  getCharges(): double\n  getBalance(): double\n  setBalance(double)\n}\nContract <|-- BasicContract\nContract <|-- ContractOption\nContractOption <|-- DataOption\nContractOption <|-- DoubleTransferRateOption\nContractOption <|-- MinutesOption\nContractOption <|-- SMSOption\nBasicContract *-- ContractOption\n@enduml"
+    }
+  ],
+  "0.990": [
+    {
+      "exercise_id": 4,
+      "exercise_title": "Patient Record and Scheduling",
+      "generated_diagram": "@startuml\nclass Doctor {\n  doctorInfo\n  name\n  specialty\n}\nclass Family {\n  headOfFamily\n  primaryMedicalCoverage\n}\nclass Medication {\n  medicationName\n}\nclass Patient {\n  patientInfo\n  name\n  dateOfBirth\n  contactDetails\n}\nclass Visit {\n  diagnosis\n  treatment\n  visitDate\n  prescribedMedications\n}\nclass Receptionist {\n  name\n  contactDetails\n  scheduleAppointment()\n  enterPatientInfo()\n}\nclass Nurse {\n  name\n  contactDetails\n  trackVisitResults()\n  printVisitHistory()\n}\nDoctor --> Family : primary care physician\nFamily --> Patient : family member\nMedication --> Visit : prescribed during\nPatient --> Visit\nDoctor --> Visit : attends\nReceptionist --> Patient\nNurse --> Visit : records\n@enduml"
+    },
+    {
+      "exercise_id": 5,
+      "exercise_title": "Movie-Shop",
+      "generated_diagram": "@startuml\nclass User {\n  name\n  userId\n  email\n  address\n}\nclass Subscriber {\n  card\n  creditBalance\n}\nclass Movie {\n  title\n  price\n  type\n  genre\n  releaseDate\n  isAvailable\n}\nclass Order {\n  orderDate\n  status\n  orderType\n  totalAmount\n  userId\n}\nclass Catalogue {\n  description\n  catalogueId\n  lastUpdated\n  browseMovies()\n}\nUser --> Order\nOrder --> Movie\nUser <|-- Subscriber\nCatalogue --> Movie\nSubscriber --> Order\nSubscriber --> Movie\nUser --> Movie\n@enduml"
+    },
+    {
+      "exercise_id": 6,
+      "exercise_title": "Flights",
+      "generated_diagram": "",
+      "error": "Recursion limit of 130 reached without hitting a stop condition. You can increase the limit by setting the `recursion_limit` config key.\nFor troubleshooting, visit: https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT"
+    },
+    {
+      "exercise_id": 7,
+      "exercise_title": "Bank System",
+      "generated_diagram": "@startuml\nclass Customer {\n  name\n  address\n}\nclass Account {\n  balance\n}\nclass SavingsAccount {\n  interestRate\n}\nclass InvestmentAccount {\n}\nclass Stock {\n  ticker\n  quantity\n  price\n  commission\n}\nclass StockOrder {\n  quantity\n  price\n  commission\n}\nCustomer --> Account\nAccount <|-- SavingsAccount\nAccount <|-- InvestmentAccount\nInvestmentAccount --> StockOrder\nStockOrder --> Stock\n@enduml"
+    },
+    {
+      "exercise_id": 8,
+      "exercise_title": "Veterinary Clinic",
+      "generated_diagram": "@startuml\nclass Animal {\n  name\n  breed\n  owner\n  uniqueIdentifier\n}\nclass Owner {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass Breed {\n  name\n}\nclass Appointment {\n  responsiblePhysician\n  startDateTime\n  animal\n}\nclass Physician {\n  name\n  address\n  phoneNumber\n  uniqueIdentifier\n}\nclass MedicalCondition {\n  commonName\n  scientificName\n}\nAnimal --> Owner\nAnimal --> Breed\nAppointment --> Animal\nAppointment --> Physician\nAppointment --> MedicalCondition\nBreed --> MedicalCondition\n@enduml"
+    },
+    {
+      "exercise_id": 9,
+      "exercise_title": "Auto Repair",
+      "generated_diagram": "@startuml\nclass Employee {\n  identifyingNumber\n  name\n  address\n}\nclass AssemblyService {\n  workHours\n  admissionDate\n  finishDate\n  kms\n}\nclass PartAccessory {\n  category\n  serialNumber\n  price\n}\nclass Car {\n  licensePlate\n  make\n  model\n  color\n}\nclass Owner {\n  name\n  identifyingNumber\n  address\n  phone\n}\nclass Compatibility {\n  partAccessory\n  carModel\n}\nclass AssemblyServicePart {\n  assemblyService\n  partAccessory\n  quantity\n}\nEmployee --> AssemblyService : responsible\nAssemblyService --> Car\nAssemblyServicePart --> PartAccessory\nPartAccessory *-- Compatibility\nCompatibility --> Car\nCar --> Owner\n@enduml"
+    },
+    {
+      "exercise_id": 10,
+      "exercise_title": "Restaurant",
+      "generated_diagram": "@startuml\nclass Client {\n  address\n  name\n  taxIdentificationNumber\n}\nclass Dish {\n  name\n  numericIdentifier\n}\nclass Ingredient {\n  measuringUnit\n  name\n  quantityInStock: Integer\n}\nclass Meal {\n  date\n  endTime\n  startTime\n}\nclass Table {\n  maxCapacity\n  numericIdentifier\n}\nclass Waiter {\n  address\n  name\n  numericIdentifier\n  phoneNumber\n}\nMeal --> Client\nMeal --> Table\nMeal --> Waiter\nMeal --> Dish\nDish --> Ingredient\nnote right of Ingredient::name\n  {unique}\nend note\nnote right of Dish::name\n  {unique}\nend note\nnote right of Meal\n  The same dish can be consumed\n  multiple times in a meal.\nend note\nnote on link Dish-Ingredient\n  Indicates the quantity of ingredients\n  used in a dish.\nend note\nnote on link Meal-Client\n  A client may not always be present.\nend note\nnote on link Meal-Waiter\n  The waiter responsible for the meal.\nend note\nnote right of Waiter::numericIdentifier\n  {unique}\nend note\n@enduml"
+    },
+    {
+      "exercise_id": 11,
+      "exercise_title": "Deliveries",
+      "generated_diagram": "@startuml\nclass Customer {\n  vatNumber\n  name\n  phoneNumber\n  address\n}\nclass Package {\n  weight\n  isUrgent\n  uniqueIdentifierCode\n  sender : Customer\n  receiver : Customer\n}\nclass DeliveryCenter {\n  name\n  address\n}\nclass Courier {\n  vatNumber\n  name\n  phoneNumber\n}\n\nCustomer -- Package\nCustomer -- DeliveryCenter : \"chosen by company\"\nPackage --> Courier : \"assigned upon introduction\"\nCourier --> DeliveryCenter : worksIn\nPackage --> DeliveryCenter : \"routing process\"\nnote right of DeliveryCenter::name : unique\n@enduml"
+    },
+    {
+      "exercise_id": 12,
+      "exercise_title": "Furniture Factory Management",
+      "generated_diagram": "@startuml\nclass Component {\n  code\n  manufacturingPrice\n  type\n}\nclass FurnitureLine {\n  name\n}\nclass FurniturePiece {\n  reference\n  sellingPrice\n  type\n}\nclass Order {\n  date\n  orderNumber\n  orderedFurniture\n  quantities\n  store\n}\nclass Store {\n  address\n  faxNumber\n}\nFurnitureLine *-- FurniturePiece\nFurniturePiece *-- Component\nOrder --> FurniturePiece\nStore --> Order\n@enduml"
+    },
+    {
+      "exercise_id": 13,
+      "exercise_title": "Industrial Factory Operations",
+      "generated_diagram": "@startuml\nclass Client {\n  clientId\n  address\n  contactPersonName\n  name\n  phoneNumber\n}\nclass Machine {\n  machineId\n  make\n  model\n  purchaseDate\n  serialNumber\n}\nclass Product {\n  material\n  productId\n  type\n  weight\n  machineId\n}\nclass PurchaseOrder {\n  orderId\n  actualDeliveryDate\n  expectedDeliveryDate\n  orderDate\n}\nclass Worker {\n  workerId\n  address\n  birthDate\n  firstName\n  lastName\n  skills\n}\nclass Factory {\n}\nClient --> PurchaseOrder\nMachine --> Product\nPurchaseOrder --> Product\nWorker --> Machine\nFactory --> Machine\n@enduml"
+    },
+    {
+      "exercise_id": 14,
+      "exercise_title": "Bycicle Rental",
+      "generated_diagram": "@startuml\nclass Client {\n  {field} nationalIdNumber {unique}\n  {field} taxIdentificationNumber {unique, mandatory}\n  {field} name {mandatory}\n  {field} address\n}\nclass BicycleModel {\n  name\n  type {road, mountain, bmx, hybrid}\n  numberOfGears\n}\nclass Bicycle {\n  identifyingNumber\n  model\n}\nclass Store {\n  name {mandatory}\n  address {mandatory}\n}\nclass Reservation {\n  client\n  pickupDay\n  bikeModel\n  pickupStore\n}\nclass Rental {\n  bike\n  returnDate\n}\nClient -- Reservation\nReservation --> BicycleModel\nReservation --> Store\nBicycle --> BicycleModel\nRental --> Reservation\nRental --> Bicycle\nRental --> Store\nRental --> Client\n@enduml"
+    },
+    {
+      "exercise_id": 15,
+      "exercise_title": "Car Park Access System",
+      "generated_diagram": "@startuml\nclass Employee {\n  name\n  department\n  number\n}\nclass IdentityCard {\n  number\n}\nclass CardReader\nclass Barrier\nclass Sign\nclass GuestCard {\n  number\n  currentDate\n}\nclass CarPark {\n  availableSpaces\n  totalCapacity\n  occupiedSpaces\n}\nclass Reception\nEmployee --> IdentityCard\nIdentityCard --> CardReader\nGuestCard --> CardReader\nCardReader --> Barrier\nCarPark --> Barrier : raises exit barrier when car leaves\nCarPark --> Sign : displays 'Full' when no spaces, switches off when car leaves\nGuestCard --> Reception : must be returned upon leaving\n@enduml"
+    },
+    {
+      "exercise_id": 16,
+      "exercise_title": "Banking Organizational Structure",
+      "generated_diagram": "@startuml\nclass OOBank {\n  name\n  bankID\n}\nclass Branch {\n  address\n  branchNumber\n}\nclass Account {\n  accountNumber\n  balance\n  creditOrOverdraftLimit\n  interestRate\n  monthlyFee\n  privileges\n}\nclass MortgageAccount {\n}\nclass CheckingAccount {\n}\nclass CreditCardAccount {\n  expiryDate\n}\nclass JointAccount {\n}\nclass Division {\n  name\n}\nclass ConsumerDivision {\n}\nclass Manager {\n  name\n  employeeID\n}\nclass Employee {\n  name\n  employeeID\n}\nclass Customer {\n  name\n}\nclass Property {\n  address\n  value\n  collateralDetails\n}\nclass SecondaryCard {\n  cardNumber\n  expiryDate\n  holderName\n}\nDivision --> Manager : manages\nDivision --> Employee : employs\nDivision <|-- ConsumerDivision\nConsumerDivision --> Branch : subdivision\nCustomer --> Employee : personal banker\nJointAccount --> Customer\nOOBank --> Division\nAccount --> Customer\nOOBank --> Branch\nBranch --> Account\nAccount <|-- MortgageAccount\nAccount <|-- CheckingAccount\nAccount <|-- CreditCardAccount\nAccount <|-- JointAccount\nMortgageAccount --> Property\nCreditCardAccount --> SecondaryCard\n@enduml"
+    },
+    {
+      "exercise_id": 17,
+      "exercise_title": "Prepaid Cell Phone (Decorator Pattern)",
+      "generated_diagram": "@startuml\nclass BasicContract {\n  int contractNumber\n  double balance\n  BasicContract(int contractNumber, double balance)\n  getBalance(): double\n  setBalance(double)\n  getCharges(): double\n}\nabstract class ContractDecorator {\n  BasicContract wrappedContract\n  ContractDecorator(BasicContract contract)\n  getBalance(): double\n  setBalance(double)\n  getCharges(): double\n}\nclass DataOption {\n  int data = 100\n  double monthlyCharge = 1.00\n  getCharges(): double\n}\nclass SMSOption {\n  int smsCount = 50\n  double monthlyCharge = 0.50\n  getCharges(): double\n}\nclass MinutesOption {\n  int minutes = 50\n  double monthlyCharge = 1.50\n  getCharges(): double\n}\nclass DoubleTransferRateOption {\n  double monthlyCharge = 2.00\n  getCharges(): double\n}\nContractDecorator <|-- DataOption\nContractDecorator <|-- SMSOption\nContractDecorator <|-- MinutesOption\nContractDecorator <|-- DoubleTransferRateOption\nContractDecorator --> BasicContract\n@enduml"
+    }
+  ]
+}

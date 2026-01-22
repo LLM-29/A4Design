@@ -1,6 +1,5 @@
-from src.config import cfg
+from src.config import SINGLE_AGENT_OUTPUT_DIR
 from src.core.logger import Logger
-from src.agents.single_agent.agent import SingleAgent
 from src.agents.single_agent.config import SystemConfig
 from src.core.utils import initialize_single_agent_system
 from src.evaluation.evaluation import evaluate_diagram
@@ -23,7 +22,7 @@ def main(api_key: str):
 
     app = initialize_single_agent_system(cfg=config)
 
-    output_dir = cfg.SINGLE_AGENT_OUTPUT_DIR
+    output_dir = SINGLE_AGENT_OUTPUT_DIR
 
     Logger.log_info("System initialized successfully")
 
