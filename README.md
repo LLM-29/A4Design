@@ -141,21 +141,6 @@ The multi-agent system uses the same shared Model Manager and Safe Invoke utilit
    ```
    This will execute the respective workflows and save outputs to the [output/](output/) directory. Single-agent results are saved to `output/single_agent/`, while multi-agent results are saved to `output/multi_agent_critic/` or `output/multi_agent_scorer/` depending on the evaluation mode.
 
-### Direct Agent Execution
-
-You can also run the agents directly:
-
-```bash
-# Single agent
-python src/agents/single_agent/main.py
-
-# Multi-agent with critic evaluation
-python src/agents/multi_agent/main.py --evaluation critic
-
-# Multi-agent with scorer evaluation
-python src/agents/multi_agent/main.py --evaluation scorer
-```
-
 ## Evaluation
 
 The system evaluates generated diagrams against a human-created gold standard using:
@@ -164,17 +149,11 @@ The system evaluates generated diagrams against a human-created gold standard us
 
 ### Threshold Optimization
 
-To optimize evaluation accuracy, the project includes several threshold optimization scripts:
+To optimize evaluation accuracy, the project includes a joint threshold optimization script:
 
 ```bash
-# Cross-validation threshold optimization
-python src/evaluation/cv_threshold_optimization.py
-
-# Convergence threshold optimization
-python src/evaluation/convergence_threshold_optimization.py
-
 # Joint threshold optimization
 python src/evaluation/joint_threshold_optimization.py
 ```
 
-These scripts perform optimization and save results to the `output/evaluation/` directory. Cached results are stored in `output/cache/` to avoid recomputation. The optimal thresholds are used in the main evaluation pipeline.
+This script performs optimization and saves results to the `output/evaluation/` directory. Cached results are stored in `output/cache/` to avoid recomputation. The optimal thresholds are used in the main evaluation pipeline.
