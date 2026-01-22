@@ -67,10 +67,20 @@ OPENROUTER_API_KEY=your_api_key_here
   - [main.py](scripts/main.py): Entry point script for running single-agent or multi-agent modes.
 - [src/](src/): Source code of the project.
   - [agents/](src/agents/): Agent implementations.
-    - [multi_agent/](src/agents/multi_agent/): Multi-agent workflow components (agents, config, main, memory, model_manager, workflow).
+    - [multi_agent/](src/agents/multi_agent/): Multi-agent workflow components (agents, config, main, memory, workflow).
     - [single_agent/](src/agents/single_agent/): Single-agent baseline implementation.
-  - [core/](src/core/): Core modules (few_shot_loader, logger, models, plantuml, prompts, utils).
-  - [evaluation/](src/evaluation/): Evaluation modules.
+  - [core/](src/core/): Core modules shared across agents.
+    - [few_shot_loader.py](src/core/few_shot_loader.py): Few-shot example loading utilities.
+    - [logger.py](src/core/logger.py): Logging utilities.
+    - [model_manager.py](src/core/model_manager.py): Dynamic model loading and management for different tasks.
+    - [models.py](src/core/models.py): Data models and type definitions.
+    - [plantuml.py](src/core/plantuml.py): PlantUML integration and validation.
+    - [prompts.py](src/core/prompts.py): Prompt templates and system messages.
+    - [utils.py](src/core/utils.py): Utility functions including safe LLM invocation and system initialization.
+  - [evaluation/](src/evaluation/): Evaluation modules and threshold optimization.
+    - [evaluation.py](src/evaluation/evaluation.py): Main evaluation utilities.
+    - [joint_threshold_optimization.py](src/evaluation/joint_threshold_optimization.py): Joint threshold optimization.
+
 - [data/](data/): Data files.
   - [index.faiss](data/index.faiss): FAISS index for retrieval.
   - [processed/](data/processed/): Processed data.
@@ -81,12 +91,14 @@ OPENROUTER_API_KEY=your_api_key_here
     - [test_exercises.json](data/processed/test_exercises.json): Test exercises.
   - [raw/](data/raw/): Raw data (if any).
 - [output/](output/): Output results from runs.
-  - [multi_agent/](output/multi_agent/): Outputs from multi-agent workflow.
+  - [cache/](output/cache/): Cached results from threshold optimization.
+    - [threshold_generation_cache.json](output/cache/threshold_generation_cache.json): Cached threshold optimization results.
+  - [evaluation/](output/evaluation/): Evaluation results.
+  - [multi_agent_critic/](output/multi_agent_critic/): Outputs from multi-agent workflow with critic evaluation.
+  - [multi_agent_scorer/](output/multi_agent_scorer/): Outputs from multi-agent workflow with scorer evaluation.
   - [single_agent/](output/single_agent/): Outputs from single-agent baseline.
 - [pyproject.toml](pyproject.toml): Project configuration for modern Python packaging.
-- [setup.py](setup.py): Legacy setup script.
 - [requirements.txt](requirements.txt): Python dependencies.
-- [cv_results.json](cv_results.json): Results from cross-validation threshold optimization.
 - [README.md](README.md): This file.
 - [**init**.py](__init__.py): Package initialization.
 
@@ -94,9 +106,16 @@ OPENROUTER_API_KEY=your_api_key_here
 
 The project implements two main approaches for generating and correcting UML diagrams from natural language requirements:
 
+### Shared Components
+
+- **Model Manager** (`src/core/model_manager.py`): Dynamic loading and management of LLMs for different tasks, shared between single-agent and multi-agent systems.
+- **Safe Invoke** (`src/core/utils.py`): Retry logic for reliable LLM calls with error handling.
+- **Few-shot Learning**: Uses examples from `few_shot.json` to improve generation quality.
+- **Retrieval-Augmented Generation**: Uses FAISS index for relevant example retrieval.
+
 ### Single-Agent Baseline
 
-A straightforward LLM-based system that directly generates PlantUML code from text requirements using a single model call.
+A straightforward LLM-based system that directly generates PlantUML code from text requirements using a single model call through the shared Model Manager.
 
 ### Multi-Agent Workflow
 
@@ -109,7 +128,7 @@ A sophisticated multi-agent system with specialized roles:
 - **PlantUML Syntax Checker**: Validates PlantUML syntax.
 - **PlantUML Logical Fixer**: Corrects logical errors in the diagram structure.
 
-The system incorporates few-shot learning using examples from `few_shot.json` to improve generation quality. It uses retrieval-augmented generation with a FAISS index for relevant examples.
+The multi-agent system uses the same shared Model Manager and Safe Invoke utilities as the single-agent baseline.
 
 ## How to Run
 
@@ -120,7 +139,22 @@ The system incorporates few-shot learning using examples from `few_shot.json` to
    python scripts/main.py --mode multi --evaluation critic  # For multi-agent workflow with critic-based evaluation
    python scripts/main.py --mode multi --evaluation scorer  # For multi-agent workflow with scorer-based evaluation
    ```
-   This will execute the respective workflows and save outputs to the [output/](output/) directory.
+   This will execute the respective workflows and save outputs to the [output/](output/) directory. Single-agent results are saved to `output/single_agent/`, while multi-agent results are saved to `output/multi_agent_critic/` or `output/multi_agent_scorer/` depending on the evaluation mode.
+
+### Direct Agent Execution
+
+You can also run the agents directly:
+
+```bash
+# Single agent
+python src/agents/single_agent/main.py
+
+# Multi-agent with critic evaluation
+python src/agents/multi_agent/main.py --evaluation critic
+
+# Multi-agent with scorer evaluation
+python src/agents/multi_agent/main.py --evaluation scorer
+```
 
 ## Evaluation
 
@@ -130,10 +164,17 @@ The system evaluates generated diagrams against a human-created gold standard us
 
 ### Threshold Optimization
 
-To optimize evaluation accuracy, the project includes cross-validation for finding the best cosine similarity threshold for matching generated diagram elements to ground truth. Run the optimization script:
+To optimize evaluation accuracy, the project includes several threshold optimization scripts:
 
 ```bash
+# Cross-validation threshold optimization
 python src/evaluation/cv_threshold_optimization.py
+
+# Convergence threshold optimization
+python src/evaluation/convergence_threshold_optimization.py
+
+# Joint threshold optimization
+python src/evaluation/joint_threshold_optimization.py
 ```
 
-This performs 5-fold cross-validation and saves results to `cv_results.json`. The optimal threshold is used in the main evaluation pipeline.
+These scripts perform optimization and save results to the `output/evaluation/` directory. Cached results are stored in `output/cache/` to avoid recomputation. The optimal thresholds are used in the main evaluation pipeline.
