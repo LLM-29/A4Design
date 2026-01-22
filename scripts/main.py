@@ -12,6 +12,7 @@ from src.config import ensure_output_dirs, DOTENV
 from src.core.models import EvaluationMode, AgentMode
 from src.agents.multi_agent.main import main as run_multi_agent
 from src.agents.single_agent.main import main as run_single_agent
+from src.core.logger import Logger
 
 def define_parser() -> ArgumentParser:
     parser = ArgumentParser(description="Run multi-agent system with different configurations")
@@ -32,14 +33,12 @@ def main():
     args = retrieve_args()
     openrouter_api_key = getenv("OPENROUTER_API_KEY", "")
 
-    print("KEY: " + openrouter_api_key)
-
     if args.mode == AgentMode.SINGLE:
         results = run_single_agent(api_key=openrouter_api_key, evaluation=args.evaluation)
     else:
         results = run_multi_agent(api_key=openrouter_api_key, evaluation=args.evaluation)
 
-    print(f"Completed! Results: {results}")
+    Logger.log_info(f"Completed! Results: {results}")
 
 
 if __name__ == "__main__":

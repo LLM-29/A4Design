@@ -2,12 +2,8 @@
 Evaluation tools for comparing generated diagrams against gold standards.
 """
 
-import matplotlib.pyplot as plt
-import numpy as np
-
-from typing import Dict, Set, Tuple, List, Optional
+from typing import Dict, Set, Tuple
 from sentence_transformers import SentenceTransformer, util
-from sklearn.metrics import auc
 from src.core.models import EvaluationMetrics
 from src.core.plantuml import PlantUMLParser
 from src.core.logger import Logger
@@ -26,9 +22,8 @@ class DiagramEvaluator:
         self,
         gold_plantuml: str,
         pred_plantuml: str,
-        embeder_model: str,
-        similarity_threshold: float = 0.85,
-        auto_threshold: bool = False
+        embeder_model,  # Can be str or SentenceTransformer
+        similarity_threshold: float,
     ):
         """
         Initialize evaluator with gold and predicted diagrams.
@@ -48,17 +43,16 @@ class DiagramEvaluator:
         self.pred_parser = PlantUMLParser(pred_plantuml)
         
         try:
-            self.bert_model = SentenceTransformer(embeder_model)
-            Logger.log_info("BERT model loaded for semantic matching")
+            if isinstance(embeder_model, str):
+                self.bert_model = SentenceTransformer(embeder_model)
+                Logger.log_info("BERT model loaded for semantic matching")
+            else:
+                self.bert_model = embeder_model
+                Logger.log_info("Using pre-loaded BERT model for semantic matching")
         except Exception as e:
             raise RuntimeError(f"Failed to load BERT model: {e}")
         
-        # Auto-determine threshold using ROC curve if requested
-        if auto_threshold:
-            self.similarity_threshold = self._find_optimal_threshold()
-            Logger.log_info(f"Auto-selected optimal threshold: {self.similarity_threshold:.4f}")
-        else:
-            self.similarity_threshold = similarity_threshold
+        self.similarity_threshold = similarity_threshold
     
     def _normalize_attr(self, attr_str: str) -> str:
         """Normalize attribute strings for comparison."""
@@ -212,50 +206,41 @@ class DiagramEvaluator:
         Returns:
             Tuple of (matched_pairs, unmatched_gold, unmatched_pred)
         """
+        # Group by class for efficiency
+        gold_by_class = {}
+        for cls, attr in gold_attrs:
+            gold_by_class.setdefault(cls, set()).add(attr)
+        
+        pred_by_class = {}
+        for cls, attr in pred_attrs:
+            mapped_cls = class_mapping.get(cls, cls)
+            pred_by_class.setdefault(mapped_cls, []).append((cls, attr))
+        
         matched_pairs = set()
         remaining_gold = set(gold_attrs)
         remaining_pred = set(pred_attrs)
         
-        # Group attributes by class for matching
-        gold_by_class = {}
-        for cls, attr in remaining_gold:
-            if cls not in gold_by_class:
-                gold_by_class[cls] = set()
-            gold_by_class[cls].add(attr)
-        
-        pred_by_class = {}
-        for cls, attr in remaining_pred:
-            # Use the mapped class name to group predicted attributes
-            mapped_cls = class_mapping.get(cls, cls)
-            if mapped_cls not in pred_by_class:
-                pred_by_class[mapped_cls] = []
-            pred_by_class[mapped_cls].append((cls, attr))
-        
-        # Match attributes for each gold class
-        for gold_cls, gold_attrs_set in gold_by_class.items():
-            pred_attrs_list = pred_by_class.get(gold_cls, [])
-            if not pred_attrs_list:
+        # Match within each class
+        for gold_cls, gold_attr_set in gold_by_class.items():
+            if gold_cls not in pred_by_class:
                 continue
             
-            pred_attrs_set = {attr for _, attr in pred_attrs_list}
+            pred_attr_list = pred_by_class[gold_cls]
+            pred_attr_set = {attr for _, attr in pred_attr_list}
             
-            # Similarity function for this class to use in the generic matcher
-            def attr_similarity(gold_attr, pred_attr):
-                return self._compute_similarity(gold_attr, pred_attr)
-            
-
+            # Use generic matcher on this subset
             attr_matches, _, _ = self._generic_fuzzy_match(
-                gold_attrs_set,
-                pred_attrs_set,
-                attr_similarity
+                gold_attr_set,
+                pred_attr_set,
+                self._compute_similarity
             )
             
-
+            # Record full matches with class info
             for gold_attr, pred_attr in attr_matches:
-                orig_pred_cls = next(cls for cls, attr in pred_attrs_list if attr == pred_attr)
+                orig_pred_cls = next(cls for cls, attr in pred_attr_list if attr == pred_attr)
                 matched_pairs.add(((gold_cls, gold_attr), (orig_pred_cls, pred_attr)))
                 remaining_gold.discard((gold_cls, gold_attr))
-                remaining_pred.discard((orig_pred_cls, pred_attr))
+                remaining_pred.discard((orig_pred_cls, pred_attr))    
 
         if matched_pairs:
             Logger.log_info(f"Matched attributes: {matched_pairs}")
@@ -302,7 +287,7 @@ class DiagramEvaluator:
             
             # Return average similarity (both must be above threshold)
             avg_sim = (src_sim + tgt_sim) / 2.0
-            return avg_sim if src_sim >= self.similarity_threshold and tgt_sim >= self.similarity_threshold else 0.0
+            return avg_sim
         
         matched_pairs, remaining_gold, remaining_pred = self._generic_fuzzy_match(
             gold_rels,
@@ -434,281 +419,12 @@ class DiagramEvaluator:
             "relationships": rel_metrics,
         }
     
-    def _compute_similarity_matrix(
-        self,
-        gold_items: List,
-        pred_items: List
-    ) -> np.ndarray:
-        """
-        Compute pairwise similarity matrix between gold and predicted items.
-        
-        Args:
-            gold_items: List of gold standard items (strings)
-            pred_items: List of predicted items (strings)
-            
-        Returns:
-            Similarity matrix of shape (len(gold_items), len(pred_items))
-        """
-        if not gold_items or not pred_items:
-            return np.array([])
-        
-        similarities = np.zeros((len(gold_items), len(pred_items)))
-        for i, gold_item in enumerate(gold_items):
-            for j, pred_item in enumerate(pred_items):
-                similarities[i, j] = self._compute_similarity(str(gold_item), str(pred_item))
-        
-        return similarities
-    
-    def _compute_metrics_at_threshold(
-        self,
-        similarity_matrix: np.ndarray,
-        threshold: float
-    ) -> Tuple[float, float, float]:
-        """
-        Compute TPR, FPR, and F1 at a given threshold.
-        
-        Args:
-            similarity_matrix: Pairwise similarity matrix
-            threshold: Similarity threshold to test
-            
-        Returns:
-            Tuple of (TPR, FPR, F1)
-        """
-        if similarity_matrix.size == 0:
-            return 0.0, 0.0, 0.0
-        
-        n_gold, n_pred = similarity_matrix.shape
-        
-        # Greedy matching: for each gold item, find best match above threshold
-        matched_gold = set()
-        matched_pred = set()
-        
-        for i in range(n_gold):
-            best_j = -1
-            best_sim = threshold
-            
-            for j in range(n_pred):
-                if j not in matched_pred and similarity_matrix[i, j] > best_sim:
-                    best_sim = similarity_matrix[i, j]
-                    best_j = j
-            
-            if best_j >= 0:
-                matched_gold.add(i)
-                matched_pred.add(best_j)
-        
-        tp = len(matched_gold)
-        fp = n_pred - len(matched_pred)
-        fn = n_gold - len(matched_gold)
-        tn = 0  # Not applicable in this context
-        
-        # Calculate metrics
-        tpr = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        fpr = fp / (fp + tn) if (fp + tn) > 0 else (1.0 if fp > 0 else 0.0)
-        
-        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        f1 = (2 * precision * tpr) / (precision + tpr) if (precision + tpr) > 0 else 0.0
-        
-        return tpr, fpr, f1
-    
-    def _find_optimal_threshold(
-        self,
-        thresholds: Optional[np.ndarray] = None,
-        plot: bool = False
-    ) -> float:
-        """
-        Find optimal similarity threshold using ROC curve analysis.
-        Uses Youden's J statistic (TPR - FPR) to select the best threshold.
-        
-        Args:
-            thresholds: Array of thresholds to test. If None, uses np.linspace(0.5, 1.0, 51)
-            plot: Whether to plot the ROC curve
-            
-        Returns:
-            Optimal similarity threshold
-        """
-        if thresholds is None:
-            thresholds = np.linspace(0.5, 1.0, 51)
-        
-        # Extract classes for ROC analysis
-        gold_classes = list({c.lower() for c in self.gold_parser.classes.keys()})
-        pred_classes = list({c.lower() for c in self.pred_parser.classes.keys()})
-        
-        if not gold_classes or not pred_classes:
-            Logger.log_warning("No classes found for ROC analysis, using default threshold")
-            return 0.85
-        
-        # Compute similarity matrix
-        similarity_matrix = self._compute_similarity_matrix(gold_classes, pred_classes)
-        
-        if similarity_matrix.size == 0:
-            Logger.log_warning("Empty similarity matrix, using default threshold")
-            return 0.85
-        
-        # Compute metrics at each threshold
-        tpr_values = []
-        fpr_values = []
-        f1_values = []
-        
-        for threshold in thresholds:
-            tpr, fpr, f1 = self._compute_metrics_at_threshold(similarity_matrix, threshold)
-            tpr_values.append(tpr)
-            fpr_values.append(fpr)
-            f1_values.append(f1)
-        
-        tpr_values = np.array(tpr_values)
-        fpr_values = np.array(fpr_values)
-        f1_values = np.array(f1_values)
-
-        # --------------------------------
-        
-        # Calculate ROC AUC using trapezoidal rule
-        # Sort by FPR for proper AUC calculation
-        sorted_indices = np.argsort(fpr_values)
-        fpr_sorted = fpr_values[sorted_indices]
-        tpr_sorted = tpr_values[sorted_indices]
-        
-        roc_auc = auc(fpr_sorted, tpr_sorted)
-        Logger.log_info(f"ROC AUC Score: {roc_auc:.4f}")
-        
-        # Find optimal threshold using multiple strategies
-        # Strategy 1: Maximum F1 score
-        f1_optimal_idx = np.argmax(f1_values)
-        
-        # Strategy 2: Youden's J statistic (TPR - FPR)
-        youden_j = tpr_values - fpr_values
-        youden_optimal_idx = np.argmax(youden_j)
-        
-        # Strategy 3: Point closest to (0, 1) - perfect classifier
-        distances = np.sqrt((1 - tpr_values)**2 + fpr_values**2)
-        closest_optimal_idx = np.argmin(distances)
-        
-        # Use F1 score as primary criterion (better for imbalanced matching)
-        optimal_idx = f1_optimal_idx
-        optimal_threshold = thresholds[optimal_idx]
-        
-        Logger.log_info(f"ROC Analysis Results:")
-        Logger.log_info(f"  Optimal threshold (F1): {thresholds[f1_optimal_idx]:.4f} (F1={f1_values[f1_optimal_idx]:.3f})")
-        Logger.log_info(f"  Optimal threshold (Youden): {thresholds[youden_optimal_idx]:.4f} (J={youden_j[youden_optimal_idx]:.3f})")
-        Logger.log_info(f"  Optimal threshold (Distance): {thresholds[closest_optimal_idx]:.4f} (dist={distances[closest_optimal_idx]:.3f})")
-        Logger.log_info(f"  Selected threshold: {optimal_threshold:.4f}")
-        
-        # Plot ROC curve if requested
-        if plot:
-            self._plot_roc_curve(
-                fpr_values, tpr_values, f1_values, thresholds, 
-                optimal_idx, f1_optimal_idx, youden_optimal_idx
-            )
-        
-        return float(optimal_threshold)
-    
-    def _plot_roc_curve(
-        self,
-        fpr_values: np.ndarray,
-        tpr_values: np.ndarray,
-        f1_values: np.ndarray,
-        thresholds: np.ndarray,
-        optimal_idx: int,
-        f1_idx: int,
-        youden_idx: int
-    ) -> None:
-        """
-        Plot ROC curve with optimal thresholds marked.
-        
-        Args:
-            fpr_values: False positive rates
-            tpr_values: True positive rates
-            f1_values: F1 scores
-            thresholds: Threshold values
-            optimal_idx: Index of selected optimal threshold
-            f1_idx: Index of F1 optimal threshold
-            youden_idx: Index of Youden's J optimal threshold
-        """
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-        
-        # Sort by FPR for proper ROC curve
-        sorted_indices = np.argsort(fpr_values)
-        fpr_sorted = fpr_values[sorted_indices]
-        tpr_sorted = tpr_values[sorted_indices]
-        
-        # Calculate AUC
-        roc_auc = auc(fpr_sorted, tpr_sorted)
-        
-        # Plot 1: ROC Curve
-        ax1.plot(fpr_sorted, tpr_sorted, 'b-', linewidth=2, label=f'ROC Curve (AUC={roc_auc:.3f})')
-        ax1.plot([0, 1], [0, 1], 'r--', linewidth=1, label='Random Classifier')
-        
-        # Mark optimal thresholds
-        ax1.plot(fpr_values[optimal_idx], tpr_values[optimal_idx], 'go', 
-                markersize=12, label=f'Selected (t={thresholds[optimal_idx]:.2f})', zorder=5)
-        ax1.plot(fpr_values[youden_idx], tpr_values[youden_idx], 'mo', 
-                markersize=10, label=f'Youden (t={thresholds[youden_idx]:.2f})', zorder=5)
-        
-        ax1.set_xlabel('False Positive Rate', fontsize=12)
-        ax1.set_ylabel('True Positive Rate (Recall)', fontsize=12)
-        ax1.set_title('ROC Curve for Similarity Threshold Selection', fontsize=14, fontweight='bold')
-        ax1.legend(loc='lower right')
-        ax1.grid(True, alpha=0.3)
-        ax1.set_xlim([-0.05, 1.05])
-        ax1.set_ylim([-0.05, 1.05])
-        
-        # Plot 2: F1 Score vs Threshold
-        ax2.plot(thresholds, f1_values, 'b-', linewidth=2, label='F1 Score')
-        ax2.axvline(thresholds[f1_idx], color='g', linestyle='--', linewidth=2, 
-                   label=f'Max F1 (t={thresholds[f1_idx]:.2f}, F1={f1_values[f1_idx]:.3f})')
-        ax2.plot(thresholds[f1_idx], f1_values[f1_idx], 'go', markersize=12, zorder=5)
-        
-        ax2.set_xlabel('Similarity Threshold', fontsize=12)
-        ax2.set_ylabel('F1 Score', fontsize=12)
-        ax2.set_title('F1 Score vs Similarity Threshold', fontsize=14, fontweight='bold')
-        ax2.legend(loc='best')
-        ax2.grid(True, alpha=0.3)
-        ax2.set_xlim([thresholds[0] - 0.05, thresholds[-1] + 0.05])
-        
-        plt.tight_layout()
-        plt.savefig('roc_curve_threshold_analysis.png', dpi=300, bbox_inches='tight')
-        Logger.log_info("ROC curve saved to roc_curve_threshold_analysis.png")
-        plt.close()
-    
-    @classmethod
-    def find_optimal_threshold(
-        cls,
-        gold_plantuml: str,
-        pred_plantuml: str,
-        embeder_model: str,
-        thresholds: Optional[np.ndarray] = None,
-        plot: bool = False
-    ) -> float:
-        """
-        Class method to find optimal threshold without full evaluation.
-        
-        Args:
-            gold_plantuml: Gold standard PlantUML code
-            pred_plantuml: Predicted PlantUML code
-            embeder_model: Embedding model name or path
-            thresholds: Array of thresholds to test. If None, uses np.linspace(0.5, 1.0, 51)
-            plot: Whether to plot the ROC curve
-            
-        Returns:
-            Optimal similarity threshold
-        """
-        # Create temporary evaluator with default threshold
-        temp_evaluator = cls(
-            gold_plantuml=gold_plantuml,
-            pred_plantuml=pred_plantuml,
-            embeder_model=embeder_model,
-            similarity_threshold=0.85,
-            auto_threshold=False
-        )
-        
-        return temp_evaluator._find_optimal_threshold(thresholds=thresholds, plot=plot)
-
 
 def evaluate_diagram(
     gold_standard: str,
     generated_diagram: str,
-    embeder_model: str,
-    similarity_threshold: Optional[float] = None,
-    auto_threshold: bool = True
+    embeder_model,  # Can be str or SentenceTransformer
+    similarity_threshold: float,
 ) -> Dict[str, EvaluationMetrics]:
     """
     Evaluate a generated diagram against gold standard using semantic similarity.
@@ -718,8 +434,6 @@ def evaluate_diagram(
         generated_diagram: Generated PlantUML code
         embeder_model: Embedding model name or path
         similarity_threshold: Minimum similarity for class/attribute matches (0.0-1.0).
-                            If None and auto_threshold=False, defaults to 0.75.
-        auto_threshold: If True, automatically determine optimal threshold using ROC analysis
         
     Returns:
         Dictionary of evaluation metrics
@@ -728,24 +442,11 @@ def evaluate_diagram(
         ImportError: If sentence-transformers is not installed
         RuntimeError: If BERT model fails to load
     """
-    if similarity_threshold is None and not auto_threshold:
-        similarity_threshold = 0.75
     
     evaluator = DiagramEvaluator(
         gold_standard,
         generated_diagram,
         embeder_model,
         similarity_threshold=similarity_threshold,
-        auto_threshold=auto_threshold
     )
     return evaluator.get_metrics()
-
-
-# Example usage:
-# 
-# # Automatic threshold selection:
-# metrics = evaluate_diagram(gold, pred, model, auto_threshold=True)
-# 
-# # Or find optimal threshold first:
-# optimal_threshold = DiagramEvaluator.find_optimal_threshold(gold, pred, model, plot=True)
-# metrics = evaluate_diagram(gold, pred, model, similarity_threshold=optimal_threshold)

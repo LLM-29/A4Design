@@ -37,6 +37,16 @@ A local PlantUML server is required for syntax validation and diagram rendering.
   ```
 - Alternatively, if you want to run the server locally, you can follow the official guide at `https://plantuml.com/starting`.
 
+### 2. OpenRouter API Key
+
+The project uses OpenRouter for accessing Large Language Models (LLMs). You need to obtain an API key from [OpenRouter](https://openrouter.ai/).
+
+Create a `.env` file in the project root with the following content:
+
+```
+OPENROUTER_API_KEY=your_api_key_here
+```
+
 ## Setup Instructions
 
 1. **Clone the repository** and navigate to the project folder.
@@ -64,10 +74,11 @@ A local PlantUML server is required for syntax validation and diagram rendering.
 - [data/](data/): Data files.
   - [index.faiss](data/index.faiss): FAISS index for retrieval.
   - [processed/](data/processed/): Processed data.
-    - [diagrams.json](data/processed/diagrams.json): Processed diagrams.
-    - [few_shot.json](data/processed/few_shot.json): Few-shot examples.
+    - [diagrams.json](data/processed/diagrams.json): Processed diagrams used for validation.
+    - [few_shot.json](data/processed/few_shot.json): Few-shot examples for prompt engineering.
+    - [generated_diagrams_cv.json](data/processed/generated_diagrams_cv.json): Generated diagrams for cross-validation.
+    - [labels.json](data/processed/labels.json): Labels for evaluation.
     - [test_exercises.json](data/processed/test_exercises.json): Test exercises.
-    - [validation_exercises.json](data/processed/validation_exercises.json): Validation exercises.
   - [raw/](data/raw/): Raw data (if any).
 - [output/](output/): Output results from runs.
   - [multi_agent/](output/multi_agent/): Outputs from multi-agent workflow.
@@ -75,16 +86,39 @@ A local PlantUML server is required for syntax validation and diagram rendering.
 - [pyproject.toml](pyproject.toml): Project configuration for modern Python packaging.
 - [setup.py](setup.py): Legacy setup script.
 - [requirements.txt](requirements.txt): Python dependencies.
+- [cv_results.json](cv_results.json): Results from cross-validation threshold optimization.
 - [README.md](README.md): This file.
 - [**init**.py](__init__.py): Package initialization.
 
+## System Architecture
+
+The project implements two main approaches for generating and correcting UML diagrams from natural language requirements:
+
+### Single-Agent Baseline
+
+A straightforward LLM-based system that directly generates PlantUML code from text requirements using a single model call.
+
+### Multi-Agent Workflow
+
+A sophisticated multi-agent system with specialized roles:
+
+- **Class Extractor**: Identifies and extracts class definitions from requirements.
+- **Relationship Extractor**: Determines relationships between classes (inheritance, association, etc.).
+- **Generator**: Produces PlantUML code based on extracted elements.
+- **Critic**: Reviews and critiques the generated diagram for accuracy and completeness.
+- **PlantUML Syntax Checker**: Validates PlantUML syntax.
+- **PlantUML Logical Fixer**: Corrects logical errors in the diagram structure.
+
+The system incorporates few-shot learning using examples from `few_shot.json` to improve generation quality. It uses retrieval-augmented generation with a FAISS index for relevant examples.
+
 ## How to Run
 
-1. Ensure the PlantUML server is running.
+1. Ensure the PlantUML server is running and the `.env` file is set up with your OpenRouter API key.
 2. Run the script from the project root:
    ```bash
    python scripts/main.py --mode single  # For single-agent baseline
-   python scripts/main.py --mode multi   # For multi-agent workflow
+   python scripts/main.py --mode multi --evaluation critic  # For multi-agent workflow with critic-based evaluation
+   python scripts/main.py --mode multi --evaluation scorer  # For multi-agent workflow with scorer-based evaluation
    ```
    This will execute the respective workflows and save outputs to the [output/](output/) directory.
 
@@ -93,3 +127,13 @@ A local PlantUML server is required for syntax validation and diagram rendering.
 The system evaluates generated diagrams against a human-created gold standard using:
 
 - **Structural Accuracy**: Precision, Recall, and F1 score for Classes, Attributes, and Relationships.
+
+### Threshold Optimization
+
+To optimize evaluation accuracy, the project includes cross-validation for finding the best cosine similarity threshold for matching generated diagram elements to ground truth. Run the optimization script:
+
+```bash
+python src/evaluation/cv_threshold_optimization.py
+```
+
+This performs 5-fold cross-validation and saves results to `cv_results.json`. The optimal threshold is used in the main evaluation pipeline.

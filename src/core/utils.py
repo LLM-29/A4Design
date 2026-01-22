@@ -4,6 +4,7 @@ Utility functions for the UML generation system.
 
 import os
 import json
+import time
 
 from typing import List, Dict, Any
 from sentence_transformers import SentenceTransformer
@@ -11,9 +12,11 @@ from sentence_transformers import SentenceTransformer
 from src.agents.multi_agent.config import SystemConfig
 from src.agents.multi_agent.memory import MemoryManager
 from src.agents.multi_agent.agents import UMLNodes
-from src.agents.multi_agent.model_manager import ModelManager, ModelSpec
+from src.core.model_manager import ModelManager, ModelSpec
 from src.agents.multi_agent.workflow import create_critic_workflow, create_scoring_workflow
-from src.core.models import AgentState
+from src.agents.single_agent.agent import Node
+from src.agents.single_agent.workflow import create_single_agent
+from src.core.models import AgentState, SingleAgentState
 from src.core.plantuml import PlantUMLTool
 from src.core.models import EvaluationMode, TaskType
 from src.core.logger import Logger
@@ -102,6 +105,37 @@ def initialize_multi_agent_system(
         raise
 
 
+def initialize_single_agent_system(
+    cfg: SystemConfig,
+) -> Any:
+    """
+    Initialize single agent system components.
+    
+    Args:
+        cfg: System configuration
+        
+    Returns:
+        Compiled workflow for single agent
+    """
+    Logger.log_title("INITIALIZING SINGLE AGENT UML GENERATION SYSTEM")
+    
+    try:
+        Logger.log_models(cfg.decompose_model, cfg.generate_model)
+        model_mgr = create_model_manager(cfg=cfg)
+        
+        Logger.log_info("Building single agent workflow...")
+        nodes = Node(model_mgr)
+        app = create_single_agent(nodes, cfg)
+        
+        Logger.log_title("SINGLE AGENT SYSTEM INITIALIZATION COMPLETE")
+        
+        return app
+        
+    except Exception as e:
+        Logger.log_error(f"Single agent system initialization failed: {e}")
+        raise
+
+
 def seed_memory_from_shots(
     memory_manager: MemoryManager,
     shots_json_path: str,
@@ -150,6 +184,7 @@ def seed_memory_from_shots(
     with open(shots_json_path, 'r', encoding='utf-8') as f:
         shots = json.load(f)
     
+    shots = shots[:3]  # Limit to first 3 shots for seeding
     Logger.log_info(f"Found {len(shots)} shots to seed")
     
     # Seed each shot individually
@@ -187,12 +222,7 @@ def create_model_manager(
     Create a model manager with sensible defaults.
     
     Args:
-        decompose_model: Model for analysis/decomposition tasks
-        generate_model: Model for code generation tasks
-        base_url: LM Studio base URL
-        local_api_key: Local API key
-        temperature: Sampling temperature
-        timeout: Request timeout
+        cfg: System configuration object
         
     Returns:
         Configured ModelManager instance
@@ -226,6 +256,22 @@ def create_model_manager(
         task_model_mapping=task_mapping,
         default_model=code_model,  # Default to code model if no mapping
     )
+
+
+def create_initial_single_agent_state(requirements: str) -> SingleAgentState:
+    """
+    Create an initial state for the single agent workflow.
+    
+    Args:
+        requirements: Software requirements text
+        
+    Returns:
+        Initial SingleAgentState dictionary
+    """
+    return {
+        "requirements": requirements,
+        "current_diagram": None,
+    }
 
 
 def create_initial_state(requirements: str) -> AgentState:
@@ -265,8 +311,9 @@ def create_initial_state(requirements: str) -> AgentState:
 def run_exercise(
     app: Any,
     requirements: str,
-    exercise_name: str
-) -> AgentState:
+    exercise_name: str,
+    is_single_agent: bool = False
+) -> Any:
     """
     Run the workflow on a single exercise.
     
@@ -274,19 +321,57 @@ def run_exercise(
         app: Compiled LangGraph workflow
         requirements: Software requirements text
         exercise_name: Name for logging purposes
+        is_single_agent: Whether this is a single agent workflow
         
     Returns:
         Final workflow state
     """
     
     Logger.log_run_start(exercise_name, requirements)
-    initial_state = create_initial_state(requirements)
+    
+    if is_single_agent:
+        initial_state = create_initial_single_agent_state(requirements)
+    else:
+        initial_state = create_initial_state(requirements)
     
     try:
-        final_output = app.invoke(initial_state)
+        final_output = app.invoke(initial_state, config={"recursion_limit": 130})
         Logger.log_generation(final_output)
         return final_output
     except Exception as e:
-        logger.error(f"Workflow execution failed: {e}")
+        Logger.log_error(f"Workflow execution failed: {e}")
         raise
+
+
+def safe_invoke(runnable: Any, input_data: Any, **kwargs) -> Any:
+    """
+    Invoke a runnable (LLM or chain) with retry logic.
+    
+    Args:
+        runnable: The runnable to invoke
+        input_data: Input data for the runnable
+        **kwargs: Additional keyword arguments
+        
+    Returns:
+        Result from the runnable
+        
+    Raises:
+        Exception: If all retries fail
+    """
+    max_retries = 3
+    last_exception = None
+    
+    for attempt in range(max_retries):
+        try:
+            return runnable.invoke(input_data, **kwargs)
+        except Exception as e:
+            last_exception = e
+            Logger.log_warning(
+                f"LLM call failed (attempt {attempt+1}/{max_retries}): {e}"
+            )
+            if attempt < max_retries - 1:
+                time.sleep(2 * (attempt + 1))
+    
+    Logger.log_error(f"Max retries reached for LLM call: {last_exception}")
+    raise last_exception
 

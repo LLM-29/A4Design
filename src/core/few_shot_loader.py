@@ -45,15 +45,15 @@ class FewShotLoader:
         return self._examples
     
     def _load_diagrams(self) -> List[Dict[str, Any]]:
-        """Load complete shots with diagrams from JSON file."""
+        """Load complete diagrams from JSON file."""
         if self._diagrams is None:
             try:
                 with open(self.diagrams_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     self._diagrams = data if isinstance(data, list) else []
-                Logger.log_info(f"Loaded {len(self._diagrams)} complete shots with diagrams")
+                Logger.log_info(f"Loaded {len(self._diagrams)} complete  diagrams")
             except Exception as e:
-                Logger.log_warning(f"Failed to load complete shots: {e}")
+                Logger.log_warning(f"Failed to load complete diagrams: {e}")
                 self._diagrams = []
         return self._diagrams
     

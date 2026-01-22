@@ -1,0 +1,33 @@
+@startuml
+class User {
+  fullName
+  borrowedBooksHistory: List<BorrowRecord>
+  currentlyBorrowedBooks: List<Book>
+}
+class UnderAgedUser {
+  studentCard
+}
+class AdultUser {
+  idCard
+}
+class Book {
+  author
+  title
+  publicationDate
+}
+class Library {
+  bookCollection: List<Book>
+  manageBooks()
+  manageUsers()
+}
+class BorrowRecord {
+  borrowDate
+  returnDate
+}
+User <|-- UnderAgedUser
+User <|-- AdultUser
+Library --> Book
+Library --> User
+User --> BorrowRecord
+BorrowRecord --> Book
+@enduml

@@ -4,6 +4,7 @@ Agent nodes for the UML generation workflow.
 
 import json
 import time
+import Levenshtein
 
 from typing import Dict, List, Any, Optional
 from langchain_openai import ChatOpenAI
@@ -18,11 +19,13 @@ from src.core.models import (
     AgentState,
     Class,
     Relationship,
+    ScoredCritiqueReport
 )
 from src.core.plantuml import PlantUMLTool
 from src.core.logger import Logger
+from src.core.utils import safe_invoke
 from src.agents.multi_agent.memory import MemoryManager
-from src.agents.multi_agent.model_manager import ModelManager, TaskType
+from src.core.model_manager import ModelManager, TaskType
 from src.core.few_shot_loader import FewShotLoader
 from src.core.prompts import (
     CLASS_EXTRACTOR_SYSTEM,
@@ -31,6 +34,7 @@ from src.core.prompts import (
     CRITIC_SYSTEM,
     PLANTUML_SYNTAX_CHECKER_SYSTEM,
     PLANTUML_LOGICAL_FIXER_SYSTEM,
+    SCORER_SYSTEM
 )
 
 
@@ -85,38 +89,6 @@ class UMLNodes:
             LLM instance from model manager
         """
         return self.model_manager.get_model(task_type, **override_kwargs)
-
-    def _safe_invoke(self, runnable: Any, input_data: Any, **kwargs) -> Any:
-        """
-        Invoke a runnable (LLM or chain) with retry logic.
-        
-        Args:
-            runnable: The runnable to invoke
-            input_data: Input data for the runnable
-            **kwargs: Additional keyword arguments
-            
-        Returns:
-            Result from the runnable
-            
-        Raises:
-            Exception: If all retries fail
-        """
-        max_retries = 3
-        last_exception = None
-        
-        for attempt in range(max_retries):
-            try:
-                return runnable.invoke(input_data, **kwargs)
-            except Exception as e:
-                last_exception = e
-                Logger.log_warning(
-                    f"LLM call failed (attempt {attempt+1}/{max_retries}): {e}"
-                )
-                if attempt < max_retries - 1:
-                    time.sleep(2 * (attempt + 1))
-        
-        Logger.log_error(f"Max retries reached for LLM call: {last_exception}")
-        raise last_exception
 
     @staticmethod
     def _format_plan(classes: List[Class], relationships: List[Relationship]) -> str:
@@ -238,7 +210,7 @@ class UMLNodes:
                 max_tokens=self.config.max_tokens_decompose
             ).with_structured_output(ClassExtractionResult)
             
-            result: ClassExtractionResult = self._safe_invoke(structured_llm, messages)
+            result: ClassExtractionResult = safe_invoke(structured_llm, messages)
             
             Logger.log_classes(result.classes)
             
@@ -299,7 +271,7 @@ class UMLNodes:
             
             structured_llm = llm.with_structured_output(RelationshipExtractionResult)
             
-            result: RelationshipExtractionResult = self._safe_invoke(
+            result: RelationshipExtractionResult = safe_invoke(
                 structured_llm,
                 messages
             )
@@ -356,7 +328,7 @@ class UMLNodes:
                 max_tokens=self.config.max_tokens_generate
             )
             
-            response = self._safe_invoke(
+            response = safe_invoke(
                 llm,
                 messages
             )
@@ -445,7 +417,7 @@ class UMLNodes:
                 max_tokens=self.config.max_tokens_generate
             )
             
-            response = self._safe_invoke(llm, messages)
+            response = safe_invoke(llm, messages)
             diagram = self.plantuml_tool.extract_plantuml(response.content)
             
             Logger.log_info(f"Syntax fixing completed (iteration {state['iterations'] + 1})")
@@ -474,6 +446,9 @@ class UMLNodes:
         messages = [SystemMessage(content=PLANTUML_LOGICAL_FIXER_SYSTEM)]
         
         critique_report = state.get("current_validation")
+        current_diagram = state.get("current_diagram", "")
+        current_iteration = state.get("iterations", 0)
+
         if critique_report and critique_report.findings:
             findings_summary = []
             for finding in critique_report.findings:
@@ -488,7 +463,7 @@ class UMLNodes:
             user_content = f"""
             # PLANTUML DIAGRAM WITH LOGICAL ERRORS
             ```plantuml
-            {state['current_diagram']}
+            {current_diagram}
             ```
             
             # CRITIQUE FINDINGS TO ADDRESS
@@ -508,12 +483,24 @@ class UMLNodes:
                     max_tokens=self.config.max_tokens_generate
                 )
                 
-                response = self._safe_invoke(llm, messages)
-                diagram = self.plantuml_tool.extract_plantuml(response.content)
+                response = safe_invoke(llm, messages)
+                generated_diagram = self.plantuml_tool.extract_plantuml(response.content)
+
+                similarity = Levenshtein.ratio(
+                    current_diagram,
+                    generated_diagram
+                )
+
+                if similarity > self.config.convergence_similarity_threshold:
+                    Logger.log_warning("No meaningful changes made to diagram")
+                    return {
+                        "current_diagram": current_diagram,
+                        "no_improvements_iteration": current_iteration,
+                    }
                 
                 Logger.log_info(f"Logical fixing completed (iteration {state['iterations'] + 1})")
                 return {
-                    "current_diagram": diagram,
+                    "current_diagram": generated_diagram,
                     "iterations": state["iterations"] + 1,
                 }
                 
@@ -526,7 +513,7 @@ class UMLNodes:
         else:
             Logger.log_warning("No critique findings; skipping logical fixing")
             return {
-                "current_diagram": state["current_diagram"],
+                "current_diagram": state.get("current_diagram", ""),
                 "iterations": state["iterations"]
             }
 
@@ -560,7 +547,7 @@ class UMLNodes:
             structured_llm = llm.bind(
                 max_tokens=self.config.max_tokens_critique
             ).with_structured_output(CritiqueReport)
-            report: CritiqueReport = self._safe_invoke(structured_llm, messages)
+            report: CritiqueReport = safe_invoke(structured_llm, messages)
 
             Logger.log_critique_report(report)
             
@@ -576,5 +563,55 @@ class UMLNodes:
             return {
                 "logic_valid": False,
                 "current_validation": None,
+                "error_message": str(e)
+            }
+    
+    def scorer(self, state: AgentState) -> Dict[str, Any]:
+        """
+        Score the current diagram based on syntax and logic validity.
+        
+        Args:
+            state: Current workflow state
+        Returns:
+            Dict with 'syntax_score', 'semantic_score', 'pragmatic_score' updates
+        """
+
+        Logger.log_info(f"--- NODE: {NodeNames.SCORER.upper()} ---")
+
+        try:
+            requirements = state["requirements"]
+            diagram = self.plantuml_tool.extract_plantuml(state["current_diagram"])
+
+            messages = [
+                SystemMessage(content=SCORER_SYSTEM),
+                HumanMessage(content=json.dumps({
+                    "requirements": requirements,
+                    "diagram": diagram
+                }))
+            ]
+
+            Logger.log_info("Getting model for scoring task")
+            llm = self._get_model_for_task(TaskType.SCORING)
+
+            structured_llm = llm.bind(
+                max_tokens=self.config.max_tokens_scoring
+            ).with_structured_output(ScoredCritiqueReport)
+            report: ScoredCritiqueReport = safe_invoke(structured_llm, messages)
+
+            Logger.log_scored_report(report)
+
+            return {
+                "syntax_score": report.scores.syntax_score,
+                "semantic_score": report.scores.semantic_score,
+                "pragmatic_score": report.scores.pragmatic_score,
+                "current_validation": report.report,
+            }
+
+        except Exception as e:
+            Logger.log_error(f"Scoring node failed: {e}")
+            return {
+                "syntax_score": 0.0,
+                "semantic_score": 0.0,
+                "pragmatic_score": 0.0,
                 "error_message": str(e)
             }

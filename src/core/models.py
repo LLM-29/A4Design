@@ -23,6 +23,7 @@ class TaskType(str, Enum):
     DECOMPOSE = "decompose"  # Analyzing requirements, extracting classes/relationships
     GENERATE = "generate"    # Generating PlantUML code
     CRITIQUE = "critique"    # Evaluating diagram quality
+    SCORING = "scoring"      # Scoring the diagram based on metrics
 
 
 class NodeNames(str, Enum):
@@ -36,6 +37,7 @@ class NodeNames(str, Enum):
     SYNTAX_FIXER = "syntax_fixer"
     LOGICAL_FIXER = "logical_fixer"
     SCORER = "scorer"
+    SINGLE_AGENT = "single_agent"
 
 
 class Attribute(BaseModel):
@@ -129,6 +131,16 @@ class CritiqueReport(BaseModel):
         return len(self.findings) == 0
 
 
+class EvaluationMetrics(BaseModel):
+    """Container for evaluation metrics."""
+    precision: float = Field(ge=0.0, le=1.0, description="Precision score")
+    recall: float = Field(ge=0.0, le=1.0, description="Recall score")
+    f1: float = Field(ge=0.0, le=1.0, description="F1 score")
+    
+    def __str__(self) -> str:
+        return f"P={self.precision:.2f}, R={self.recall:.2f}, F1={self.f1:.2f}"
+
+
 class AgentState(TypedDict):
     """Shared state for the LangGraph workflow."""
     requirements: str
@@ -145,14 +157,32 @@ class AgentState(TypedDict):
     current_validation: Optional[CritiqueReport]
     failed_attempts: Annotated[List[Dict[str, Any]], operator.add]
     iterations: int
+    no_improvements_iteration: int
     critique_cache: Dict[str, Dict[str, Any]]
+    syntax_score: Optional[float]
+    semantic_score: Optional[float]
+    pragmatic_score: Optional[float]
 
 
-class EvaluationMetrics(BaseModel):
-    """Container for evaluation metrics."""
-    precision: float = Field(ge=0.0, le=1.0, description="Precision score")
-    recall: float = Field(ge=0.0, le=1.0, description="Recall score")
-    f1: float = Field(ge=0.0, le=1.0, description="F1 score")
-    
-    def __str__(self) -> str:
-        return f"P={self.precision:.2f}, R={self.recall:.2f}, F1={self.f1:.2f}"
+class SingleAgentState(TypedDict):
+    """State for the single agent workflow."""
+    requirements: str
+    current_diagram: Optional[str]
+
+
+
+class DiagramScores(BaseModel):
+    syntax_score: float = Field(ge=0.0, le=5.0, description="The degree to which a model conforms to the grammar and rules of the modeling language")
+    semantic_score: float = Field(ge=0.0, le=5.0, description="The degree to which the model accurately and completely represents the intended real-world domain or requirements")
+    pragmatic_score: float = Field(ge=0.0, le=5.0, description="The degree to which stakeholders understand and can use the model for its intended purpose")
+
+
+class ScoredCritiqueReport(BaseModel):
+    report: CritiqueReport
+    scores: DiagramScores
+
+
+class SingleAgentOutput(BaseModel):
+    """Output from a single agent in the workflow."""
+    thought: str = Field(description="Agent's reasoning process")
+    diagram: str = Field(description="The generated diagram")

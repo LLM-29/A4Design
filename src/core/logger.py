@@ -2,7 +2,7 @@ import logging
 
 from typing import Any, Dict, List
 
-from src.core.models import EvaluationMetrics, CritiqueReport
+from src.core.models import EvaluationMetrics, CritiqueReport, ScoredCritiqueReport
 
 
 logging.basicConfig(
@@ -122,5 +122,12 @@ class Logger:
     def log_critique_report(report: CritiqueReport) -> None:
         logger.info(f"Extracted {len(report.findings)} findings")
         logger.info(f"Extracted report: {report}")
+    
+
+    @staticmethod
+    def log_scored_report(report: ScoredCritiqueReport) -> None:
+        logger.info(f"Extracted scores: {report.scores.syntax_score}")
+        logger.info(f"Extracted scores: {report.scores.semantic_score}")
+        logger.info(f"Extracted scores: {report.scores.pragmatic_score}")
 
         
