@@ -106,6 +106,16 @@ OPENROUTER_API_KEY=your_api_key_here
 
 The project implements two main approaches for generating and correcting UML diagrams from natural language requirements:
 
+### Data Usage
+
+The system uses a structured dataset for training, testing, and evaluation:
+
+- **Few-shot Examples** (`few_shot.json`): 3 exercises used for in-context learning to improve generation quality.
+- **Test Exercises** (`test_exercises.json`): 3 exercises used for evaluating the system's performance on unseen requirements.
+- **Validation Diagrams** (`diagrams.json`): 14 processed diagrams used for cross-validation and structural accuracy assessment.
+
+The first 3 exercises from the combined dataset are reserved for few-shot learning and are excluded from testing to ensure proper evaluation on unseen data.
+
 ### Shared Components
 
 - **Model Manager** (`src/core/model_manager.py`): Dynamic loading and management of LLMs for different tasks, shared between single-agent and multi-agent systems.
@@ -117,16 +127,38 @@ The project implements two main approaches for generating and correcting UML dia
 
 A straightforward LLM-based system that directly generates PlantUML code from text requirements using a single model call through the shared Model Manager.
 
+**Workflow**:
+
+1. **Single Agent Generation**: The LLM receives the natural language requirements and generates complete PlantUML class diagram code in one step, leveraging few-shot examples and retrieval-augmented generation for improved accuracy.
+
 ### Multi-Agent Workflow
 
-A sophisticated multi-agent system with specialized roles:
+A multi-agent system with specialized roles that iteratively refines the diagram generation process. The system supports two evaluation modes: critic-based and scorer-based.
 
-- **Class Extractor**: Identifies and extracts class definitions from requirements.
-- **Relationship Extractor**: Determines relationships between classes (inheritance, association, etc.).
-- **Generator**: Produces PlantUML code based on extracted elements.
-- **Critic**: Reviews and critiques the generated diagram for accuracy and completeness.
-- **PlantUML Syntax Checker**: Validates PlantUML syntax.
-- **PlantUML Logical Fixer**: Corrects logical errors in the diagram structure.
+**Shared Multi-Agent Components**:
+
+- **Retriever**: Retrieves relevant few-shot examples from the knowledge base.
+- **Class Extractor**: Identifies and extracts class definitions and attributes from requirements.
+- **Relationship Extractor**: Determines relationships between classes (inheritance, association, aggregation, etc.).
+- **Generator**: Produces initial PlantUML code based on extracted elements.
+- **Syntax Checker**: Validates PlantUML syntax and reports errors.
+- **Syntax Fixer**: Corrects PlantUML syntax errors.
+- **Logical Fixer**: Addresses structural and logical inconsistencies in the diagram.
+
+**Critic-Based Workflow**:
+
+1. **Retrieve** → **Extract Classes** → **Extract Relationships** → **Generate** → **Syntax Check**
+2. If syntax invalid: **Syntax Fixer** → **Syntax Check** (loop until valid)
+3. **Critic** → If issues found: **Logical Fixer** → **Critic** (iterative refinement until valid or converged)
+4. **END**
+
+**Scorer-Based Workflow**:
+
+1. **Retrieve** → **Extract Classes** → **Extract Relationships** → **Generate** → **Syntax Check**
+2. If syntax invalid: **Syntax Fixer** → **Syntax Check** (loop until valid)
+3. **Scorer** → Evaluates diagram quality on syntax, semantic, and pragmatic dimensions
+4. If score below threshold: **Logical Fixer** → **Scorer** (iterative improvement with plateau detection)
+5. **END** (when score meets threshold or convergence detected)
 
 The multi-agent system uses the same shared Model Manager and Safe Invoke utilities as the single-agent baseline.
 
@@ -157,5 +189,3 @@ python src/evaluation/joint_threshold_optimization.py
 ```
 
 This script performs optimization and saves results to the `output/evaluation/` directory. Cached results are stored in `output/cache/` to avoid recomputation. The optimal thresholds are used in the main evaluation pipeline.
-
-### Ground truth Data

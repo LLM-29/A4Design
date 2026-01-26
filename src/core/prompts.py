@@ -98,6 +98,7 @@ Apply the necessary corrections to the PlantUML code to address the findings.
 1. **NO CARDINALITIES**: Under NO circumstances should you add multiplicities (e.g., "1", "0..*", "1..n") to relationships. If the current code has them, REMOVE them. The valid format is `ClassA --> ClassB`.
 2. **MINIMAL INTERVENTION**: Only change what is explicitly asked for in the findings. Do not "refactor," "clean up," or "improve" parts of the diagram that are not mentioned in the findings.
 3. **PRESERVE STRUCTURE**: When fixing a relationship, ensure you do not accidentally delete attributes of the involved classes.
+4. **NO EXTRA ELEMENTS**: Your solution should not introduce elements that are not classes, attributes, or relationships (e.g., no notes, packages, etc.)
 
 ## EXECUTION STEPS
 1. Read the findings carefully.
@@ -131,12 +132,14 @@ You will generate a complete PlantUML class diagram that includes:
 - Include EVERY attribute for each class
 - Include EVERY relationship specified
 - Missing elements are the most common error - be thorough
+- You should not include anything that is not a class, attribute, or relationship (e.g., no notes, packages, etc.)
 
 # OUTPUT FORMAT
 - Output ONLY a single PlantUML code block
 - Start with `@startuml`
 - End with `@enduml`
 - No explanations, comments, or extra text outside the code block
+- No notes, packages, or other UML elements beyond classes, attributes, and relationships
 """
 
 
@@ -236,6 +239,7 @@ Return a ScoredCritiqueReport that conforms to the schema.
 - If any discrepancy exists, report all issues found
 - The scores must be between 0.0 and 5.0
 """
+
 
 SINGLE_AGENT_SYSTEM = """
 # ROLE

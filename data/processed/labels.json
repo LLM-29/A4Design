@@ -145,9 +145,8 @@
       "class_matches": [
         {
           "ground_truth": "Card",
-          "generated": "Subscriber",
-          "match": false,
-          "reason": "Card is separate entity in ground truth"
+          "generated": null,
+          "match": false
         },
         { "ground_truth": "Movie", "generated": "Movie", "match": true },
         { "ground_truth": "Movie-Buy", "generated": null, "match": false },
@@ -254,7 +253,7 @@
         {
           "ground_truth": "Airline --> Aircraft",
           "generated": "Airline o-- Aircraft",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Airline --> Flight",
@@ -445,7 +444,7 @@
         {
           "ground_truth": "Animal --> Appointment",
           "generated": "Appointment --> Animal",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Animal --> Breed",
@@ -470,7 +469,7 @@
         {
           "ground_truth": "Breed --> Condition",
           "generated": "MedicalCondition --> Breed",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Owner <|-- Person",
@@ -571,7 +570,7 @@
         {
           "ground_truth": "Owner --> Car",
           "generated": "Car --> Owner",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Part/Acc --> Part Type",
@@ -586,7 +585,7 @@
         {
           "ground_truth": "Service --> Part/Acc",
           "generated": "AssemblyService --> Part/Accessory",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Employee <|-- Person",
@@ -679,7 +678,7 @@
         {
           "ground_truth": "Client --> Meal",
           "generated": "Meal --> Client",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Dish --> Ingredient",
@@ -699,7 +698,7 @@
         {
           "ground_truth": "Waiter --> Meal",
           "generated": "Meal --> Waiter",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Person <|-- Client",
@@ -803,7 +802,7 @@
         {
           "ground_truth": "Courier --> Package",
           "generated": "Package --> Courier",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Customer --> DeliveryCenter",
@@ -818,12 +817,12 @@
         {
           "ground_truth": "Customer --> Package",
           "generated": "Package --> Customer",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "DeliveryCenter --> Package",
           "generated": "Package --> DeliveryCenter",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "DeliveryCenter --> Package",
@@ -910,7 +909,7 @@
         {
           "ground_truth": "Piece --> Line",
           "generated": "FurnitureLine *-- FurniturePiece",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Store --> Order",
@@ -987,7 +986,7 @@
         {
           "ground_truth": "Product --> Purchase Order",
           "generated": "PurchaseOrder --> Product",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Product_Type --> Product",
@@ -1380,12 +1379,12 @@
         {
           "ground_truth": "Employee --> Customer",
           "generated": "Customer --> Employee",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Employee --> OrganizationalUnit",
           "generated": "Division o-- Employee",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "OrganizationalUnit --> Employee",
@@ -1526,7 +1525,7 @@
         {
           "ground_truth": "Phone",
           "generated": "MinutesOption",
-          "match": true
+          "match": false
         },
         { "ground_truth": "SMS", "generated": "SMSOption", "match": true }
       ],
@@ -1539,7 +1538,7 @@
         {
           "ground_truth": "Contract --> Option",
           "generated": "BasicContract o-- ContractOption",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Option <|-- Data",
@@ -1554,7 +1553,7 @@
         {
           "ground_truth": "Option <|-- Phone",
           "generated": "ContractOption <|-- MinutesOption",
-          "match": true
+          "match": false
         },
         {
           "ground_truth": "Option <|-- SMS",

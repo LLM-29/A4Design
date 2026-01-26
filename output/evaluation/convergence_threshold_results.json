@@ -1,0 +1,108 @@
+{
+  "optimization_metric": "Fixed Evaluation Threshold F1",
+  "fixed_evaluation_threshold": 0.45,
+  "optimal_convergence_threshold": 0.96,
+  "max_f1_score": 0.6185714285714284,
+  "all_results": [
+    {
+      "convergence_threshold": 0.9,
+      "average_f1": 0.5833333333333334,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.91,
+      "average_f1": 0.5564285714285714,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.92,
+      "average_f1": 0.5802380952380952,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.93,
+      "average_f1": 0.5802380952380952,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.94,
+      "average_f1": 0.5897619047619047,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.95,
+      "average_f1": 0.5702380952380952,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.96,
+      "average_f1": 0.6185714285714284,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.97,
+      "average_f1": 0.5280952380952381,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.98,
+      "average_f1": 0.5364285714285714,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.99,
+      "average_f1": 0.5388095238095237,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.8,
+      "average_f1": 0.4695238095238095,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.81,
+      "average_f1": 0.5654761904761905,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.82,
+      "average_f1": 0.5704761904761905,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.83,
+      "average_f1": 0.5580952380952382,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.84,
+      "average_f1": 0.5766666666666665,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.85,
+      "average_f1": 0.5785714285714285,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.86,
+      "average_f1": 0.5733333333333333,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.87,
+      "average_f1": 0.5759523809523809,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.88,
+      "average_f1": 0.5657142857142856,
+      "num_exercises": 14
+    },
+    {
+      "convergence_threshold": 0.89,
+      "average_f1": 0.5635714285714285,
+      "num_exercises": 14
+    }
+  ]
+}

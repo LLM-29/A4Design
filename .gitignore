@@ -6,3 +6,4 @@ index.faiss
 indexer.pkl
 .DS_Store
 .venv/
+a4design.egg-info

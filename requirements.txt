@@ -11,3 +11,4 @@ python-Levenshtein
 tqdm
 scikit-learn
 numpy
+matplotlib
