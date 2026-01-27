@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-# Add project root to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from argparse import ArgumentParser, Namespace
@@ -34,11 +33,11 @@ def main():
     openrouter_api_key = getenv("OPENROUTER_API_KEY", "")
 
     if args.mode == AgentMode.SINGLE:
-        results = run_single_agent(api_key=openrouter_api_key, evaluation=args.evaluation)
+        run_single_agent(api_key=openrouter_api_key)
     else:
-        results = run_multi_agent(api_key=openrouter_api_key, evaluation=args.evaluation)
+        run_multi_agent(api_key=openrouter_api_key, evaluation=args.evaluation)
 
-    Logger.log_info(f"Completed! Results: {results}")
+    Logger.log_info(f"Completed!")
 
 
 if __name__ == "__main__":

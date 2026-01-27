@@ -44,8 +44,7 @@ class ModelManager:
     Manages dynamic loading and unloading of LLM instances.
     
     Allows using different models for different tasks to optimize
-    performance, cost, and quality. Models are loaded on-demand and
-    can be cached for reuse.
+    performance, cost, and quality.
     """
     
     def __init__(
@@ -59,7 +58,6 @@ class ModelManager:
         Args:
             task_model_mapping: Mapping of task types to model specs
             default_model: Default model to use if no specific mapping exists
-            cache_models: Whether to cache loaded models for reuse
         """
         self.task_model_mapping = task_model_mapping or {}
         self.default_model = default_model
@@ -79,9 +77,6 @@ class ModelManager:
     ) -> ChatOpenAI:
         """
         Get an LLM instance for a specific task type.
-        
-        Models are loaded dynamically and cached if caching is enabled.
-        Previously loaded models are reused to avoid reloading overhead.
         
         Args:
             task_type: The type of task requiring a model

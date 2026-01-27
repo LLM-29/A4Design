@@ -5,10 +5,11 @@ Utility functions for the UML generation system.
 import os
 import json
 
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 from sentence_transformers import SentenceTransformer
 
-from src.agents.multi_agent.config import SystemConfig
+from src.agents.multi_agent.config import SystemConfig as MultiAgentSystemConfig
+from src.agents.single_agent.config import SystemConfig as SingleAgentSystemConfig
 from src.agents.multi_agent.memory import MemoryManager
 from src.agents.multi_agent.agents import UMLNodes
 from src.core.model_manager import ModelManager, ModelSpec
@@ -48,17 +49,16 @@ def load_test_exercises(json_path: str) -> List[Dict[str, Any]]:
 
 
 def initialize_multi_agent_system(
-    cfg: SystemConfig,
+    cfg: MultiAgentSystemConfig,
 ) -> Any:
     """
     Initialize all system components.
     
     Args:
-        config: Optional system configuration
-        enable_long_term_memory: Whether to enable long-term memory
+        cfg: System configuration 
         
     Returns:
-        Tuple of (nodes, compiled_workflow, config, memory_manager)
+        Compiled workflow for multi-agent system
     """
     Logger.log_title("INITIALIZING UML GENERATION SYSTEM")
     
@@ -105,7 +105,7 @@ def initialize_multi_agent_system(
 
 
 def initialize_single_agent_system(
-    cfg: SystemConfig,
+    cfg: SingleAgentSystemConfig,
 ) -> Any:
     """
     Initialize single agent system components.
@@ -119,12 +119,12 @@ def initialize_single_agent_system(
     Logger.log_title("INITIALIZING SINGLE AGENT UML GENERATION SYSTEM")
     
     try:
-        Logger.log_models(cfg.decompose_model, cfg.generate_model)
+        Logger.log_models(cfg.model)
         model_mgr = create_model_manager(cfg=cfg)
         
         Logger.log_info("Building single agent workflow...")
-        nodes = Node(model_mgr)
-        app = create_single_agent(nodes, cfg)
+        nodes = Node(model_mgr, cfg)
+        app = create_single_agent(nodes)
         
         Logger.log_title("SINGLE AGENT SYSTEM INITIALIZATION COMPLETE")
         
@@ -215,7 +215,7 @@ def seed_memory_from_shots(
 
 
 def create_model_manager(
-    cfg: SystemConfig
+    cfg: Union[MultiAgentSystemConfig, SingleAgentSystemConfig]
 ) -> ModelManager:
     """
     Create a model manager with sensible defaults.
@@ -226,35 +226,52 @@ def create_model_manager(
     Returns:
         Configured ModelManager instance
     """
-    # Define model specifications
-    analysis_model = ModelSpec(
-        name=cfg.decompose_model,
-        api_key=cfg.api_key,
-        base_url=cfg.openrouter_base_url,
-        temperature=cfg.temperature_decompose,
-        timeout=cfg.llm_timeout
-    )
-    
 
-    code_model = ModelSpec(
-        name=cfg.generate_model,
-        api_key=cfg.api_key,
-        base_url=cfg.openrouter_base_url,
-        temperature=cfg.temperature_generation,
-        timeout=cfg.llm_timeout
-    )
-    
-    # Map tasks to models
-    task_mapping = {
-        TaskType.DECOMPOSE: analysis_model, 
-        TaskType.GENERATE: code_model,       
-        TaskType.CRITIQUE: analysis_model,       
-    }
-    
-    return ModelManager(
-        task_model_mapping=task_mapping,
-        default_model=code_model,  # Default to code model if no mapping
-    )
+    if isinstance(cfg, SingleAgentSystemConfig):
+        Logger.log_info("Creating model manager for single agent system")
+
+        model = ModelSpec(
+            name=cfg.model,
+            api_key=cfg.api_key,
+            base_url=cfg.openrouter_base_url,
+            temperature=cfg.temperature,
+            timeout=cfg.llm_timeout
+        )
+
+        return ModelManager(
+            task_model_mapping={},
+            default_model=model,
+        )
+    else: 
+        Logger.log_info("Creating model manager for multi-agent system")
+        
+        analysis_model = ModelSpec(
+            name=cfg.decompose_model,
+            api_key=cfg.api_key,
+            base_url=cfg.openrouter_base_url,
+            temperature=cfg.temperature_decompose,
+            timeout=cfg.llm_timeout
+        )
+        
+
+        code_model = ModelSpec(
+            name=cfg.generate_model,
+            api_key=cfg.api_key,
+            base_url=cfg.openrouter_base_url,
+            temperature=cfg.temperature_generation,
+            timeout=cfg.llm_timeout
+        )
+        
+        task_mapping = {
+            TaskType.DECOMPOSE: analysis_model, 
+            TaskType.GENERATE: code_model,       
+            TaskType.CRITIQUE: analysis_model,       
+        }
+        
+        return ModelManager(
+            task_model_mapping=task_mapping,
+            default_model=code_model, 
+        )
 
 
 def create_initial_single_agent_state(requirements: str) -> SingleAgentState:
@@ -335,7 +352,6 @@ def run_exercise(
     
     try:
         final_output = app.invoke(initial_state, config={"recursion_limit": 130})
-        Logger.log_generation(final_output)
         return final_output
     except Exception as e:
         Logger.log_error(f"Workflow execution failed: {e}")

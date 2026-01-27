@@ -1,3 +1,6 @@
+import os
+import json
+
 from src.config import SINGLE_AGENT_OUTPUT_DIR
 from src.core.logger import Logger
 from src.agents.single_agent.config import SystemConfig
@@ -8,6 +11,7 @@ from src.core.utils import (
     load_test_exercises, 
     run_exercise
 )
+
 
 def main(api_key: str):
     """
@@ -28,21 +32,11 @@ def main(api_key: str):
 
     try:
         test_exercises = load_test_exercises(config.test_exercises_path)
-        validation_exercises = load_test_exercises(config.diagrams_json_path)
-        all_exercises = test_exercises + validation_exercises
-        all_exercises = all_exercises[3:] # Skip first 3 exercises that are for few-shot
-        Logger.log_info(f"Loaded {len(all_exercises)} test exercises")
-        #Logger.log_info(f"Loaded {len(test_exercises)} test exercises")
     except Exception as e:
         Logger.log_error(f"Failed to load test exercises: {e}")
         return
     
-    #TODO: When completed, only the three test exercises should be used
-    # Also, remove attributes not used anymore (e.g., logic_valid)
-
-    
-    for idx, exercise in enumerate(test_exercises[:1]):
-        Logger.log_info(f"Running exercise: {exercise['title']}")
+    for idx, exercise in enumerate(test_exercises):
         requirements = exercise["requirements"]
         final_output = run_exercise(
             app,
@@ -65,3 +59,12 @@ def main(api_key: str):
             )
 
             Logger.log_result_metrics(metrics)
+
+            metrics_file = os.path.join(output_dir, f"exercise_{idx+1}_metrics.json")
+            serializable_metrics = {k: v.model_dump() for k, v in metrics.items()}
+            with open(metrics_file, 'w') as f:
+                json.dump(serializable_metrics, f, indent=4)
+
+            diagram_file = os.path.join(output_dir, f"exercise_{idx+1}_diagram.puml")
+            with open(diagram_file, 'w') as f:
+                f.write(generated_diagram)

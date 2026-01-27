@@ -11,9 +11,9 @@ from src.evaluation.threshold_optimizer import optimize_threshold, save_and_plot
 
 
 CACHE_DIR = Path(__file__).parent.parent.parent / "output" / "cache"
-CACHE_FILE = CACHE_DIR / "threshold_generation_cache.json"
-RESULTS_FILE = Path(__file__).parent.parent.parent / "output" / "evaluation" / "convergence_threshold_results.json"
-PLOT_FILE = Path(__file__).parent.parent.parent / "output" / "plots" / "convergence_threshold_plot.png"
+CACHE_FILE = CACHE_DIR / "scoring_threshold_generation_cache.json"
+RESULTS_FILE = Path(__file__).parent.parent.parent / "output" / "evaluation" / "scoring_threshold_results.json"
+PLOT_FILE = Path(__file__).parent.parent.parent / "output" / "plots" / "scoring_threshold_plot.png"
 
 
 if __name__ == "__main__":
@@ -28,12 +28,12 @@ if __name__ == "__main__":
     
     results = optimize_threshold(
         api_key=api_key,
-        threshold_name="convergence",
-        threshold_range=(0.80, 0.99, 20),
-        config_attr="convergence_similarity_threshold",
-        evaluation_mode="critic",
+        threshold_name="scoring",
+        threshold_range=(3.0, 5.0, 15),
+        config_attr="scoring_threshold",
+        evaluation_mode="scorer",
         cache_file=CACHE_FILE,
         eval_thresh=EVAL_THRESH
     )
 
-    save_and_plot_results(results, "convergence", RESULTS_FILE, PLOT_FILE, "g")
+    save_and_plot_results(results, "scoring", RESULTS_FILE, PLOT_FILE, "b")

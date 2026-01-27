@@ -199,11 +199,7 @@ class UMLNodes:
         ]
         
         try:
-            llm = self._get_model_for_task(
-                TaskType.DECOMPOSE, 
-                # reasoning_effort="high",
-                # temperature=0.8
-            )
+            llm = self._get_model_for_task(TaskType.DECOMPOSE)
             
             structured_llm = llm.bind(
                 max_tokens=self.config.max_tokens_decompose
@@ -597,13 +593,29 @@ class UMLNodes:
             ).with_structured_output(ScoredCritiqueReport)
             report: ScoredCritiqueReport = safe_invoke(structured_llm, messages)
 
+            Logger.log_info(f"Report type: {type(report)}, value: {report}")
+            
+            if isinstance(report, dict):
+                scores = report['scores']
+                syntax_score = scores['syntax_score']
+                semantic_score = scores['semantic_score']
+                pragmatic_score = scores['pragmatic_score']
+                current_validation = report['report']
+            else:
+                scores = report.scores
+                syntax_score = report.scores.syntax_score
+                semantic_score = report.scores.semantic_score
+                pragmatic_score = report.scores.pragmatic_score
+                current_validation = report.report
+
             Logger.log_scored_report(report)
 
             return {
-                "syntax_score": report.scores.syntax_score,
-                "semantic_score": report.scores.semantic_score,
-                "pragmatic_score": report.scores.pragmatic_score,
-                "current_validation": report.report,
+                "syntax_score": syntax_score,
+                "semantic_score": semantic_score,
+                "pragmatic_score": pragmatic_score,
+                "scores": scores,
+                "current_validation": current_validation,
             }
 
         except Exception as e:
@@ -612,5 +624,7 @@ class UMLNodes:
                 "syntax_score": 0.0,
                 "semantic_score": 0.0,
                 "pragmatic_score": 0.0,
+                "scores": None,
+                "current_validation": None,
                 "error_message": str(e)
             }

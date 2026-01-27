@@ -1,0 +1,28 @@
+@startuml
+class Office {}
+class Doctor {}
+class Patient {}
+class Hospital {}
+class Appointment {
+  + type: AppointmentType
+  + startDateTime: DateTime
+  + endDateTime: DateTime
+}
+enum AppointmentType {
+  BLOOD_TEST
+  CONSULTATION
+  SURGERY
+}
+class OfficeSchedule {
+  + slotIdentifier: Time
+}
+Doctor --> Office : PracticingIn
+Patient --> Appointment : books
+Appointment --> Doctor : performed by
+Appointment --> OfficeSchedule
+Doctor --> OfficeSchedule
+Office --> OfficeSchedule
+Hospital --> Office
+Patient --> Doctor : views
+Appointment --> Office
+@enduml

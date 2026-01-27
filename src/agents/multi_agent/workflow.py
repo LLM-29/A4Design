@@ -223,7 +223,7 @@ def create_scoring_workflow(
             Logger.log_error("No scoring report; stopping workflow.")
             return END
         
-        avg_score = (state.syntax_score + state.semantic_score + state.pragmatic_score) / 3.0
+        avg_score = (state['syntax_score'] + state['semantic_score'] + state['pragmatic_score']) / 3.0
         Logger.log_info(f"Average diagram score: {avg_score:.2f}")
         if avg_score < cfg.scoring_threshold:
             if abs(avg_score - cfg.plateau_threshold) <= cfg.plateau_threshold:

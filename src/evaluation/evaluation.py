@@ -2,7 +2,7 @@
 Evaluation tools for comparing generated diagrams against gold standards.
 """
 
-from typing import Dict, Set, Tuple
+from typing import Dict, Set, Tuple, Union
 from sentence_transformers import SentenceTransformer, util
 from src.core.models import EvaluationMetrics
 from src.core.plantuml import PlantUMLParser
@@ -22,7 +22,7 @@ class DiagramEvaluator:
         self,
         gold_plantuml: str,
         pred_plantuml: str,
-        embeder_model,  # Can be str or SentenceTransformer
+        embeder_model: Union[str, SentenceTransformer], 
         similarity_threshold: float,
     ):
         """
@@ -94,7 +94,6 @@ class DiagramEvaluator:
         )
         similarity = util.cos_sim(embeddings[0], embeddings[1])
         similarity_score = float(similarity)
-        Logger.log_debug(f"Similarity between '{text1}' and '{text2}': {similarity_score:.4f}")
         return similarity_score
     
     def _generic_fuzzy_match(
@@ -131,13 +130,11 @@ class DiagramEvaluator:
                 if similarity >= self.similarity_threshold and similarity > best_score:
                     best_score = similarity
                     best_match = pred_item
-                    Logger.log_debug(f"Found candidate match: {gold_item} -> {pred_item} (score: {best_score:.4f})")
             
             if best_match:
                 matched_pairs.add((gold_item, best_match))
                 remaining_gold.discard(gold_item)
                 remaining_pred.discard(best_match)
-                Logger.log_debug(f"Matched: {gold_item} -> {best_match} (score: {best_score:.4f})")
             else:
                 Logger.log_debug(f"No match found for: {gold_item} (best score: {best_score:.4f}, threshold: {self.similarity_threshold})")
         
@@ -228,7 +225,6 @@ class DiagramEvaluator:
             pred_attr_list = pred_by_class[gold_cls]
             pred_attr_set = {attr for _, attr in pred_attr_list}
             
-            # Use generic matcher on this subset
             attr_matches, _, _ = self._generic_fuzzy_match(
                 gold_attr_set,
                 pred_attr_set,
@@ -242,12 +238,6 @@ class DiagramEvaluator:
                 remaining_gold.discard((gold_cls, gold_attr))
                 remaining_pred.discard((orig_pred_cls, pred_attr))    
 
-        if matched_pairs:
-            Logger.log_info(f"Matched attributes: {matched_pairs}")
-        if remaining_gold:
-            Logger.log_warning(f"Unmatched gold attributes: {remaining_gold}")
-        if remaining_pred:
-            Logger.log_warning(f"Unmatched predicted attributes: {remaining_pred}")
         return matched_pairs, remaining_gold, remaining_pred
     
     def _fuzzy_match_relationships(
@@ -343,15 +333,6 @@ class DiagramEvaluator:
         
         class_mapping = {pred: gold for gold, pred in matched_class_pairs}
         
-
-        if matched_class_pairs:
-            Logger.log_info(f"Matched classes: {matched_class_pairs}")
-        if unmatched_gold:
-            Logger.log_warning(f"Unmatched gold classes: {unmatched_gold}")
-        if unmatched_pred:
-            Logger.log_warning(f"Unmatched predicted classes: {unmatched_pred}")
-        
-        # Calculate class metrics
         class_metrics = self._calc_metrics_from_counts(
             len(matched_class_pairs),
             len(unmatched_pred),
@@ -369,16 +350,11 @@ class DiagramEvaluator:
             cls_lower = cls.lower()
             for attr in info['attributes']:
                 pred_attrs.add((cls_lower, self._normalize_attr(attr)))
-        # Log extracted attribute sets before matching
-        Logger.log_debug(f"Gold attributes extracted: {gold_attrs}")
-        Logger.log_debug(f"Pred attributes extracted: {pred_attrs}")
 
-        # Match attributes using semantic similarity
         matched_attr_pairs, unmatched_gold_attrs, unmatched_pred_attrs = self._fuzzy_match_attributes(
             gold_attrs, pred_attrs, class_mapping
         )
         
-        # Calculate attribute metrics
         attr_metrics = self._calc_metrics_from_counts(
             len(matched_attr_pairs),
             len(unmatched_pred_attrs),
@@ -397,16 +373,11 @@ class DiagramEvaluator:
             if r.get('source') and r.get('target')
         }
 
-        # Log extracted relationship sets before matching
-        Logger.log_debug(f"Gold relationships extracted: {gold_rels}")
-        Logger.log_debug(f"Pred relationships extracted: {pred_rels}")
 
-        # Match relationships using semantic similarity
         matched_rel_pairs, unmatched_gold_rels, unmatched_pred_rels = self._fuzzy_match_relationships(
             gold_rels, pred_rels, class_mapping
         )
         
-        # Calculate relationship metrics
         rel_metrics = self._calc_metrics_from_counts(
             len(matched_rel_pairs),
             len(unmatched_pred_rels),
@@ -423,7 +394,7 @@ class DiagramEvaluator:
 def evaluate_diagram(
     gold_standard: str,
     generated_diagram: str,
-    embeder_model,  # Can be str or SentenceTransformer
+    embeder_model: Union[str, SentenceTransformer], 
     similarity_threshold: float,
 ) -> Dict[str, EvaluationMetrics]:
     """

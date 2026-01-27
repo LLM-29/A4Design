@@ -1,0 +1,83 @@
+{
+  "optimization_metric": "Fixed Evaluation Threshold F1",
+  "fixed_evaluation_threshold": 0.45,
+  "optimal_scoring_threshold": 3.143,
+  "max_f1_score": 0.577857142857143,
+  "all_results": [
+    {
+      "scoring_threshold": 3.0,
+      "average_f1": 0.5542857142857144,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 3.143,
+      "average_f1": 0.577857142857143,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 3.286,
+      "average_f1": 0.49738095238095237,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 3.429,
+      "average_f1": 0.47238095238095246,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 3.571,
+      "average_f1": 0.5276190476190477,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 3.714,
+      "average_f1": 0.5411904761904762,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 3.857,
+      "average_f1": 0.4540476190476191,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.0,
+      "average_f1": 0.5114285714285715,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.143,
+      "average_f1": 0.5107142857142858,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.286,
+      "average_f1": 0.45642857142857146,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.429,
+      "average_f1": 0.47738095238095246,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.571,
+      "average_f1": 0.5011904761904762,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.714,
+      "average_f1": 0.5147619047619048,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 4.857,
+      "average_f1": 0.0,
+      "num_exercises": 14
+    },
+    {
+      "scoring_threshold": 5.0,
+      "average_f1": 0.0,
+      "num_exercises": 14
+    }
+  ]
+}

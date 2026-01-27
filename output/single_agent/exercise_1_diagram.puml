@@ -1,0 +1,23 @@
+@startuml
+class User {
+  +String fullName
+}
+class UnderAgeUser extends User {
+  +String studentCard
+}
+class AdultUser extends User {
+  +String idCard
+}
+class Book {
+  +String title
+  +String author
+}
+class Loan {
+  +Date borrowDate
+  +Date returnDate
+}
+User -- Loan : borrows
+Loan -- Book : about
+UnderAgeUser -- User : inherits
+AdultUser -- User : inherits
+@enduml

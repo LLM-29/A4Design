@@ -19,21 +19,21 @@ MULTI_AGENT_OUTPUT_DIR_SCORER = OUTPUT_DIR / "multi_agent_scorer"
 SINGLE_AGENT_OUTPUT_DIR = OUTPUT_DIR / "single_agent"
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-DECOMPOSE_MODEL = "mistralai/devstral-2512:free"
-GENERATE_MODEL = "mistralai/devstral-2512:free"
+DECOMPOSE_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free"
+GENERATE_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free"
 EMBEDDER_MODEL = "BAAI/bge-large-en-v1.5"
 EVALUATION_EMBEDDER_MODEL = "sentence-transformers/all-mpnet-base-v2"
-PLANTUML_HOST = "http://localhost:8080"
-MAX_ITERATIONS = 12
-MAX_TOKENS_DECOMPOSE = 4096
+PLANTUML_HOST = "https://www.plantuml.com/plantuml"
+MAX_TOKENS_DECOMPOSE = 8192
 MAX_TOKENS_GENERATE = 4096
-MAX_TOKENS_CRITIQUE = 4096
-MAX_TOKENS_SCORING = 4096
+MAX_TOKENS_CRITIQUE = 8192
+MAX_TOKENS_SCORING = 8192
 TEMPERATURE_GENERATION = 0.0
 TEMPERATURE_DECOMPOSE = 0.15
 NUM_FEW_SHOTS = 3
-EVALUATION_SIMILARITY_THRESHOLD = 0.55
+EVALUATION_SIMILARITY_THRESHOLD = 0.45
 CONVERGENCE_SIMILARITY_THRESHOLD = 0.96
+SCORE_THRESHOLD = 3.14
 
 
 def create_run_dir(agent_type: str, evaluation_mode: str = "critic") -> Path:

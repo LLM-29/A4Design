@@ -59,6 +59,11 @@ class Logger:
                     "Using BEST diagram instead of final (prevented regression)"
                 )
                 final_output['current_diagram'] = final_output['best_diagram']
+    
+
+    @staticmethod
+    def log_single_agent_generation(final_output: Any) -> None:
+        logger.info(f"Diagram: {final_output['diagram']}")
 
 
     @staticmethod
@@ -126,8 +131,16 @@ class Logger:
 
     @staticmethod
     def log_scored_report(report: ScoredCritiqueReport) -> None:
-        logger.info(f"Extracted scores: {report.scores.syntax_score}")
-        logger.info(f"Extracted scores: {report.scores.semantic_score}")
-        logger.info(f"Extracted scores: {report.scores.pragmatic_score}")
-
+        if isinstance(report, dict):
+            scores = report['scores']
+            syntax_score = scores['syntax_score']
+            semantic_score = scores['semantic_score']
+            pragmatic_score = scores['pragmatic_score']
+        else:
+            syntax_score = report.scores.syntax_score
+            semantic_score = report.scores.semantic_score
+            pragmatic_score = report.scores.pragmatic_score
         
+        logger.info(f"Extracted syntax score: {syntax_score}")
+        logger.info(f"Extracted semantic score: {semantic_score}")
+        logger.info(f"Extracted pragmatic score: {pragmatic_score}")

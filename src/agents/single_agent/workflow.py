@@ -11,10 +11,7 @@ from src.agents.single_agent.agent import Node
 from src.core.logger import Logger
 
 
-def create_single_agent(
-    nodes: Node,
-    cfg: SystemConfig
-) -> Any:
+def create_single_agent(nodes: Node,) -> Any:
     """
     Create the LangGraph workflow for UML diagram generation.
     

@@ -56,11 +56,6 @@ class SystemConfig(BaseModel):
         default=cfg.PLANTUML_HOST,
         description="PlantUML server host"
     )
-    max_iterations: int = Field(
-        default=cfg.MAX_ITERATIONS,
-        ge=1,
-        description="Maximum workflow iterations"
-    )
     max_tokens_decompose: int = Field(
         default=cfg.MAX_TOKENS_DECOMPOSE,
         description="Max tokens for decompose step"
@@ -127,7 +122,7 @@ class SystemConfig(BaseModel):
         description="Score delta threshold for plateau detection"
     )
     scoring_threshold: float = Field(
-        default=4.0,
+        default=cfg.SCORE_THRESHOLD,
         ge=0.0,
         le=5.0,
         description="Scoring threshold for diagram quality"
