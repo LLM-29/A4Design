@@ -1,0 +1,34 @@
+@startuml
+class Hospital {
+}
+class Office {
+}
+class Doctor {
+  name: String
+}
+class Patient {
+  name: String
+}
+class Schedule {
+  office: Office
+  date: Date
+  startTime: Time
+  endTime: Time
+}
+class Appointment {
+  duration: Integer
+  type: String
+  startTime: Time
+  endTime: Time
+}
+class AppointmentType {
+}
+Hospital --> Office
+Doctor --> Office
+Doctor --> Schedule
+Appointment --> Doctor
+Appointment --> Schedule
+Patient --> Appointment
+Patient --> Doctor
+Patient --> Schedule
+@enduml

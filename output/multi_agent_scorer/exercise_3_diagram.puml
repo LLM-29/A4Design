@@ -1,0 +1,38 @@
+@startuml
+class Customer {
+  +customerId : String
+}
+class Account {
+  +accountId : String
+  +balance : Double
+}
+class WebUser {
+  +loginName : String
+  +state : String
+}
+class ShoppingCart {
+  +cartId : String
+}
+class Order {
+  +status : String
+}
+class Payment {
+  +paymentId : String
+  +amount : Double
+}
+class Product {
+  +productId : String
+  +name : String
+}
+class LineItem {
+  +product : Product
+}
+Customer --> Account
+WebUser --> Account
+ShoppingCart --> Account
+Order --> Payment
+Order --> Account
+Payment --> Account
+WebUser --> ShoppingCart
+Order --> LineItem
+@enduml
