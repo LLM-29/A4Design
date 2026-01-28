@@ -1,0 +1,1621 @@
+{
+  "diagram_matches": [
+    {
+      "id": 4,
+      "title": "Patient Record and Scheduling",
+      "class_matches": [
+        {
+          "ground_truth": "Appointment",
+          "generated": "Appointment",
+          "match": true
+        },
+        { "ground_truth": "Doctor", "generated": "Doctor", "match": true },
+        {
+          "ground_truth": "FamilyInsured",
+          "generated": "Family",
+          "match": true
+        },
+        { "ground_truth": "Patient", "generated": "Patient", "match": true },
+        {
+          "ground_truth": "Prescription",
+          "generated": "Medication",
+          "match": true
+        },
+        { "ground_truth": "Visit", "generated": "Visit", "match": true },
+        { "ground_truth": null, "generated": "Receptionist", "match": false },
+        { "ground_truth": null, "generated": "Nurse", "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Doctor --> Visit",
+          "generated": "Doctor --> Visit",
+          "match": true
+        },
+        {
+          "ground_truth": "FamilyInsured --> Doctor",
+          "generated": "Family --> Doctor",
+          "match": true
+        },
+        {
+          "ground_truth": "FamilyInsured --> Patient",
+          "generated": "Patient --> Family",
+          "match": false
+        },
+        {
+          "ground_truth": "Patient --> Appointment",
+          "generated": "Patient --> Appointment",
+          "match": true
+        },
+        {
+          "ground_truth": "Patient --> Visit",
+          "generated": "Patient --> Visit",
+          "match": true
+        },
+        {
+          "ground_truth": "Visit --> Appointment",
+          "generated": "Appointment --> Visit",
+          "match": false
+        },
+        {
+          "ground_truth": "Visit --> Prescription",
+          "generated": "Visit --> Medication",
+          "match": true
+        },
+        {
+          "ground_truth": null,
+          "generated": "Receptionist --> Patient",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Receptionist --> Appointment",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Nurse --> Visit",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Nurse --> Patient",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Appointment": [
+          {
+            "ground_truth": "Date",
+            "generated": "appointmentDetails",
+            "match": false
+          },
+          { "ground_truth": "Reason", "generated": null, "match": false },
+          { "ground_truth": "Time", "generated": null, "match": false }
+        ],
+        "Doctor": [
+          {
+            "ground_truth": "Address",
+            "generated": "doctorInformation",
+            "match": false
+          },
+          { "ground_truth": "Name", "generated": null, "match": false },
+          { "ground_truth": "PagerNumber", "generated": null, "match": false },
+          { "ground_truth": "SSN", "generated": null, "match": false },
+          { "ground_truth": "Specialty", "generated": null, "match": false },
+          { "ground_truth": "Telephone", "generated": null, "match": false }
+        ],
+        "Patient": [
+          { "ground_truth": "Allergies", "generated": null, "match": false },
+          { "ground_truth": "Birthdate", "generated": null, "match": false },
+          { "ground_truth": "Gender", "generated": null, "match": false },
+          {
+            "ground_truth": "LastVisitDate",
+            "generated": null,
+            "match": false
+          },
+          { "ground_truth": "Name", "generated": "name", "match": true },
+          { "ground_truth": "Notes", "generated": null, "match": false }
+        ],
+        "Visit": [
+          {
+            "ground_truth": "BloodPressure",
+            "generated": null,
+            "match": false
+          },
+          { "ground_truth": "Date", "generated": null, "match": false },
+          {
+            "ground_truth": "DiagnosisNotes",
+            "generated": "diagnosis",
+            "match": true
+          },
+          { "ground_truth": "Reason", "generated": null, "match": false },
+          { "ground_truth": "Temperature", "generated": null, "match": false },
+          {
+            "ground_truth": "TreatmentNotes",
+            "generated": "treatment",
+            "match": true
+          },
+          { "ground_truth": "Weight", "generated": null, "match": false }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "Movie-Shop",
+      "class_matches": [
+        {
+          "ground_truth": "Card",
+          "generated": null,
+          "match": false
+        },
+        { "ground_truth": "Movie", "generated": "Movie", "match": true },
+        { "ground_truth": "Movie-Buy", "generated": null, "match": false },
+        { "ground_truth": "Movie-Rent", "generated": null, "match": false },
+        {
+          "ground_truth": "Movie-Shop",
+          "generated": "Catalogue",
+          "match": false
+        },
+        { "ground_truth": "Order", "generated": "Order", "match": true },
+        {
+          "ground_truth": "Subscriber",
+          "generated": "Subscriber",
+          "match": true
+        },
+        { "ground_truth": "User", "generated": "User", "match": true }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Subscriber --> Card",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Subscriber --> Movie-Rent",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "User --> Movie-Buy",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "User --> Movie-Shop",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Order --> Movie-Buy",
+          "generated": "Order --> Movie",
+          "match": false
+        },
+        {
+          "ground_truth": "User <|-- Subscriber",
+          "generated": "User <|-- Subscriber",
+          "match": true
+        },
+        {
+          "ground_truth": null,
+          "generated": "Subscriber --> Order",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Catalogue --> Movie",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Movie": [
+          { "ground_truth": "name", "generated": "title", "match": true },
+          { "ground_truth": "type", "generated": "genre", "match": true },
+          { "ground_truth": null, "generated": "isAvailable", "match": false },
+          { "ground_truth": null, "generated": "movieId", "match": false }
+        ],
+        "User": [
+          { "ground_truth": "name", "generated": "name", "match": true },
+          { "ground_truth": "surname", "generated": null, "match": false },
+          { "ground_truth": null, "generated": "userId", "match": false }
+        ],
+        "Order": [
+          { "ground_truth": "date", "generated": "orderDate", "match": true },
+          { "ground_truth": "user", "generated": "userId", "match": true },
+          { "ground_truth": null, "generated": "orderId", "match": false },
+          { "ground_truth": null, "generated": "orderType", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "title": "Flights",
+      "class_matches": [
+        { "ground_truth": "Aircraft", "generated": "Aircraft", "match": true },
+        {
+          "ground_truth": "AircraftType",
+          "generated": "AircraftType",
+          "match": true
+        },
+        { "ground_truth": "Airline", "generated": "Airline", "match": true },
+        { "ground_truth": "Airport", "generated": "Airport", "match": true },
+        { "ground_truth": "Flight", "generated": "Flight", "match": true },
+        { "ground_truth": "Pilot", "generated": "Pilot", "match": true },
+        { "ground_truth": "Pilot 1", "generated": null, "match": false },
+        { "ground_truth": "Pilot 2", "generated": null, "match": false },
+        { "ground_truth": "Pilot 3", "generated": null, "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Aircraft --> Aircraft Type",
+          "generated": "Aircraft --> AircraftType",
+          "match": true
+        },
+        {
+          "ground_truth": "Airline --> Aircraft",
+          "generated": "Airline o-- Aircraft",
+          "match": false
+        },
+        {
+          "ground_truth": "Airline --> Flight",
+          "generated": "Airline --> Flight",
+          "match": true
+        },
+        {
+          "ground_truth": "Airport --> Flight",
+          "generated": "Flight --> Airport",
+          "match": true
+        },
+        {
+          "ground_truth": "Flight --> Aircraft",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Flight --> Airport",
+          "generated": "Flight --> Airport",
+          "match": true
+        },
+        {
+          "ground_truth": "Flight --> Pilot",
+          "generated": "Flight --> Pilot",
+          "match": true
+        },
+        {
+          "ground_truth": "Pilot --> Aircraft Type",
+          "generated": "AircraftType --> Pilot",
+          "match": true
+        },
+        {
+          "ground_truth": null,
+          "generated": "Airline o-- Pilot",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Aircraft": [
+          { "ground_truth": "Name", "generated": null, "match": false },
+          { "ground_truth": "landed", "generated": null, "match": false },
+          { "ground_truth": "repair", "generated": "state", "match": true },
+          { "ground_truth": null, "generated": "type", "match": false }
+        ],
+        "Airline": [
+          { "ground_truth": "ID", "generated": "id", "match": true },
+          { "ground_truth": "Name", "generated": null, "match": false }
+        ],
+        "Airport": [
+          {
+            "ground_truth": "ID",
+            "generated": "uniqueIdentifier",
+            "match": true
+          },
+          { "ground_truth": "name", "generated": null, "match": false }
+        ],
+        "Flight": [
+          { "ground_truth": "ID", "generated": "id", "match": true },
+          {
+            "ground_truth": "arrival_time",
+            "generated": "arrivalTime",
+            "match": true
+          },
+          {
+            "ground_truth": "departure_time",
+            "generated": "departureTime",
+            "match": true
+          },
+          {
+            "ground_truth": null,
+            "generated": "arrivalAirport",
+            "match": false
+          },
+          {
+            "ground_truth": null,
+            "generated": "departureAirport",
+            "match": false
+          }
+        ],
+        "Pilot": [
+          { "ground_truth": "name", "generated": null, "match": false },
+          {
+            "ground_truth": null,
+            "generated": "experienceLevel",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "role", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "title": "Bank System",
+      "class_matches": [
+        { "ground_truth": "Account", "generated": "Account", "match": true },
+        { "ground_truth": "Customer", "generated": "Customer", "match": true },
+        {
+          "ground_truth": "InvestmentAccount",
+          "generated": "InvestmentAccount",
+          "match": true
+        },
+        {
+          "ground_truth": "SavingAccount",
+          "generated": "SavingsAccount",
+          "match": true
+        },
+        { "ground_truth": "Stock", "generated": "Stock", "match": true },
+        { "ground_truth": "StockOrder", "generated": null, "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Customer --> Account",
+          "generated": "Customer --> Account",
+          "match": true
+        },
+        {
+          "ground_truth": "InvestmentAccount --> Stock",
+          "generated": "InvestmentAccount --> Stock",
+          "match": true
+        },
+        {
+          "ground_truth": "Stock --> StockOrder",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Account <|-- InvestmentAccount",
+          "generated": "Account <|-- InvestmentAccount",
+          "match": true
+        },
+        {
+          "ground_truth": "Account <|-- SavingAccount",
+          "generated": "Account <|-- SavingsAccount",
+          "match": true
+        }
+      ],
+      "attribute_matches": {
+        "Account": [
+          {
+            "ground_truth": "CashBalance",
+            "generated": "balance",
+            "match": true
+          }
+        ],
+        "Customer": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          { "ground_truth": "Name", "generated": "name", "match": true }
+        ],
+        "SavingAccount": [
+          {
+            "ground_truth": "interestRate",
+            "generated": "interestRate",
+            "match": true
+          }
+        ],
+        "Stock": [
+          {
+            "ground_truth": "quantity",
+            "generated": "quantity",
+            "match": true
+          },
+          { "ground_truth": "ticker", "generated": "ticker", "match": true },
+          { "ground_truth": null, "generated": "commission", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "title": "Veterinary Clinic",
+      "class_matches": [
+        { "ground_truth": "Animal", "generated": "Animal", "match": true },
+        {
+          "ground_truth": "Appointment",
+          "generated": "Appointment",
+          "match": true
+        },
+        { "ground_truth": "Breed", "generated": "Breed", "match": true },
+        {
+          "ground_truth": "Condition",
+          "generated": "MedicalCondition",
+          "match": true
+        },
+        { "ground_truth": "Owner", "generated": "Owner", "match": true },
+        { "ground_truth": "Person", "generated": null, "match": false },
+        { "ground_truth": "Physician", "generated": "Physician", "match": true }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Animal --> Appointment",
+          "generated": "Appointment --> Animal",
+          "match": false
+        },
+        {
+          "ground_truth": "Animal --> Breed",
+          "generated": "Animal --> Breed",
+          "match": true
+        },
+        {
+          "ground_truth": "Animal --> Owner",
+          "generated": "Animal --> Owner",
+          "match": true
+        },
+        {
+          "ground_truth": "Appointment --> Condition",
+          "generated": "Appointment --> MedicalCondition",
+          "match": true
+        },
+        {
+          "ground_truth": "Appointment --> Physician",
+          "generated": "Appointment --> Physician",
+          "match": true
+        },
+        {
+          "ground_truth": "Breed --> Condition",
+          "generated": "MedicalCondition --> Breed",
+          "match": false
+        },
+        {
+          "ground_truth": "Owner <|-- Person",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Physician --> Person",
+          "generated": null,
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Animal": [
+          { "ground_truth": "ID", "generated": "animalId", "match": true },
+          { "ground_truth": "Name", "generated": "name", "match": true },
+          { "ground_truth": null, "generated": "breed", "match": false },
+          { "ground_truth": null, "generated": "owner", "match": false }
+        ],
+        "Appointment": [
+          { "ground_truth": "Date", "generated": "dateTime", "match": true },
+          { "ground_truth": "Time", "generated": null, "match": false },
+          { "ground_truth": null, "generated": "physician", "match": false },
+          { "ground_truth": null, "generated": "animal", "match": false }
+        ],
+        "Breed": [
+          { "ground_truth": "Name", "generated": "breedName", "match": true }
+        ],
+        "Condition": [
+          {
+            "ground_truth": "Common_Name",
+            "generated": "commonName",
+            "match": true
+          },
+          {
+            "ground_truth": "Sci_Name",
+            "generated": "scientificName",
+            "match": true
+          }
+        ],
+        "Owner": [
+          { "ground_truth": null, "generated": "name", "match": false },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "phoneNumber", "match": false },
+          { "ground_truth": null, "generated": "ownerId", "match": false }
+        ],
+        "Physician": [
+          { "ground_truth": null, "generated": "name", "match": false },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "phoneNumber", "match": false },
+          { "ground_truth": null, "generated": "physicianId", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "title": "Auto Repair",
+      "class_matches": [
+        { "ground_truth": "Car", "generated": "Car", "match": true },
+        { "ground_truth": "Car Model", "generated": null, "match": false },
+        { "ground_truth": "Employee", "generated": "Employee", "match": true },
+        { "ground_truth": "Make", "generated": null, "match": false },
+        { "ground_truth": "Owner", "generated": "Owner", "match": true },
+        { "ground_truth": "Part Type", "generated": null, "match": false },
+        {
+          "ground_truth": "Part/Acc",
+          "generated": "Part/Accessory",
+          "match": true
+        },
+        { "ground_truth": "Person", "generated": null, "match": false },
+        {
+          "ground_truth": "Service",
+          "generated": "AssemblyService",
+          "match": true
+        }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Employee --> Service",
+          "generated": "Employee --> AssemblyService",
+          "match": true
+        },
+        {
+          "ground_truth": "Car --> Car Model",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Car Model --> Make",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Car Model --> Part Type",
+          "generated": "Part/Accessory --> Car",
+          "match": false
+        },
+        {
+          "ground_truth": "Owner --> Car",
+          "generated": "Car --> Owner",
+          "match": false
+        },
+        {
+          "ground_truth": "Part/Acc --> Part Type",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Service --> Car",
+          "generated": "AssemblyService --> Car",
+          "match": true
+        },
+        {
+          "ground_truth": "Service --> Part/Acc",
+          "generated": "AssemblyService --> Part/Accessory",
+          "match": false
+        },
+        {
+          "ground_truth": "Employee <|-- Person",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Owner <|-- Person",
+          "generated": null,
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Car": [
+          { "ground_truth": "Color", "generated": "color", "match": true },
+          {
+            "ground_truth": "Plate",
+            "generated": "licensePlate",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "make", "match": false },
+          { "ground_truth": null, "generated": "model", "match": false },
+          { "ground_truth": null, "generated": "owner", "match": false }
+        ],
+        "Employee": [
+          {
+            "ground_truth": null,
+            "generated": "identifyingNumber",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "name", "match": false },
+          { "ground_truth": null, "generated": "address", "match": false }
+        ],
+        "Owner": [
+          { "ground_truth": null, "generated": "name", "match": false },
+          {
+            "ground_truth": null,
+            "generated": "identifyingNumber",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "phone", "match": false }
+        ],
+        "Part/Acc": [
+          { "ground_truth": "Price", "generated": "price", "match": true },
+          {
+            "ground_truth": "Serial_No",
+            "generated": "serialNumber",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "category", "match": false }
+        ],
+        "Service": [
+          {
+            "ground_truth": "Adm_Date",
+            "generated": "admissionDate",
+            "match": true
+          },
+          { "ground_truth": "Car_Km", "generated": "kms", "match": true },
+          {
+            "ground_truth": "Finish_Date",
+            "generated": "finishDate",
+            "match": true
+          },
+          {
+            "ground_truth": "Hours_spent",
+            "generated": "workHours",
+            "match": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "title": "Restaurant",
+      "class_matches": [
+        { "ground_truth": "Client", "generated": "Client", "match": true },
+        { "ground_truth": "Dish", "generated": "Dish", "match": true },
+        {
+          "ground_truth": "Ingredient",
+          "generated": "Ingredient",
+          "match": true
+        },
+        { "ground_truth": "Meal", "generated": "Meal", "match": true },
+        { "ground_truth": "Person", "generated": null, "match": false },
+        { "ground_truth": "Table", "generated": "Table", "match": true },
+        { "ground_truth": "Waiter", "generated": "Waiter", "match": true }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Client --> Meal",
+          "generated": "Meal --> Client",
+          "match": false
+        },
+        {
+          "ground_truth": "Dish --> Ingredient",
+          "generated": "Dish --> Ingredient",
+          "match": true
+        },
+        {
+          "ground_truth": "Meal --> Dish",
+          "generated": "Meal --> Dish",
+          "match": true
+        },
+        {
+          "ground_truth": "Meal --> Table",
+          "generated": "Meal --> Table",
+          "match": true
+        },
+        {
+          "ground_truth": "Waiter --> Meal",
+          "generated": "Meal --> Waiter",
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Client",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Waiter",
+          "generated": null,
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Client": [
+          {
+            "ground_truth": "Tax_ID",
+            "generated": "taxIdentificationNumber",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "name", "match": false }
+        ],
+        "Dish": [
+          {
+            "ground_truth": "ID",
+            "generated": "numericIdentifier",
+            "match": true
+          },
+          { "ground_truth": "Name", "generated": "name", "match": true }
+        ],
+        "Ingredient": [
+          { "ground_truth": "Name", "generated": "name", "match": true },
+          {
+            "ground_truth": "Stock",
+            "generated": "quantityInStock",
+            "match": true
+          },
+          {
+            "ground_truth": "Unit",
+            "generated": "measuringUnit",
+            "match": true
+          }
+        ],
+        "Meal": [
+          { "ground_truth": "Date", "generated": "date", "match": true },
+          { "ground_truth": "EndTime", "generated": "endTime", "match": true },
+          {
+            "ground_truth": "StartTime",
+            "generated": "startTime",
+            "match": true
+          }
+        ],
+        "Table": [
+          {
+            "ground_truth": "Capacity",
+            "generated": "maxPeople",
+            "match": true
+          },
+          {
+            "ground_truth": "ID",
+            "generated": "numericIdentifier",
+            "match": true
+          }
+        ],
+        "Waiter": [
+          {
+            "ground_truth": "ID",
+            "generated": "numericIdentifier",
+            "match": true
+          },
+          {
+            "ground_truth": "Phone",
+            "generated": "phoneNumber",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "name", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "title": "Deliveries",
+      "class_matches": [
+        { "ground_truth": "Courier", "generated": "Courier", "match": true },
+        { "ground_truth": "Customer", "generated": "Customer", "match": true },
+        {
+          "ground_truth": "DeliveryCenter",
+          "generated": "DeliveryCenter",
+          "match": true
+        },
+        { "ground_truth": "Package", "generated": "Package", "match": true },
+        { "ground_truth": "Person", "generated": null, "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Courier --> DeliveryCenter",
+          "generated": "Courier --> DeliveryCenter",
+          "match": true
+        },
+        {
+          "ground_truth": "Courier --> Package",
+          "generated": "Package --> Courier",
+          "match": false
+        },
+        {
+          "ground_truth": "Customer --> DeliveryCenter",
+          "generated": "Customer --> DeliveryCenter",
+          "match": true
+        },
+        {
+          "ground_truth": "Customer --> Package",
+          "generated": "Customer --> Package",
+          "match": true
+        },
+        {
+          "ground_truth": "Customer --> Package",
+          "generated": "Package --> Customer",
+          "match": false
+        },
+        {
+          "ground_truth": "DeliveryCenter --> Package",
+          "generated": "Package --> DeliveryCenter",
+          "match": false
+        },
+        {
+          "ground_truth": "DeliveryCenter --> Package",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Courier",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Customer",
+          "generated": null,
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Courier": [
+          { "ground_truth": null, "generated": "vatNumber", "match": false },
+          { "ground_truth": null, "generated": "name", "match": false },
+          { "ground_truth": null, "generated": "phoneNumber", "match": false }
+        ],
+        "Customer": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          { "ground_truth": null, "generated": "vatNumber", "match": false },
+          { "ground_truth": null, "generated": "name", "match": false },
+          { "ground_truth": null, "generated": "phoneNumber", "match": false }
+        ],
+        "DeliveryCenter": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          { "ground_truth": "Name", "generated": "name", "match": true }
+        ],
+        "Package": [
+          {
+            "ground_truth": "ID",
+            "generated": "uniqueIdentifierCode",
+            "match": true
+          },
+          {
+            "ground_truth": "Urgency",
+            "generated": "deliveryType",
+            "match": true
+          },
+          { "ground_truth": "Weight", "generated": "weight", "match": true }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "title": "Furniture Factory Management",
+      "class_matches": [
+        {
+          "ground_truth": "Component",
+          "generated": "Component",
+          "match": true
+        },
+        { "ground_truth": "ComponentType", "generated": null, "match": false },
+        { "ground_truth": "Line", "generated": "FurnitureLine", "match": true },
+        { "ground_truth": "Order", "generated": "Order", "match": true },
+        {
+          "ground_truth": "Piece",
+          "generated": "FurniturePiece",
+          "match": true
+        },
+        { "ground_truth": "Store", "generated": "Store", "match": true }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Component --> ComponentType",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Order --> Piece",
+          "generated": "Order --> FurniturePiece",
+          "match": true
+        },
+        {
+          "ground_truth": "Piece --> Component",
+          "generated": "FurniturePiece *-- Component",
+          "match": true
+        },
+        {
+          "ground_truth": "Piece --> Line",
+          "generated": "FurnitureLine *-- FurniturePiece",
+          "match": false
+        },
+        {
+          "ground_truth": "Store --> Order",
+          "generated": "Store --> Order",
+          "match": true
+        }
+      ],
+      "attribute_matches": {
+        "Component": [
+          { "ground_truth": "Code", "generated": "code", "match": true },
+          {
+            "ground_truth": "Price",
+            "generated": "manufacturingPrice",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "type", "match": false }
+        ],
+        "Line": [
+          { "ground_truth": "Type", "generated": "name", "match": false }
+        ],
+        "Order": [
+          { "ground_truth": "Date", "generated": "date", "match": true },
+          {
+            "ground_truth": "Number",
+            "generated": "orderNumber",
+            "match": true
+          }
+        ],
+        "Piece": [
+          {
+            "ground_truth": "Price",
+            "generated": "sellingPrice",
+            "match": true
+          },
+          { "ground_truth": "Ref", "generated": "reference", "match": true },
+          { "ground_truth": null, "generated": "type", "match": false }
+        ],
+        "Store": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          { "ground_truth": "FAX", "generated": "faxNumber", "match": true },
+          { "ground_truth": "Name", "generated": null, "match": false }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "title": "Industrial Factory Operations",
+      "class_matches": [
+        { "ground_truth": "Client", "generated": "Client", "match": true },
+        { "ground_truth": "Machine", "generated": "Machine", "match": true },
+        { "ground_truth": "Person", "generated": null, "match": false },
+        { "ground_truth": "Product", "generated": "Product", "match": true },
+        { "ground_truth": "Product_Type", "generated": null, "match": false },
+        {
+          "ground_truth": "Purchase Order",
+          "generated": "PurchaseOrder",
+          "match": true
+        },
+        { "ground_truth": "Skill", "generated": null, "match": false },
+        { "ground_truth": "Worker", "generated": "Worker", "match": true },
+        { "ground_truth": null, "generated": "Factory", "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Client --> Purchase Order",
+          "generated": "Client --> PurchaseOrder",
+          "match": true
+        },
+        {
+          "ground_truth": "Machine --> Product_Type",
+          "generated": "Machine --> Product",
+          "match": false
+        },
+        {
+          "ground_truth": "Product --> Purchase Order",
+          "generated": "PurchaseOrder --> Product",
+          "match": false
+        },
+        {
+          "ground_truth": "Product_Type --> Product",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Worker --> Machine",
+          "generated": "Machine --> Worker",
+          "match": true
+        },
+        {
+          "ground_truth": "Worker --> Skill",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Client",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Worker",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Factory o-- Machine",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Client": [
+          {
+            "ground_truth": "Contact_Person",
+            "generated": "contactPersonName",
+            "match": true
+          },
+          {
+            "ground_truth": "Phone",
+            "generated": "phoneNumber",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "name", "match": false }
+        ],
+        "Machine": [
+          { "ground_truth": "Make", "generated": "make", "match": true },
+          { "ground_truth": "Model", "generated": "model", "match": true },
+          {
+            "ground_truth": "Purchase_Date",
+            "generated": "purchaseDate",
+            "match": true
+          },
+          {
+            "ground_truth": "Serial",
+            "generated": "serialNumber",
+            "match": true
+          }
+        ],
+        "Product": [
+          { "ground_truth": "ID", "generated": null, "match": false },
+          { "ground_truth": "Name", "generated": null, "match": false },
+          { "ground_truth": null, "generated": "material", "match": false },
+          { "ground_truth": null, "generated": "type", "match": false },
+          { "ground_truth": null, "generated": "weight", "match": false }
+        ],
+        "Purchase Order": [
+          {
+            "ground_truth": "Actual_Del",
+            "generated": "actualDeliveryDate",
+            "match": true
+          },
+          { "ground_truth": "Date", "generated": "dateMade", "match": true },
+          {
+            "ground_truth": "Expected_Del",
+            "generated": "expectedDeliveryDate",
+            "match": true
+          },
+          {
+            "ground_truth": "Number",
+            "generated": "orderNumber",
+            "match": true
+          }
+        ],
+        "Worker": [
+          {
+            "ground_truth": "Birth_Date",
+            "generated": "birthDate",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "address", "match": false },
+          { "ground_truth": null, "generated": "firstName", "match": false },
+          { "ground_truth": null, "generated": "lastName", "match": false },
+          { "ground_truth": null, "generated": "skills", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "title": "Bicycle Rental",
+      "class_matches": [
+        { "ground_truth": "Bicycle", "generated": "Bicycle", "match": true },
+        {
+          "ground_truth": "BicycleModel",
+          "generated": "BicycleModel",
+          "match": true
+        },
+        { "ground_truth": "Client", "generated": "Client", "match": true },
+        {
+          "ground_truth": "Reservation",
+          "generated": "Reservation",
+          "match": true
+        },
+        { "ground_truth": "Store", "generated": "Store", "match": true },
+        { "ground_truth": null, "generated": "Rental", "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Bicycle --> BicycleModel",
+          "generated": "Bicycle --> BicycleModel",
+          "match": true
+        },
+        {
+          "ground_truth": "Client --> Reservation",
+          "generated": "Client --> Reservation",
+          "match": true
+        },
+        {
+          "ground_truth": "Reservation --> Bicycle",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Reservation --> BicycleModel",
+          "generated": "Reservation --> BicycleModel",
+          "match": true
+        },
+        {
+          "ground_truth": "Reservation --> Store",
+          "generated": "Reservation --> Store",
+          "match": true
+        },
+        {
+          "ground_truth": null,
+          "generated": "Rental --> Client",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Rental --> Bicycle",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Rental --> Store",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Bicycle": [
+          {
+            "ground_truth": "Number",
+            "generated": "identifyingNumber",
+            "match": true
+          },
+          { "ground_truth": null, "generated": "model", "match": false }
+        ],
+        "BicycleModel": [
+          { "ground_truth": "Name", "generated": "name", "match": true },
+          {
+            "ground_truth": "No_Gears",
+            "generated": "numberOfGears",
+            "match": true
+          },
+          { "ground_truth": "Type", "generated": "type", "match": true }
+        ],
+        "Client": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          { "ground_truth": "Name", "generated": "name", "match": true },
+          {
+            "ground_truth": "Nin",
+            "generated": "nationalIdNumber",
+            "match": true
+          },
+          {
+            "ground_truth": "Tin",
+            "generated": "taxIdentificationNumber",
+            "match": true
+          }
+        ],
+        "Reservation": [
+          {
+            "ground_truth": "Pickup_Day",
+            "generated": "pickupDay",
+            "match": true
+          },
+          { "ground_truth": "Return_Day", "generated": null, "match": false },
+          { "ground_truth": null, "generated": "client", "match": false },
+          { "ground_truth": null, "generated": "bikeModel", "match": false },
+          { "ground_truth": null, "generated": "pickupStore", "match": false }
+        ],
+        "Store": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          { "ground_truth": "Name", "generated": "name", "match": true }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "title": "Car Park Access System",
+      "class_matches": [
+        { "ground_truth": "Access", "generated": null, "match": false },
+        { "ground_truth": "Barrier", "generated": "Barrier", "match": true },
+        { "ground_truth": "Car Park", "generated": "CarPark", "match": true },
+        { "ground_truth": "Card", "generated": null, "match": false },
+        {
+          "ground_truth": "Card Reader",
+          "generated": "CardReader",
+          "match": true
+        },
+        {
+          "ground_truth": "Guest Card",
+          "generated": "GuestCard",
+          "match": true
+        },
+        { "ground_truth": "Signal", "generated": null, "match": false },
+        {
+          "ground_truth": "Staff Card",
+          "generated": "IdentityCard",
+          "match": true
+        },
+        { "ground_truth": null, "generated": "Employee", "match": false },
+        { "ground_truth": null, "generated": "Sign", "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Car Park o-- Barrier",
+          "generated": "CarPark *-- Barrier",
+          "match": true
+        },
+        {
+          "ground_truth": "Car Park o-- Card Reader",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Card Reader o-- Guest Card",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Card Reader o-- Signal",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Guest card --> Card",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Barrier --> Signal",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Card <|-- Access",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Card <|-- Staff Card",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Employee --> IdentityCard",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "IdentityCard ..> CardReader",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "CardReader --> Barrier",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "CarPark *-- Sign",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "GuestCard ..> CardReader",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Barrier": [
+          { "ground_truth": null, "generated": "isRaised", "match": false }
+        ],
+        "Car Park": [
+          {
+            "ground_truth": null,
+            "generated": "availableSpaces",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "totalSpaces", "match": false },
+          {
+            "ground_truth": null,
+            "generated": "occupiedSpaces",
+            "match": false
+          }
+        ],
+        "Guest Card": [
+          { "ground_truth": null, "generated": "number", "match": false },
+          { "ground_truth": null, "generated": "currentDate", "match": false }
+        ],
+        "Staff Card": [
+          { "ground_truth": null, "generated": "number", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "title": "Banking Organizational Structure",
+      "class_matches": [
+        { "ground_truth": "Account", "generated": "Account", "match": true },
+        { "ground_truth": "AccountType", "generated": null, "match": false },
+        { "ground_truth": "Branch", "generated": "Branch", "match": true },
+        {
+          "ground_truth": "ChequingAccount",
+          "generated": "CheckingAccount",
+          "match": true
+        },
+        { "ground_truth": "CreditCard", "generated": null, "match": false },
+        {
+          "ground_truth": "CreditCardAccount",
+          "generated": "CreditCardAccount",
+          "match": true
+        },
+        { "ground_truth": "Customer", "generated": "Customer", "match": true },
+        { "ground_truth": "Employee", "generated": "Employee", "match": true },
+        {
+          "ground_truth": "MortgageAccount",
+          "generated": "MortgageAccount",
+          "match": true
+        },
+        {
+          "ground_truth": "OrganizationalUnit",
+          "generated": "Division",
+          "match": true
+        },
+        { "ground_truth": "Person", "generated": null, "match": false },
+        {
+          "ground_truth": "Subdivision",
+          "generated": "Subdivision",
+          "match": true
+        },
+        { "ground_truth": null, "generated": "Bank", "match": false },
+        { "ground_truth": null, "generated": "JointAccount", "match": false }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "AccountType --> Account",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Branch --> Account",
+          "generated": "Branch --> Account",
+          "match": true
+        },
+        {
+          "ground_truth": "CreditCard --> CreditCardAccount",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Customer --> Account",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Employee --> Customer",
+          "generated": "Customer --> Employee",
+          "match": false
+        },
+        {
+          "ground_truth": "Employee --> OrganizationalUnit",
+          "generated": "Division o-- Employee",
+          "match": false
+        },
+        {
+          "ground_truth": "OrganizationalUnit --> Employee",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "OrganizationalUnit *-- Subdivision",
+          "generated": "Division *-- Subdivision",
+          "match": true
+        },
+        {
+          "ground_truth": "Account <|-- ChequingAccount",
+          "generated": "Account <|-- CheckingAccount",
+          "match": true
+        },
+        {
+          "ground_truth": "Account <|-- CreditCardAccount",
+          "generated": "Account <|-- CreditCardAccount",
+          "match": true
+        },
+        {
+          "ground_truth": "Account <|-- MortgageAccount",
+          "generated": "Account <|-- MortgageAccount",
+          "match": true
+        },
+        {
+          "ground_truth": "OrganizationalUnit <|-- Branch",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Customer",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Person <|-- Employee",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Bank *-- Branch",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Account <|-- JointAccount",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "Bank *-- Division",
+          "match": false
+        },
+        {
+          "ground_truth": null,
+          "generated": "CreditCardAccount --> CreditCardAccount",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Account": [
+          { "ground_truth": "balance", "generated": "balance", "match": true },
+          {
+            "ground_truth": "creditoroverdraftLimit",
+            "generated": "creditLimit",
+            "match": true
+          },
+          {
+            "ground_truth": "number",
+            "generated": "accountNumber",
+            "match": true
+          }
+        ],
+        "Branch": [
+          { "ground_truth": "Address", "generated": "address", "match": true },
+          {
+            "ground_truth": "Number",
+            "generated": "branchNumber",
+            "match": true
+          }
+        ],
+        "CreditCardAccount": [
+          {
+            "ground_truth": "expiryDate",
+            "generated": "expiryDate",
+            "match": true
+          },
+          {
+            "ground_truth": null,
+            "generated": "secondaryCards",
+            "match": false
+          }
+        ],
+        "Customer": [
+          { "ground_truth": null, "generated": "name", "match": false }
+        ],
+        "Employee": [
+          { "ground_truth": null, "generated": "name", "match": false }
+        ],
+        "MortgageAccount": [
+          {
+            "ground_truth": "collateral Property",
+            "generated": "property",
+            "match": true
+          }
+        ],
+        "OrganizationalUnit": [
+          { "ground_truth": null, "generated": "employees", "match": false },
+          { "ground_truth": null, "generated": "manager", "match": false }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "title": "Prepaid Cell Phone (Decorator Pattern)",
+      "class_matches": [
+        {
+          "ground_truth": "Basic Contract",
+          "generated": "BasicContract",
+          "match": true
+        },
+        { "ground_truth": "Client", "generated": null, "match": false },
+        { "ground_truth": "Contract", "generated": null, "match": false },
+        { "ground_truth": "Data", "generated": "DataOption", "match": true },
+        {
+          "ground_truth": "Double Transfer",
+          "generated": "DoubleTransferRateOption",
+          "match": true
+        },
+        {
+          "ground_truth": "Option",
+          "generated": "ContractOption",
+          "match": true
+        },
+        {
+          "ground_truth": "Phone",
+          "generated": "MinutesOption",
+          "match": false
+        },
+        { "ground_truth": "SMS", "generated": "SMSOption", "match": true }
+      ],
+      "relationship_matches": [
+        {
+          "ground_truth": "Contract --> Client",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Contract --> Option",
+          "generated": "BasicContract o-- ContractOption",
+          "match": false
+        },
+        {
+          "ground_truth": "Option <|-- Data",
+          "generated": "ContractOption <|-- DataOption",
+          "match": true
+        },
+        {
+          "ground_truth": "Option <|-- Double Transfer",
+          "generated": "ContractOption <|-- DoubleTransferRateOption",
+          "match": true
+        },
+        {
+          "ground_truth": "Option <|-- Phone",
+          "generated": "ContractOption <|-- MinutesOption",
+          "match": false
+        },
+        {
+          "ground_truth": "Option <|-- SMS",
+          "generated": "ContractOption <|-- SMSOption",
+          "match": true
+        },
+        {
+          "ground_truth": "Contract --> Basic Contract",
+          "generated": null,
+          "match": false
+        },
+        {
+          "ground_truth": "Contract --> Option",
+          "generated": "ContractOption --> BasicContract",
+          "match": false
+        }
+      ],
+      "attribute_matches": {
+        "Basic Contract": [
+          { "ground_truth": "Balance", "generated": "balance", "match": true },
+          {
+            "ground_truth": "contractNumber",
+            "generated": "contractNumber",
+            "match": true
+          }
+        ],
+        "Option": [
+          { "ground_truth": null, "generated": "monthlyCharge", "match": false }
+        ],
+        "Data": [
+          {
+            "ground_truth": null,
+            "generated": "monthlyCharge",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "dataAmount", "match": false }
+        ],
+        "Double Transfer": [
+          {
+            "ground_truth": null,
+            "generated": "monthlyCharge",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "transferRate", "match": false }
+        ],
+        "Phone": [
+          {
+            "ground_truth": null,
+            "generated": "monthlyCharge",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "minutes", "match": false }
+        ],
+        "SMS": [
+          {
+            "ground_truth": null,
+            "generated": "monthlyCharge",
+            "match": false
+          },
+          { "ground_truth": null, "generated": "smsCount", "match": false }
+        ]
+      }
+    }
+  ]
+}

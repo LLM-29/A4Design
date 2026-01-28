@@ -1,0 +1,28 @@
+@startuml
+class Hospital {
+}
+class Office {
+}
+class Doctor {
+    name: String
+}
+class Patient {
+    name: String
+    email: String
+}
+class Availability {
+    startTime: DateTime
+    endTime: DateTime
+}
+class Appointment {
+    appointmentType: String
+    startTime: DateTime
+}
+Hospital -- Office
+Doctor -- Availability
+Office -- Availability
+Patient -- Appointment
+Doctor -- Appointment
+Appointment -- Office
+Appointment -- Availability
+@enduml

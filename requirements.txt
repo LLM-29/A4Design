@@ -1,8 +1,14 @@
 requests
 torch
-pandas
 pydantic
+python-dotenv
 langchain-openai
 langchain-core
+langchain-community
 sentence-transformers
 langgraph
+python-Levenshtein
+tqdm
+scikit-learn
+numpy
+matplotlib

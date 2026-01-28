@@ -1,0 +1,17 @@
+{
+    "classes": {
+        "precision": 1.0,
+        "recall": 0.83,
+        "f1": 0.91
+    },
+    "attributes": {
+        "precision": 0.56,
+        "recall": 0.5,
+        "f1": 0.53
+    },
+    "relationships": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.67
+    }
+}
