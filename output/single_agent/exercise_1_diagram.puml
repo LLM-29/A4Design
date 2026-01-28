@@ -1,23 +1,23 @@
 @startuml
-class User {
-  +String fullName
+class UnderageUser {
+  + fullName: String
+  + studentCard: String
 }
-class UnderAgeUser extends User {
-  +String studentCard
-}
-class AdultUser extends User {
-  +String idCard
+class AdultUser {
+  + fullName: String
+  + idCard: String
 }
 class Book {
-  +String title
-  +String author
+  + title: String
+  + author: String
 }
-class Loan {
-  +Date borrowDate
-  +Date returnDate
+class BorrowHistory {
+  + borrowDate: Date
+  + book: Book
 }
-User -- Loan : borrows
-Loan -- Book : about
-UnderAgeUser -- User : inherits
-AdultUser -- User : inherits
+UnderageUser -- Book : borrows
+AdultUser -- Book : borrows
+UnderageUser -- BorrowHistory : hasHistory
+AdultUser -- BorrowHistory : hasHistory
+BorrowHistory -- Book : refersTo
 @enduml

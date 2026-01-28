@@ -5,9 +5,9 @@
         "f1": 0.91
     },
     "attributes": {
-        "precision": 0.56,
-        "recall": 0.5,
-        "f1": 0.53
+        "precision": 0.6,
+        "recall": 0.3,
+        "f1": 0.4
     },
     "relationships": {
         "precision": 1.0,

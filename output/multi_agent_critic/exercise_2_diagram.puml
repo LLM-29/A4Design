@@ -1,28 +1,34 @@
 @startuml
-class Office {}
-class Doctor {}
-class Patient {}
-class Hospital {}
+class Hospital {
+  + name: String
+  + address: String
+}
+class Office {
+  + name: String
+  + location: String
+}
+class Doctor {
+  + name: String
+  + specialty: String
+}
+class Patient {
+  + name: String
+  + patientId: String
+}
 class Appointment {
+  + date: String
+  + time: String
+  + status: String
   + type: AppointmentType
-  + startDateTime: DateTime
-  + endDateTime: DateTime
+  + duration: int
 }
 enum AppointmentType {
-  BLOOD_TEST
   CONSULTATION
+  BLOOD_TEST
   SURGERY
 }
-class OfficeSchedule {
-  + slotIdentifier: Time
-}
-Doctor --> Office : PracticingIn
-Patient --> Appointment : books
-Appointment --> Doctor : performed by
-Appointment --> OfficeSchedule
-Doctor --> OfficeSchedule
-Office --> OfficeSchedule
+Doctor --> Office
 Hospital --> Office
-Patient --> Doctor : views
-Appointment --> Office
+Appointment --> Patient
+Appointment --> Doctor
 @enduml

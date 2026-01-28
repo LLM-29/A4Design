@@ -1,28 +1,41 @@
 @startuml
 class Hospital {
+  +hospitalId: String
+  +name: String
 }
+
 class Office {
+  +officeId: String
+  +location: String
 }
+
 class Doctor {
-    name: String
+  +doctorId: String
+  +name: String
 }
+
 class Patient {
-    name: String
-    email: String
+  +patientId: String
+  +name: String
+  +email: String
 }
-class Availability {
-    startTime: DateTime
-    endTime: DateTime
+
+class Schedule {
+  +startDateTime: DateTime
+  +endDateTime: DateTime
 }
+
 class Appointment {
-    appointmentType: String
-    startTime: DateTime
+  +appointmentId: String
+  +type: String
+  +startDateTime: DateTime
+  +endDateTime: DateTime
 }
+
 Hospital -- Office
-Doctor -- Availability
-Office -- Availability
-Patient -- Appointment
-Doctor -- Appointment
+Doctor -- Schedule
+Office -- Schedule
+Appointment -- Doctor
+Appointment -- Patient
 Appointment -- Office
-Appointment -- Availability
 @enduml

@@ -1,25 +1,35 @@
 @startuml
+
 class UnderAgeUser {
-  + fullName
-  + studentCard
+    + fullName: String
+    + studentCard: String
+    + borrowingHistory: List<Borrowing>
+    + maxBorrowedBooks: int
 }
+
 class AdultUser {
-  + fullName
-  + idCard
+    + fullName: String
+    + idCard: String
+    + borrowingHistory: List<Borrowing>
+    + maxBorrowedBooks: int
 }
+
 class Book {
-  + title
-  + author
+    + title: String
+    + author: String
 }
+
+class Borrowing {
+    + borrowDate: Date
+}
+
 class Library {
-  + name
+    + name: String
 }
-class BorrowRecord {
-  + borrowDate
-  + returnDate
-}
-UnderAgeUser --> BorrowRecord
-AdultUser --> BorrowRecord
-BorrowRecord --> Book
+
+UnderAgeUser --> Borrowing
+AdultUser --> Borrowing
+Borrowing --> Book
 Library --> Book
+
 @enduml
