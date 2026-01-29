@@ -71,8 +71,17 @@ def main(api_key: str, evaluation: str):
 
                 Logger.log_result_metrics(metrics)
 
-                metrics_file = os.path.join(output_dir, f"exercise_{idx+1}_metrics.json")
                 serializable_metrics = {k: v.model_dump() for k, v in metrics.items()}
+                
+                if evaluation == EvaluationMode.SCORER:
+                    serializable_metrics['scorer_scores'] = {
+                        'syntax_score': final_output.get('syntax_score', 0),
+                        'semantic_score': final_output.get('semantic_score', 0),
+                        'pragmatic_score': final_output.get('pragmatic_score', 0),
+                        'average_score': (final_output.get('syntax_score', 0) + final_output.get('semantic_score', 0) + final_output.get('pragmatic_score', 0)) / 3.0
+                    }
+
+                metrics_file = os.path.join(output_dir, f"exercise_{idx+1}_metrics.json")
                 with open(metrics_file, 'w') as f:
                     json.dump(serializable_metrics, f, indent=4)
 

@@ -121,8 +121,8 @@ def create_critic_workflow(
             Logger.log_info("Converged: no further improvements detected -> END")
             return END
         
-        Logger.log_debug("Routing: logical_fixer -> critic")
-        return NodeNames.CRITIC
+        Logger.log_debug("Routing: logical_fixer -> syntax_check")
+        return NodeNames.SYNTAX_CHECK
 
     workflow.add_conditional_edges(
         NodeNames.CRITIC,
@@ -137,7 +137,7 @@ def create_critic_workflow(
         NodeNames.LOGICAL_FIXER,
         route_after_logical_fixer,
         {
-            NodeNames.CRITIC: NodeNames.CRITIC,
+            NodeNames.SYNTAX_CHECK: NodeNames.SYNTAX_CHECK,
             END: END
         }
     )
@@ -257,14 +257,14 @@ def create_scoring_workflow(
         Returns:
             Next node name
         """
-        Logger.log_debug("Routing: logical_fixer -> scorer")
-        return NodeNames.SCORER
+        Logger.log_debug("Routing: logical_fixer -> syntax_check")
+        return NodeNames.SYNTAX_CHECK
     
     workflow.add_conditional_edges(
         NodeNames.LOGICAL_FIXER,
         route_after_logical_fixer,
         {
-            NodeNames.SCORER: NodeNames.SCORER
+            NodeNames.SYNTAX_CHECK: NodeNames.SYNTAX_CHECK
         }
     )
           

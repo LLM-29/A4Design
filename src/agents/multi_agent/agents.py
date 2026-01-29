@@ -545,9 +545,6 @@ class UMLNodes:
             report: CritiqueReport = safe_invoke(structured_llm, messages)
 
             Logger.log_critique_report(report)
-            
-            if report.findings:
-                Logger.log_info(f"Categories: {[f.category.value for f in report.findings]}")
 
             return {
                 "current_validation": report,

@@ -114,19 +114,18 @@ class Logger:
     @staticmethod
     def log_classes(classes: List) -> None:
         logger.info(f"Extracted {len(classes)} classes")
-        logger.info(f"Extracted classes: {classes}")
+        logger.debug(f"Extracted classes: {classes}")
     
 
     @staticmethod
     def log_relationships(relationships: List) -> None:
         logger.info(f"Extracted {len(relationships)} relationships")
-        logger.info(f"Extracted relationships: {relationships}")
-    
+        logger.debug(f"Extracted relationships: {relationships}")
 
     @staticmethod
     def log_critique_report(report: CritiqueReport) -> None:
         logger.info(f"Extracted {len(report.findings)} findings")
-        logger.info(f"Extracted report: {report}")
+        logger.debug(f"Extracted report: {report}")
     
 
     @staticmethod

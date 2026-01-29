@@ -286,11 +286,11 @@ class DiagramEvaluator:
         )
 
         if matched_pairs:
-            Logger.log_info(f"Matched relationships: {matched_pairs}")
+            Logger.log_debug(f"Matched relationships: {matched_pairs}")
         if remaining_gold:
-            Logger.log_warning(f"Unmatched gold relationships: {remaining_gold}")
+            Logger.log_debug(f"Unmatched gold relationships: {remaining_gold}")
         if remaining_pred:
-            Logger.log_warning(f"Unmatched predicted relationships: {remaining_pred}")
+            Logger.log_debug(f"Unmatched predicted relationships: {remaining_pred}")
         return matched_pairs, remaining_gold, remaining_pred
     
     def _calculate_metrics(

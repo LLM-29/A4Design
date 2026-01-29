@@ -51,7 +51,6 @@ class FewShotLoader:
                 with open(self.diagrams_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     self._diagrams = data if isinstance(data, list) else []
-                Logger.log_info(f"Loaded {len(self._diagrams)} complete  diagrams")
             except Exception as e:
                 Logger.log_warning(f"Failed to load complete diagrams: {e}")
                 self._diagrams = []
